@@ -1,0 +1,2645 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anand Mohandas solo development platform</title>
+  <meta name="author" content="Anandovsky" />
+  <meta name="developer" content="Anandovsky" />
+  <meta name="creator" content="Anandovsky" />
+  <meta name="description" content="Anandovsky Studio — Test a business model, monetize existing skills, and build a revenue stream without betting everything on an unproven venture." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* CSS Reset & Design Tokens - Warm Cream & Deep Espresso Brown Theme */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Warm Ivory / Cream Backgrounds */
+      --bg-base: #FBF9F5;
+      --bg-surface: #FAF7F2;
+      --bg-surface-elevated: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --bg-card-hover: #FFFFFF;
+      
+      /* Deep Espresso Brown (Header, Footer, Framing Elements) */
+      --bg-espresso: #1E1512;
+      --bg-espresso-elevated: #2C1E1A;
+      --bg-espresso-card: #241915;
+
+      /* Warm Amber / Gold / Terracotta Accents */
+      --accent-gold: #D97706;
+      --accent-gold-light: #F59E0B;
+      --accent-gold-dark: #B45309;
+      --accent-terracotta: #EA580C;
+      --accent-glow: rgba(217, 119, 6, 0.16);
+      --accent-glow-strong: rgba(217, 119, 6, 0.32);
+      
+      /* Typography - Deep Charcoal-Brown & Dark Espresso */
+      --text-primary: #1E1512;
+      --text-secondary: #4A3B32;
+      --text-muted: #78665B;
+      
+      /* Header & Footer Text (on Espresso) */
+      --text-on-espresso: #FDFBF7;
+      --text-on-espresso-subtle: #D1C7BD;
+      
+      /* Borders & Dividers */
+      --border-subtle: rgba(44, 30, 26, 0.09);
+      --border-medium: rgba(44, 30, 26, 0.16);
+      --border-gold: rgba(217, 119, 6, 0.35);
+      --border-gold-hover: rgba(217, 119, 6, 0.75);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-normal: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Background Glows - Warm Ivory & Honey Tint */
+    .ambient-mesh {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-glow-1 {
+      position: absolute;
+      top: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 850px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(217, 119, 6, 0.08) 0%, rgba(251, 249, 245, 0) 70%);
+      filter: blur(90px);
+    }
+
+    .ambient-glow-2 {
+      position: absolute;
+      top: 40%;
+      right: -8%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(180, 83, 9, 0.05) 0%, rgba(251, 249, 245, 0) 70%);
+      filter: blur(100px);
+    }
+
+    .ambient-glow-3 {
+      position: absolute;
+      bottom: -10%;
+      left: -8%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, rgba(251, 249, 245, 0) 70%);
+      filter: blur(105px);
+    }
+
+    .grid-pattern {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(44, 30, 26, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(44, 30, 26, 0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Site Header - Rich Deep Espresso Brown */
+    header.site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(30, 21, 18, 0.96);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(30, 21, 18, 0.15);
+      transition: all var(--transition-fast);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 78px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-on-espresso);
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #2C1E1A 0%, #1E1512 100%);
+      border: 1px solid var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold-light), transparent);
+    }
+
+    .brand-mark svg {
+      width: 22px;
+      height: 22px;
+      color: var(--accent-gold-light);
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 1.18rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #FFFFFF 60%, var(--accent-gold-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      color: var(--text-on-espresso-subtle);
+      text-transform: uppercase;
+    }
+
+    /* Desktop Navigation Menu (Inside Espresso Header) */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(44, 30, 26, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-full);
+      padding: 6px 8px;
+    }
+
+    .nav-link {
+      color: var(--text-on-espresso-subtle);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 7px 18px;
+      border-radius: var(--radius-full);
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .nav-link:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-link.active {
+      color: #FFFFFF;
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.4) 0%, rgba(217, 119, 6, 0.2) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 14px rgba(217, 119, 6, 0.3);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-on-espresso-subtle);
+      background: rgba(44, 30, 26, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse-glow 2.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    .cta-btn-header {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.84rem;
+      text-decoration: none;
+      padding: 9px 20px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 16px rgba(217, 119, 6, 0.35);
+      border: 1px solid var(--accent-gold-light);
+    }
+
+    .cta-btn-header:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(217, 119, 6, 0.5);
+      filter: brightness(1.06);
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-on-espresso);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* HERO SECTION */
+    section.hero-section {
+      padding-top: 175px;
+      padding-bottom: 95px;
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      border-radius: var(--radius-full);
+      background: rgba(217, 119, 6, 0.09);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      color: var(--accent-gold-dark);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(217, 119, 6, 0.08);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 8px var(--accent-gold);
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6.2vw, 4.6rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--text-primary);
+    }
+
+    .hero-title .title-gradient {
+      background: linear-gradient(135deg, #1E1512 40%, #4A3B32 75%, var(--accent-gold-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-title .highlight-firm {
+      color: var(--accent-gold);
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 0 35px rgba(217, 119, 6, 0.22);
+    }
+
+    /* Core Tagline Box - Light Cream & Warm Ivory Container */
+    .hero-tagline-box {
+      max-width: 880px;
+      margin: 0 auto 34px auto;
+      padding: 26px 34px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FAF5ED 100%);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 40px rgba(44, 30, 26, 0.06), 0 0 25px rgba(217, 119, 6, 0.1);
+      position: relative;
+    }
+
+    .hero-tagline-box::before {
+      content: '\201C';
+      position: absolute;
+      top: 6px;
+      left: 18px;
+      font-family: Georgia, serif;
+      font-size: 3.8rem;
+      line-height: 1;
+      color: rgba(217, 119, 6, 0.22);
+      pointer-events: none;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtext {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 740px;
+      margin: 0 auto 48px auto;
+      line-height: 1.7;
+    }
+
+    /* Interactive Gateway Buttons - Crisp Off-White Cards with Warm Shadows */
+    .gateway-wrapper {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .gateway-heading-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .gateway-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--accent-gold-dark);
+      font-weight: 600;
+    }
+
+    .gateway-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .gateway-card-btn {
+      position: relative;
+      background: linear-gradient(160deg, #FFFFFF 0%, #FAF7F2 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 30px 24px;
+      text-align: left;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 6px 24px rgba(44, 30, 26, 0.05), 0 1px 3px rgba(44, 30, 26, 0.03);
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .gateway-card-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .gateway-card-btn:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-gold-hover);
+      box-shadow: 0 16px 40px rgba(44, 30, 26, 0.1), 0 0 25px rgba(217, 119, 6, 0.14);
+      background: #FFFFFF;
+    }
+
+    .gateway-card-btn:hover::before {
+      opacity: 1;
+    }
+
+    .gateway-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .gateway-icon-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold);
+      transition: all var(--transition-fast);
+    }
+
+    .gateway-card-btn:hover .gateway-icon-badge {
+      background: var(--accent-gold);
+      color: #FFFFFF;
+      box-shadow: 0 0 18px var(--accent-glow-strong);
+      transform: scale(1.05);
+    }
+
+    .gateway-step-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border-medium);
+      background: #FAF7F2;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .gateway-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .gateway-subtitle {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-gold-dark);
+      margin-bottom: 12px;
+    }
+
+    .gateway-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      flex-grow: 1;
+    }
+
+    .gateway-action {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      transition: gap var(--transition-fast);
+    }
+
+    .gateway-card-btn:hover .gateway-action {
+      gap: 12px;
+      color: var(--accent-gold-dark);
+    }
+
+    /* Metrics Strip */
+    .metrics-strip {
+      margin-top: 60px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      background: linear-gradient(135deg, #1E1512 40%, var(--accent-gold-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    /* Section Global Headers */
+    .section-wrap {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 55px;
+      max-width: 780px;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold-dark);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(2.1rem, 4vw, 2.85rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-lead {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* SECTION 1: FOR ME (Client Services & Hiring) */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .service-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all var(--transition-normal);
+      box-shadow: 0 4px 20px rgba(44, 30, 26, 0.05);
+    }
+
+    .service-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(44, 30, 26, 0.09), 0 0 20px var(--accent-glow);
+    }
+
+    .service-card.highlighted {
+      border-color: rgba(217, 119, 6, 0.4);
+      background: linear-gradient(165deg, #FFFFFF 0%, #FAF5EC 100%);
+      box-shadow: 0 10px 30px rgba(44, 30, 26, 0.07), 0 0 22px var(--accent-glow);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      background: var(--accent-gold);
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+    }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.3);
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .service-title {
+      font-size: 1.28rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .service-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .service-features {
+      list-style: none;
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .service-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+    }
+
+    .service-feature-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent-gold);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .service-timeline {
+      margin-top: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--accent-gold-dark);
+      background: rgba(217, 119, 6, 0.08);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      border: 1px solid rgba(217, 119, 6, 0.2);
+      font-weight: 600;
+    }
+
+    /* Client Inquiry Form Layout - Rich Espresso Framing Card */
+    .inquiry-split-layout {
+      background: linear-gradient(145deg, #1E1512 0%, #2A1D18 100%);
+      border: 1px solid rgba(217, 119, 6, 0.45);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: 0 20px 50px rgba(30, 21, 18, 0.2), 0 0 35px rgba(217, 119, 6, 0.15);
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 50px;
+      align-items: center;
+      color: var(--text-on-espresso);
+    }
+
+    .inquiry-info .section-tag {
+      color: var(--accent-gold-light);
+    }
+
+    .inquiry-info h3 {
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .inquiry-info p {
+      color: var(--text-on-espresso-subtle);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .trust-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .trust-bullet {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--text-on-espresso);
+    }
+
+    .trust-bullet-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .inquiry-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-on-espresso-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: #2C1E1A;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      transition: all var(--transition-fast);
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--accent-gold-light);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.25);
+      background: #36241F;
+    }
+
+    .form-select option {
+      background: #1E1512;
+      color: #FFFFFF;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 105px;
+    }
+
+    .form-submit-btn {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: 1px solid var(--accent-gold-light);
+      border-radius: var(--radius-sm);
+      padding: 14px 28px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 20px rgba(217, 119, 6, 0.35);
+      margin-top: 6px;
+    }
+
+    .form-submit-btn:hover {
+      box-shadow: 0 6px 26px rgba(217, 119, 6, 0.5);
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+
+    /* SECTION 2: FOR YOU (Stories, Philosophies & Blueprints) */
+    .filter-pills-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 35px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      background: #FFFFFF;
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 2px 6px rgba(44, 30, 26, 0.03);
+    }
+
+    .filter-pill:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-gold);
+    }
+
+    .filter-pill.active {
+      color: #FFFFFF;
+      background: var(--accent-gold);
+      border-color: var(--accent-gold-dark);
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.28);
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .story-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-normal);
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(44, 30, 26, 0.05);
+    }
+
+    .story-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-gold);
+      box-shadow: 0 16px 36px rgba(44, 30, 26, 0.09), 0 0 20px var(--accent-glow);
+    }
+
+    .story-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .story-category {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-gold-dark);
+      background: rgba(217, 119, 6, 0.1);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      font-weight: 600;
+    }
+
+    .story-read-time {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .story-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.35;
+      margin-bottom: 12px;
+      transition: color var(--transition-fast);
+    }
+
+    .story-card:hover .story-title {
+      color: var(--accent-gold-dark);
+    }
+
+    .story-snippet {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      flex-grow: 1;
+    }
+
+    .story-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .story-author {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .read-link {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* SECTION 3: FOR PROJECTS (Portfolio & Deployed Apps) */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all var(--transition-normal);
+      box-shadow: 0 4px 20px rgba(44, 30, 26, 0.05);
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-gold);
+      box-shadow: 0 16px 40px rgba(44, 30, 26, 0.1), 0 0 25px var(--accent-glow);
+    }
+
+    .project-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .project-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(16, 185, 129, 0.12);
+      color: #047857;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .project-badge.beta {
+      background: rgba(217, 119, 6, 0.12);
+      color: var(--accent-gold-dark);
+      border-color: rgba(217, 119, 6, 0.3);
+    }
+
+    .project-platform-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .project-title {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .tech-stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+
+    .tech-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      background: #FAF7F2;
+      border: 1px solid var(--border-subtle);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+    }
+
+    .project-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .project-link-btn {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--accent-gold-dark);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color var(--transition-fast);
+    }
+
+    .project-link-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .project-demo-btn {
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      color: var(--accent-gold-dark);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all var(--transition-fast);
+    }
+
+    .project-demo-btn:hover {
+      background: var(--accent-gold);
+      color: #FFFFFF;
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    /* Modals & Overlays - Warm Ivory & Espresso Framing */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 14, 12, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-normal);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      padding: 38px;
+      box-shadow: 0 25px 60px rgba(30, 21, 18, 0.25), 0 0 35px var(--accent-glow);
+      position: relative;
+      transform: scale(0.92) translateY(20px);
+      transition: transform var(--transition-normal);
+      color: var(--text-primary);
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #FAF7F2;
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .modal-close-btn:hover {
+      color: var(--text-primary);
+      background: #FAF4EB;
+    }
+
+    .modal-icon-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(217, 119, 6, 0.12);
+      border: 2px solid var(--accent-gold);
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+
+    .modal-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .modal-desc {
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .modal-details-card {
+      background: #FAF7F2;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .modal-details-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .modal-details-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-details-val {
+      color: var(--accent-gold-dark);
+      font-weight: 700;
+    }
+
+    .modal-action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--accent-gold-light);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 16px rgba(217, 119, 6, 0.3);
+    }
+
+    .modal-action-btn:hover {
+      box-shadow: 0 6px 22px rgba(217, 119, 6, 0.45);
+      filter: brightness(1.05);
+    }
+
+    /* Reading Modal for Stories */
+    .article-modal-box {
+      max-width: 740px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 44px;
+      background: #FFFFFF;
+    }
+
+    .article-modal-category {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--accent-gold-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .article-modal-title {
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .article-modal-body {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 24px;
+    }
+
+    .article-modal-body p {
+      margin-bottom: 18px;
+    }
+
+    .article-modal-body h4 {
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      margin: 24px 0 12px 0;
+    }
+
+    .article-modal-body blockquote {
+      border-left: 3px solid var(--accent-gold);
+      background: #FAF7F2;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-style: italic;
+      color: var(--accent-gold-dark);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    /* Footer - Rich Deep Espresso Brown */
+    footer.site-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: #1E1512;
+      padding: 70px 0 35px 0;
+      position: relative;
+      z-index: 10;
+      color: var(--text-on-espresso);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 55px;
+    }
+
+    .footer-brand p {
+      font-size: 0.9rem;
+      color: var(--text-on-espresso-subtle);
+      max-width: 320px;
+      margin: 16px 0 22px 0;
+      line-height: 1.6;
+    }
+
+    .footer-social-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-on-espresso-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .social-btn:hover {
+      color: var(--accent-gold-light);
+      border-color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .footer-heading {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #FFFFFF;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-link-item a {
+      color: var(--text-on-espresso-subtle);
+      text-decoration: none;
+      font-size: 0.86rem;
+      transition: color var(--transition-fast);
+    }
+
+    .footer-link-item a:hover {
+      color: var(--accent-gold-light);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #9E8E84;
+    }
+
+    .back-to-top {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-on-espresso);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .back-to-top:hover {
+      color: #FFFFFF;
+      border-color: var(--accent-gold-light);
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    /* Responsive Media Queries */
+    @media (max-width: 1024px) {
+      .gateway-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-grid, .stories-grid, .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .inquiry-split-layout {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+      .mobile-menu-toggle {
+        display: flex;
+      }
+      .status-indicator {
+        display: none;
+      }
+      .services-grid, .stories-grid, .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+      }
+      .form-group-row {
+        grid-template-columns: 1fr;
+      }
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+      .inquiry-split-layout {
+        padding: 30px 22px;
+      }
+    }
+
+    /* Mobile Drawer - Deep Espresso */
+    .mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 78px;
+      left: 0;
+      right: 0;
+      background: rgba(30, 21, 18, 0.98);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 12px;
+      backdrop-filter: blur(20px);
+    }
+
+    .mobile-drawer.active {
+      display: flex;
+    }
+
+    .mobile-nav-link {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Fields -->
+  <div class="ambient-mesh">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="ambient-glow-3"></div>
+  </div>
+  <div class="grid-pattern"></div>
+
+  <!-- Header Navigation -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-logo" aria-label="Anandovsky Home">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <span class="brand-name">Anandovsky</span>
+          <span class="brand-sub">Trial Firm Studio</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="#section-me" class="nav-link" data-target="section-me">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          For Me
+        </a>
+        <a href="#section-you" class="nav-link" data-target="section-you">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          For You
+        </a>
+        <a href="#section-projects" class="nav-link" data-target="section-projects">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          Projects
+        </a>
+        <a href="https://anandovsky.com" target="_blank" rel="noopener noreferrer" class="nav-link" style="color: var(--accent-gold); font-weight: 700;" title="anandovsky.com">anandovsky.com ↗</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span>Available for Trials</span>
+        </div>
+        <a href="#contact" class="cta-btn-header">
+          <span>Hire / Connect</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#section-me" class="mobile-nav-link" onclick="toggleMobileMenu()">1. For Me (Services &amp; Hiring) &rarr;</a>
+    <a href="#section-you" class="mobile-nav-link" onclick="toggleMobileMenu()">2. For You (Stories &amp; Blueprints) &rarr;</a>
+    <a href="#section-projects" class="mobile-nav-link" onclick="toggleMobileMenu()">3. Projects (Portfolio) &rarr;</a>
+    <a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()" style="color: var(--accent-gold);">Start an Inquiry &rarr;</a>
+  </div>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="container">
+        
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Solo Development &amp; Business Experimentation Firm</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="title-gradient">Anandovsky</span>
+          <br />
+          <span class="highlight-firm">Trial Firm Studio</span>
+        </h1>
+
+        <!-- EXACT REQUIRED TAGLINE -->
+        <div class="hero-tagline-box">
+          <p class="hero-tagline">
+            "Test a business model, monetize existing skills, and build a revenue stream without betting everything on an unproven venture."
+          </p>
+        </div>
+
+        <p class="hero-subtext">
+          A high-velocity solo laboratory bridging software engineering, micro-SaaS architecture, and rapid market validation. Explore client offerings, free blueprints for builders, and production-tested applications.
+        </p>
+
+        <!-- THREE INTERACTIVE GATEWAY BUTTONS -->
+        <div class="gateway-wrapper">
+          <div class="gateway-heading-wrap">
+            <span class="gateway-label">// Select Your Primary Pathway</span>
+          </div>
+
+          <div class="gateway-grid">
+            <!-- Gateway 1: For Me -->
+            <a href="#section-me" class="gateway-card-btn" data-target="section-me">
+              <div class="gateway-card-header">
+                <div class="gateway-icon-badge">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <span class="gateway-step-num">PATHWAY 01</span>
+              </div>
+              <h2 class="gateway-title">For Me</h2>
+              <div class="gateway-subtitle">Client Services &amp; Hiring</div>
+              <p class="gateway-desc">
+                Partner with an agile solo firm for full-stack web, Android development, technical de-risking, and fast MVP experimentation.
+              </p>
+              <div class="gateway-action">
+                <span>Explore Engagements</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+
+            <!-- Gateway 2: For You -->
+            <a href="#section-you" class="gateway-card-btn" data-target="section-you">
+              <div class="gateway-card-header">
+                <div class="gateway-icon-badge">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                </div>
+                <span class="gateway-step-num">PATHWAY 02</span>
+              </div>
+              <h2 class="gateway-title">For You</h2>
+              <div class="gateway-subtitle">Explore, Stories &amp; Blueprints</div>
+              <p class="gateway-desc">
+                Read practical playbooks, daily founder logs, solo trial frameworks, and zero-bullshit strategies to monetize your own technical skills.
+              </p>
+              <div class="gateway-action">
+                <span>Read Free Blueprints</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+
+            <!-- Gateway 3: Projects -->
+            <a href="#section-projects" class="gateway-card-btn" data-target="section-projects">
+              <div class="gateway-card-header">
+                <div class="gateway-icon-badge">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <span class="gateway-step-num">PATHWAY 03</span>
+              </div>
+              <h2 class="gateway-title">Projects</h2>
+              <div class="gateway-subtitle">Portfolio &amp; Deployed Apps</div>
+              <p class="gateway-desc">
+                Inspect active production code: language learning platforms on Vercel, offline-first Android diagnostic tools, and micro-ventures.
+              </p>
+              <div class="gateway-action">
+                <span>View Portfolio &amp; Demos</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Metrics Strip -->
+        <div class="metrics-strip">
+          <div class="metric-item">
+            <div class="metric-value">14–21d</div>
+            <div class="metric-label">MVP Sprint Cycle</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Solo Founder Leverage</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">Vercel + Android</div>
+            <div class="metric-label">Cross-Platform Stack</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">$0 Debt</div>
+            <div class="metric-label">Bootstrapped Trial Model</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 1: "FOR ME" (Client Services & Hiring) -->
+    <section class="section-wrap" id="section-me">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">// Pathway 01 &mdash; For Me</span>
+          <h2 class="section-title">Client Services &amp; Solo Engineering Trials</h2>
+          <p class="section-lead">
+            Traditional agencies bloat scopes and charge for meetings. Anandovsky operates on a precision trial model: fast, direct-to-code sprints where ideas are pressure-tested in the real market before capital is exhausted.
+          </p>
+        </div>
+
+        <!-- Service Cards Grid -->
+        <div class="services-grid">
+          
+          <!-- Card 1 -->
+          <div class="service-card">
+            <div class="service-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <h3 class="service-title">Rapid MVP Trial Sprint</h3>
+            <p class="service-description">
+              Transform an unverified hypothesis into a live, interactive web or mobile application with analytics, billing, and auth in under 3 weeks.
+            </p>
+            <ul class="service-features">
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Zero to Vercel/Android deployment</span>
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Payment &amp; micro-checkout integration</span>
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Quantitative user action telemetry</span>
+              </li>
+            </ul>
+            <div class="service-timeline">Typical Horizon: 14 to 21 Days</div>
+          </div>
+
+          <!-- Card 2: Highlighted -->
+          <div class="service-card highlighted">
+            <div class="popular-badge">High Demand</div>
+            <div class="service-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3 class="service-title">Full-Stack &amp; Custom Platforms</h3>
+            <p class="service-description">
+              Bespoke web applications, high-performance dashboards, and responsive frontends engineered for instant speed, modular scaling, and clean code.
+            </p>
+            <ul class="service-features">
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Next.js, TypeScript, Tailwind, Edge APIs</span>
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Postgres / Supabase / Redis architecture</span>
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Sub-50ms TTFB &amp; 99+ Lighthouse scores</span>
+              </li>
+            </ul>
+            <div class="service-timeline">Typical Horizon: Sprint-Based / Retainer</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="service-card">
+            <div class="service-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            </div>
+            <h3 class="service-title">Android Engineering &amp; Tools</h3>
+            <p class="service-description">
+              Native Android apps, developer utilities, and offline-first mobile tools with Kotlin, Jetpack Compose, and background system services.
+            </p>
+            <ul class="service-features">
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Kotlin &amp; Modern Jetpack Compose UI</span>
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Local Room DB &amp; background workers</span>
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Play Console release pipeline readiness</span>
+              </li>
+            </ul>
+            <div class="service-timeline">Typical Horizon: 3 to 5 Weeks</div>
+          </div>
+
+        </div>
+
+        <!-- Interactive Inquiry & Contact Form Section -->
+        <div class="inquiry-split-layout" id="contact">
+          <div class="inquiry-info">
+            <span class="section-tag">// Direct Founder Channel</span>
+            <h3>Ready to test your venture?</h3>
+            <p>
+              Tell me about your product concept or existing codebase. We’ll outline a lean trial sprint, evaluate technical feasibility, and give you an actionable delivery timeline.
+            </p>
+
+            <div class="trust-bullets">
+              <div class="trust-bullet">
+                <div class="trust-bullet-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span>Direct engineer communication &mdash; no account managers</span>
+              </div>
+              <div class="trust-bullet">
+                <div class="trust-bullet-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span>You retain 100% intellectual property &amp; source code</span>
+              </div>
+              <div class="trust-bullet">
+                <div class="trust-bullet-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span>Guaranteed response within 12 hours</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inquiry Form -->
+          <form class="inquiry-form" id="trialInquiryForm" onsubmit="handleInquirySubmit(event)">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label class="form-label" for="clientName">Your Name</label>
+                <input class="form-input" type="text" id="clientName" required placeholder="e.g. Alex Mercer" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="clientEmail">Email Address</label>
+                <input class="form-input" type="email" id="clientEmail" required placeholder="alex@domain.com" />
+              </div>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label class="form-label" for="serviceTrack">Engagement Track</label>
+                <select class="form-select" id="serviceTrack" required>
+                  <option value="Rapid MVP Trial (14-21 Days)">Rapid MVP Trial (14-21 Days)</option>
+                  <option value="Custom Web Platform / Next.js">Custom Web Platform / Next.js</option>
+                  <option value="Native Android Tool / App">Native Android Tool / App</option>
+                  <option value="Architecture &amp; De-risking Audit">Architecture &amp; De-risking Audit</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="timelineBudget">Target Timeline / Horizon</label>
+                <select class="form-select" id="timelineBudget">
+                  <option value="Immediate Sprint (< 3 weeks)">Immediate Sprint (&lt; 3 weeks)</option>
+                  <option value="Next 30-60 Days">Next 30-60 Days</option>
+                  <option value="Exploratory Consultation">Exploratory Consultation</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="projectBrief">Project Objective &amp; Requirements</label>
+              <textarea class="form-textarea" id="projectBrief" required placeholder="Describe the core business hypothesis, target users, and what needs to be built or validated..."></textarea>
+            </div>
+
+            <button type="submit" class="form-submit-btn">
+              <span>Submit Trial Proposal</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: "FOR YOU" (Stories, Philosophies & Blueprints) -->
+    <section class="section-wrap" id="section-you">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">// Pathway 02 &mdash; For You</span>
+          <h2 class="section-title">Open Blueprints, Daily Stories &amp; Philosophies</h2>
+          <p class="section-lead">
+            Knowledge shouldn't be locked behind expensive courses. Here are the field-tested systems, mental models, and technical architectures I use to de-risk solo development and turn software skills into self-sustaining income streams.
+          </p>
+        </div>
+
+        <!-- Filter Pills Bar -->
+        
+        <!-- Domain Reference & Publication Banner -->
+        <div class="domain-reference-card" style="margin-bottom: 30px; padding: 18px 24px; background: #FFFFFF; border: 1px solid var(--border-gold); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: 0 4px 18px rgba(44, 30, 26, 0.04);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-gold-dark); background: rgba(217, 119, 6, 0.1); padding: 4px 10px; border-radius: var(--radius-full); font-weight: 700;">OFFICIAL DOMAIN</span>
+            <span style="font-size: 0.92rem; font-weight: 600; color: var(--text-primary);">All technical blueprints, essays &amp; codebases are published at <a href="https://anandovsky.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold); text-decoration: underline; font-weight: 700;">anandovsky.com</a></span>
+          </div>
+          <a href="https://anandovsky.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn" style="padding: 7px 18px;">
+            <span>Visit anandovsky.com</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </a>
+        </div>
+        <div class="filter-pills-bar">
+          <button class="filter-pill active" onclick="filterStories('all', this)">All Dispatches</button>
+          <button class="filter-pill" onclick="filterStories('blueprint', this)">Trial Playbooks</button>
+          <button class="filter-pill" onclick="filterStories('philosophy', this)">Philosophy &amp; Mindset</button>
+          <button class="filter-pill" onclick="filterStories('tech', this)">Architecture Stacks</button>
+        </div>
+
+        <!-- Stories Grid -->
+        <div class="stories-grid" id="storiesContainer">
+          
+          <!-- Story 1 -->
+          <article class="story-card" data-category="blueprint" onclick="openStoryModal('solo-trial')">
+            <div class="story-meta">
+              <span class="story-category">Trial Playbook</span>
+              <span class="story-read-time">6 min read</span>
+            </div>
+            <h3 class="story-title">The Solo Trial-Firm Engine: Monetizing Hard Skills Without Burning Out</h3>
+            <p class="story-snippet">
+              Why traditional startup lore encourages you to gamble everything on one moonshot, and how a portfolio of micro-trials creates asymmetric upside while guaranteeing cash flow.
+            </p>
+            <div class="story-footer">
+              <span class="story-author">Created by Anandovsky</span>
+              <span class="read-link">
+                Read Blueprint
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Story 2 -->
+          <article class="story-card" data-category="tech" onclick="openStoryModal('vercel-stack')">
+            <div class="story-meta">
+              <span class="story-category">Architecture Stacks</span>
+              <span class="story-read-time">8 min read</span>
+            </div>
+            <h3 class="story-title">Deploying Production MVPs to Vercel in 48 Hours: The Clean Stack</h3>
+            <p class="story-snippet">
+              A breakdown of the exact zero-friction setup: Next.js edge functions, Tailwind, Supabase RLS, and Stripe billing. No bloated AWS consoles, no Kubernetes overhead.
+            </p>
+            <div class="story-footer">
+              <span class="story-author">Created by Anandovsky</span>
+              <span class="read-link">
+                Read Blueprint
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Story 3 -->
+          <article class="story-card" data-category="philosophy" onclick="openStoryModal('unproven-risk')">
+            <div class="story-meta">
+              <span class="story-category">Philosophy &amp; Mindset</span>
+              <span class="story-read-time">5 min read</span>
+            </div>
+            <h3 class="story-title">The Fallacy of the 12-Month Build: Testing Markets on Day 3</h3>
+            <p class="story-snippet">
+              Code is the cheapest asset; attention and customer validation are the rarest. How to structure your development rhythm so real feedback dictates every git commit.
+            </p>
+            <div class="story-footer">
+              <span class="story-author">Created by Anandovsky</span>
+              <span class="read-link">
+                Read Blueprint
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Story 4 -->
+          <article class="story-card" data-category="tech" onclick="openStoryModal('android-niche')">
+            <div class="story-meta">
+              <span class="story-category">Architecture Stacks</span>
+              <span class="story-read-time">7 min read</span>
+            </div>
+            <h3 class="story-title">Android Tools as Asymmetric Assets: Building Offline-First Utilities</h3>
+            <p class="story-snippet">
+              Why the Android ecosystem remains a goldmine for independent engineers who prioritize utility, battery optimization, and low latency over flashy VC trends.
+            </p>
+            <div class="story-footer">
+              <span class="story-author">Created by Anandovsky</span>
+              <span class="read-link">
+                Read Blueprint
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Story 5 -->
+          <article class="story-card" data-category="blueprint" onclick="openStoryModal('skill-monetization')">
+            <div class="story-meta">
+              <span class="story-category">Trial Playbook</span>
+              <span class="story-read-time">9 min read</span>
+            </div>
+            <h3 class="story-title">How to Audit Your Existing Technical Skills and Package Your First $2k Sprint</h3>
+            <p class="story-snippet">
+              Step-by-step checklist to identify repetitive pains companies pay to eliminate today, packaging them into standardized 14-day deliverables.
+            </p>
+            <div class="story-footer">
+              <span class="story-author">Created by Anandovsky</span>
+              <span class="read-link">
+                Read Blueprint
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Story 6 -->
+          <article class="story-card" data-category="philosophy" onclick="openStoryModal('solo-leverage')">
+            <div class="story-meta">
+              <span class="story-category">Philosophy &amp; Mindset</span>
+              <span class="story-read-time">4 min read</span>
+            </div>
+            <h3 class="story-title">Solo Leverage in the Era of Autonomous Developer AI</h3>
+            <p class="story-snippet">
+              How a single determined engineer with systematic toolchains can out-execute a committee of twenty engineers paralyzed by sprint retrospectives.
+            </p>
+            <div class="story-footer">
+              <span class="story-author">Created by Anandovsky</span>
+              <span class="read-link">
+                Read Blueprint
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </span>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: "PROJECTS" (Portfolio & Deployed Apps) -->
+    <section class="section-wrap" id="section-projects">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">// Pathway 03 &mdash; Projects</span>
+          <h2 class="section-title">Portfolio &amp; Deployed Platforms</h2>
+          <p class="section-lead">
+            Real software running in production. From AI-powered language mastery engines on Vercel to native Android performance diagnostics and modular commerce systems.
+          </p>
+        </div>
+
+        <!-- Project Filter Pills -->
+        <div class="filter-pills-bar">
+          <button class="filter-pill active" onclick="filterProjects('all', this)">All Projects</button>
+          <button class="filter-pill" onclick="filterProjects('language', this)">Language Learning</button>
+          <button class="filter-pill" onclick="filterProjects('android', this)">Android Tools</button>
+          <button class="filter-pill" onclick="filterProjects('web', this)">Web Platforms</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projectsContainer">
+          
+          <!-- Project 1: Language App -->
+          <div class="project-card" data-category="language">
+            <div class="project-top-row">
+              <span class="project-badge">&#9679; Deployed on Vercel</span>
+              <span class="project-platform-tag">Web &amp; PWA</span>
+            </div>
+            <h3 class="project-title">LingoPulse AI</h3>
+            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky <span style="opacity: 0.4;">|</span> Tester: Sreegovind</div>
+            <p class="project-desc">
+              Context-driven language learning platform with audio voice synthesis, interactive spaced-repetition drills, and low-latency speech feedback loops.
+            </p>
+            <div class="tech-stack-row">
+              <span class="tech-tag">Next.js Edge</span>
+              <span class="tech-tag">Web Audio API</span>
+              <span class="tech-tag">TailwindCSS</span>
+              <span class="tech-tag">Vercel</span>
+            </div>
+            <div class="project-card-footer">
+              <a href="#contact" class="project-link-btn">
+                <span>View Architecture</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
+                <span>Live Demo</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 2: Language Flashcard & Reader -->
+          <div class="project-card" data-category="language">
+            <div class="project-top-row">
+              <span class="project-badge">&#9679; Production Release</span>
+              <span class="project-platform-tag">Vercel Cloud</span>
+            </div>
+            <h3 class="project-title">LexiFlow Reader</h3>
+            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky <span style="opacity: 0.4;">|</span> Tester: Gayathri</div>
+            <p class="project-desc">
+              Bilingual speed reader and vocabulary extraction utility for polyglots, offering immediate tokenization and sync with local browser databases.
+            </p>
+            <div class="tech-stack-row">
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">IndexedDB</span>
+              <span class="tech-tag">Vercel KV</span>
+              <span class="tech-tag">WASM Parser</span>
+            </div>
+            <div class="project-card-footer">
+              <a href="#contact" class="project-link-btn">
+                <span>Case Study</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
+                <span>Launch App</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 3: Android Tool -->
+          <div class="project-card" data-category="android">
+            <div class="project-top-row">
+              <span class="project-badge beta">&#9679; Active Beta</span>
+              <span class="project-platform-tag">Android Native</span>
+            </div>
+            <h3 class="project-title">DroidSprint Telemetry</h3>
+            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
+            <p class="project-desc">
+              Lightweight developer utility for real-time memory pressure monitoring, frame-drop debugging, and battery temperature profiling on Android devices.
+            </p>
+            <div class="tech-stack-row">
+              <span class="tech-tag">Kotlin</span>
+              <span class="tech-tag">Jetpack Compose</span>
+              <span class="tech-tag">NDK / C++</span>
+              <span class="tech-tag">Room DB</span>
+            </div>
+            <div class="project-card-footer">
+              <a href="#contact" class="project-link-btn">
+                <span>View Specs</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#contact" class="project-demo-btn">
+                <span>Get APK</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 4: Android Utility -->
+          <div class="project-card" data-category="android">
+            <div class="project-top-row">
+              <span class="project-badge">&#9679; Open Utility</span>
+              <span class="project-platform-tag">Android SDK 34</span>
+            </div>
+            <h3 class="project-title">TaskMesh Offline P2P</h3>
+            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
+            <p class="project-desc">
+              Zero-cloud task synchronization utility using local Wi-Fi Direct and Bluetooth mesh protocols for high-security fieldwork and developer logs.
+            </p>
+            <div class="tech-stack-row">
+              <span class="tech-tag">Kotlin Coroutines</span>
+              <span class="tech-tag">Wi-Fi Direct</span>
+              <span class="tech-tag">CRDTs</span>
+              <span class="tech-tag">Crypto</span>
+            </div>
+            <div class="project-card-footer">
+              <a href="#contact" class="project-link-btn">
+                <span>System Diagram</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#contact" class="project-demo-btn">
+                <span>Source Code</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 5: Web Platform -->
+          <div class="project-card" data-category="web">
+            <div class="project-top-row">
+              <span class="project-badge">&#9679; Live Platform</span>
+              <span class="project-platform-tag">Cloud Infrastructure</span>
+            </div>
+            <h3 class="project-title">OmniLedger Micro-Billing</h3>
+            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
+            <p class="project-desc">
+              Lightweight subscription &amp; pay-per-trial checkout module designed for solo developers to validate willingness-to-pay within 5 minutes of launch.
+            </p>
+            <div class="tech-stack-row">
+              <span class="tech-tag">Stripe API</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">Webhooks</span>
+            </div>
+            <div class="project-card-footer">
+              <a href="#contact" class="project-link-btn">
+                <span>Integration Docs</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
+                <span>Live Test</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 6: Web Platform -->
+          <div class="project-card" data-category="web">
+            <div class="project-top-row">
+              <span class="project-badge beta">&#9679; Experimental</span>
+              <span class="project-platform-tag">Developer Studio</span>
+            </div>
+            <h3 class="project-title">PromptForge Deterministic Lab</h3>
+            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
+            <p class="project-desc">
+              Regression testing and schema evaluation workbench for structured AI outputs, testing system prompt resilience across edge micro-services.
+            </p>
+            <div class="tech-stack-row">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Zod Schemas</span>
+              <span class="tech-tag">Vercel Serverless</span>
+              <span class="tech-tag">Monaco</span>
+            </div>
+            <div class="project-card-footer">
+              <a href="#contact" class="project-link-btn">
+                <span>View Schema</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
+                <span>Workbench</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-mark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <div class="brand-title-wrap">
+              <span class="brand-name">Anandovsky</span>
+              <span class="brand-sub">Trial Firm Studio</span>
+            </div>
+          </div>
+          <p>
+            A deliberate solo development laboratory engineered to validate business models, deploy resilient software, and eliminate venture bloat.
+          </p>
+          <div class="footer-social-links">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X / Twitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Pathways</h4>
+          <ul class="footer-links">
+            <li class="footer-link-item"><a href="#section-me">For Me (Services)</a></li>
+            <li class="footer-link-item"><a href="#section-you">For You (Blueprints)</a></li>
+            <li class="footer-link-item"><a href="#section-projects">Projects &amp; Demos</a></li>
+            <li class="footer-link-item"><a href="#contact">Client Inquiries</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Core Systems</h4>
+          <ul class="footer-links">
+            <li class="footer-link-item"><a href="#section-projects">Language Learning Apps</a></li>
+            <li class="footer-link-item"><a href="#section-projects">Android Developer Tools</a></li>
+            <li class="footer-link-item"><a href="#section-projects">Vercel Micro-Deployments</a></li>
+            <li class="footer-link-item"><a href="#section-me">Trial Sprint Model</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Status</h4>
+          <ul class="footer-links">
+            <li class="footer-link-item"><span style="color: #10b981;">&#9679; All Systems Operational</span></li>
+            <li class="footer-link-item"><span style="color: var(--text-muted);">Q4 / Q1 Trial Queue Open</span></li>
+            <li class="footer-link-item"><span style="color: var(--text-muted);">Latency: &lt; 45ms Global</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 Anandovsky Studio. Created by Anandovsky. All rights reserved. <span style="margin: 0 6px; opacity: 0.4;">•</span> <a href="https://anandovsky.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold-light); text-decoration: underline;">anandovsky.com</a>
+        </div>
+        <a href="#hero" class="back-to-top">
+          <span>Back to Top</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- MODAL: Custom Inquiry Feedback -->
+  <div class="modal-overlay" id="inquirySuccessModal" onclick="closeModalOnBackdrop(event, 'inquirySuccessModal')">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('inquirySuccessModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="modal-icon-circle">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 class="modal-title">Trial Proposal Received</h3>
+      <p class="modal-desc">
+        Thank you for submitting your hypothesis. Your project details have been safely registered with Anandovsky.
+      </p>
+      <div class="modal-details-card">
+        <div class="modal-details-row">
+          <span>Applicant:</span>
+          <span class="modal-details-val" id="modalApplicantName">Founder</span>
+        </div>
+        <div class="modal-details-row">
+          <span>Selected Track:</span>
+          <span class="modal-details-val" id="modalTrackName">Rapid MVP Trial</span>
+        </div>
+        <div class="modal-details-row">
+          <span>Response Window:</span>
+          <span class="modal-details-val" style="color: #10b981;">&lt; 12 Hours Direct</span>
+        </div>
+      </div>
+      <button class="modal-action-btn" onclick="closeModal('inquirySuccessModal')">Dismiss &amp; Continue Exploring</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Story / Blueprint Reader -->
+  <div class="modal-overlay" id="storyReaderModal" onclick="closeModalOnBackdrop(event, 'storyReaderModal')">
+    <div class="modal-box article-modal-box">
+      <button class="modal-close-btn" onclick="closeModal('storyReaderModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="article-modal-category" id="storyModalCategory">TRIAL PLAYBOOK</div>
+      <h3 class="article-modal-title" id="storyModalTitle">Blueprint Title</h3>
+      <div class="article-modal-body" id="storyModalContent">
+        <!-- Content injected dynamically -->
+      </div>
+      <div style="margin-top: 28px; text-align: right;">
+        <button class="modal-action-btn" style="width: auto; padding: 10px 24px;" onclick="closeModal('storyReaderModal')">Close Reading</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Functionality -->
+  <script>
+    // --- Interactive Gateway Buttons & Smooth Scroll / Focus ---
+    document.querySelectorAll('[data-target]').forEach(trigger => {
+      trigger.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('data-target');
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          e.preventDefault();
+          
+          // Calculate offset taking fixed header into account
+          const headerHeight = document.getElementById('siteHeader').offsetHeight;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerHeight + 10;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+
+          // Visual focus pulse on the targeted section
+          targetElement.style.transition = 'box-shadow 0.6s ease';
+          targetElement.style.boxShadow = '0 0 45px rgba(245, 158, 11, 0.16)';
+          setTimeout(() => {
+            targetElement.style.boxShadow = 'none';
+          }, 1500);
+
+          // Update active state in nav
+          updateActiveNav(targetId);
+        }
+      });
+    });
+
+    // --- Active Nav Link Updating on Scroll ---
+    const sections = ['section-me', 'section-you', 'section-projects'];
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      const headerHeight = document.getElementById('siteHeader').offsetHeight + 40;
+
+      sections.forEach(id => {
+        const section = document.getElementById(id);
+        if (section) {
+          const top = section.offsetTop - headerHeight;
+          const height = section.offsetHeight;
+          if (scrollY >= top && scrollY < top + height) {
+            updateActiveNav(id);
+          }
+        }
+      });
+    });
+
+    function updateActiveNav(activeId) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('data-target') === activeId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // --- Mobile Menu Toggle ---
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+
+    function toggleMobileMenu() {
+      mobileDrawer.classList.toggle('active');
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
+
+    // --- Contact / Trial Inquiry Form Submission ---
+    function handleInquirySubmit(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('clientName').value.trim();
+      const track = document.getElementById('serviceTrack').value;
+
+      // Populate Modal Content
+      document.getElementById('modalApplicantName').textContent = name || 'Founder';
+      document.getElementById('modalTrackName').textContent = track;
+
+      // Show Feedback Modal
+      openModal('inquirySuccessModal');
+
+      // Reset form fields
+      document.getElementById('trialInquiryForm').reset();
+    }
+
+    // --- Modal Management ---
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeModalOnBackdrop(event, id) {
+      if (event.target === document.getElementById(id)) {
+        closeModal(id);
+      }
+    }
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('inquirySuccessModal');
+        closeModal('storyReaderModal');
+      }
+    });
+
+    // --- Story Content Database for Interactive Reading ---
+    const storyDatabase = {
+      'solo-trial': {
+        category: 'Trial Playbook',
+        title: 'The Solo Trial-Firm Engine: Monetizing Hard Skills Without Burning Out',
+        content: `
+          <p>The tech industry preaches an all-or-nothing doctrine: quit your role, burn your savings, raise angel money, and gamble 24 months on a single unverified vision. For 98% of creators, this yields burnout and zero revenue.</p>
+          <h4>The Trial-Firm Alternative</h4>
+          <p>A trial-firm operates under an experimental thesis: treat your development abilities like an investment portfolio. Instead of committing to one monolithic project, run time-boxed 14-day trials to test concrete business hypotheses.</p>
+          <blockquote>"The goal is not to build a finished empire on day one, but to locate immediate willingness-to-pay with minimal wasted syntax."</blockquote>
+          <h4>Three Core Principles:</h4>
+          <p><strong>1. Asymmetric Velocity:</strong> Standard agencies take three weeks to draft an agreement. A solo engineer with automated scaffolding can launch a functional MVP while others are scheduling Zoom syncs.</p>
+          <p><strong>2. Direct Monetization:</strong> Charge clients for rapid de-risking, and allocate 20% of profits into internal micro-SaaS trials.</p>
+          <p><strong>3. Relentless Self-Sufficiency:</strong> Zero debt, minimal subscriptions, and maximum ownership.</p>
+        `
+      },
+      'vercel-stack': {
+        category: 'Architecture Stacks',
+        title: 'Deploying Production MVPs to Vercel in 48 Hours: The Clean Stack',
+        content: `
+          <p>Over-engineering kills more early-stage products than competitors ever will. If you're setting up a Kubernetes cluster before you have three paying customers, you are running away from user validation.</p>
+          <h4>The 48-Hour Architecture:</h4>
+          <p>Here is the exact battle-tested stack deployed across my solo trials:</p>
+          <p><strong>Frontend:</strong> Next.js App Router deployed natively to Vercel. Instant edge routing, server actions for simple DB mutations, and automated preview branches for fast feedback.</p>
+          <p><strong>Data Tier:</strong> Supabase (Postgres with Row Level Security). You get instant authentication, secure DB access, and real-time subscriptions without configuring an auth server.</p>
+          <p><strong>Styling:</strong> TailwindCSS with pre-built component structures. No custom CSS bugs, flawless responsive breakpoints on mobile.</p>
+          <blockquote>"Keep your deployment pipeline to 'git push'. The instant you require a manual deployment checklist, your iteration cycle is compromised."</blockquote>
+        `
+      },
+      'unproven-risk': {
+        category: 'Philosophy & Mindset',
+        title: 'The Fallacy of the 12-Month Build: Testing Markets on Day 3',
+        content: `
+          <p>It feels safe to code in isolation. The compiler doesn't reject your pricing model, and your local test suite doesn't cancel its subscription. But building in hiding is the highest-risk strategy in software.</p>
+          <h4>The Micro-Trial Method</h4>
+          <p>Before writing a single line of backend logic, validate that anyone actually cares about the outcome:</p>
+          <p>1. Deploy a single-page landing page highlighting the core proposition and a mock checkout or waitlist trigger.</p>
+          <p>2. Direct targeted traffic via niche developer forums or organic social discourse.</p>
+          <p>3. If fewer than 5% of visitors attempt to sign up or click 'Start Trial', pivot the proposition before spending 300 hours debugging database schemas.</p>
+        `
+      },
+      'android-niche': {
+        category: 'Architecture Stacks',
+        title: 'Android Tools as Asymmetric Assets: Building Offline-First Utilities',
+        content: `
+          <p>While the Silicon Valley hivemind obsesses over web SaaS, the global Android market of 3+ billion devices remains an extraordinary playground for solo builders.</p>
+          <h4>Why Android Utilities Win:</h4>
+          <p>1. <strong>Local Computation:</strong> Users value tools that work on trains, remote sites, or during connectivity drops. An offline-first app utilizing Room DB and Kotlin Coroutines provides an immediate competitive edge.</p>
+          <p>2. <strong>Direct Utility Over Vanity:</strong> Developers and field engineers will pay for tools that solve immediate operational pain points&mdash;network profiling, file extraction, diagnostic metrics.</p>
+          <p>3. <strong>High Retention:</strong> A good Android developer tool installed on a handset stays installed for years, unlike web tabs that are closed and forgotten.</p>
+        `
+      },
+      'skill-monetization': {
+        category: 'Trial Playbook',
+        title: 'How to Audit Your Existing Technical Skills and Package Your First $2k Sprint',
+        content: `
+          <p>Most developers underestimate how much non-technical founders struggle with basic implementation tasks: connecting Stripe webhooks, configuring custom domains, or setting up auth tables.</p>
+          <h4>Step 1: Inventory Your Repetitive Solves</h4>
+          <p>What did you spend the last 6 months doing in your day job or hobby work? Migrating schemas? Optimizing Next.js bundle sizes? Building Android background workers?</p>
+          <h4>Step 2: The Fixed-Horizon Offer</h4>
+          <p>Never sell raw hourly labor. Package a definitive outcome: <em>"In 14 days, we will launch an end-to-end payment and authentication flow for your web product, or you receive a full refund."</em></p>
+          <p>Standardizing the scope protects your calendar while giving the buyer total budget predictability.</p>
+        `
+      },
+      'solo-leverage': {
+        category: 'Philosophy & Mindset',
+        title: 'Solo Leverage in the Era of Autonomous Developer AI',
+        content: `
+          <p>Ten years ago, launching a cross-platform software company required a frontend engineer, a backend engineer, a mobile developer, an infrastructure specialist, and an operations lead.</p>
+          <p>Today, a solo engineer operating with modern agentic tools and unified deployment engines can maintain that entire surface area alone.</p>
+          <blockquote>"The bottleneck is no longer how fast you type code; it is the clarity of your business hypothesis and the discipline of your architectural choices."</blockquote>
+          <p>Maintain minimal external dependencies, write readable modular code, and focus on delivering direct value to the end user.</p>
+        `
+      }
+    };
+
+    function openStoryModal(storyKey) {
+      const data = storyDatabase[storyKey];
+      if (!data) return;
+
+      document.getElementById('storyModalCategory').textContent = data.category;
+      document.getElementById('storyModalTitle').textContent = data.title;
+      document.getElementById('storyModalContent').innerHTML = data.content;
+
+      openModal('storyReaderModal');
+    }
+
+    // --- Story Category Filter Functionality ---
+    function filterStories(category, btnElement) {
+      // Update pill UI
+      const pills = btnElement.parentElement.querySelectorAll('.filter-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      // Filter cards
+      const cards = document.querySelectorAll('.story-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // --- Projects Category Filter Functionality ---
+    function filterProjects(category, btnElement) {
+      // Update pill UI
+      const pills = btnElement.parentElement.querySelectorAll('.filter-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      // Filter cards
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
