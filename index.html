@@ -1551,6 +1551,141 @@
       justify-content: space-between;
     }
 
+  
+    /* Admin CMS Styling */
+    .admin-only {
+      display: none !important;
+    }
+    body.admin-authenticated .admin-only {
+      display: inline-flex !important;
+    }
+    body.admin-authenticated .admin-only-block {
+      display: block !important;
+    }
+    body.admin-authenticated .admin-only-flex {
+      display: flex !important;
+    }
+
+    .admin-auth-trigger {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #D1C7BD;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .admin-auth-trigger:hover {
+      color: #FFFFFF;
+      border-color: var(--accent-gold);
+      background: rgba(217, 119, 6, 0.2);
+    }
+    body.admin-authenticated .admin-auth-trigger {
+      background: rgba(217, 119, 6, 0.25);
+      border-color: var(--accent-gold-light);
+      color: #FBBF24;
+    }
+
+    .section-controls-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 35px;
+    }
+
+    .admin-add-btn {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+      color: #FFFFFF;
+      border: 1px solid var(--accent-gold-light);
+      border-radius: var(--radius-full);
+      padding: 7px 18px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+      transition: all var(--transition-fast);
+    }
+    .admin-add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+      filter: brightness(1.06);
+    }
+
+    .admin-card-actions {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 10;
+    }
+    .admin-action-pill {
+      background: #FAF7F2;
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .admin-action-pill:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-gold);
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.2);
+    }
+    .admin-action-pill.delete:hover {
+      color: #DC2626;
+      border-color: #DC2626;
+      background: #FEF2F2;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+    }
+
+    .admin-floating-status {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 120;
+      background: #1E1512;
+      border: 1px solid var(--accent-gold);
+      color: #FDFBF7;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 10px 30px rgba(30, 21, 18, 0.35), 0 0 20px rgba(217, 119, 6, 0.25);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: fadeInStatus 0.3s ease;
+    }
+    @keyframes fadeInStatus {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .admin-floating-status .logout-link {
+      color: var(--accent-gold-light);
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
   </style>
 </head>
 <body>
@@ -1598,6 +1733,11 @@
       </nav>
 
       <div class="nav-actions">
+        <button id="adminHeaderBtn" class="admin-auth-trigger" onclick="handleAdminAuthClick()" aria-label="Admin Portal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span id="adminBtnLabel">Admin</span>
+        </button>
+
         <div class="status-indicator">
           <span class="status-dot"></span>
           <span>Available for Trials</span>
@@ -1937,132 +2077,26 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
           </a>
         </div>
-        <div class="filter-pills-bar">
-          <button class="filter-pill active" onclick="filterStories('all', this)">All Dispatches</button>
-          <button class="filter-pill" onclick="filterStories('blueprint', this)">Trial Playbooks</button>
-          <button class="filter-pill" onclick="filterStories('philosophy', this)">Philosophy &amp; Mindset</button>
-          <button class="filter-pill" onclick="filterStories('tech', this)">Architecture Stacks</button>
+        
+        <div class="section-controls-header">
+          <div class="filter-pills-bar" style="margin-bottom: 0;">
+            <button class="filter-pill active" onclick="filterStories('all', this)">All Dispatches</button>
+            <button class="filter-pill" onclick="filterStories('blueprint', this)">Trial Playbooks</button>
+            <button class="filter-pill" onclick="filterStories('philosophy', this)">Philosophy &amp; Mindset</button>
+            <button class="filter-pill" onclick="filterStories('tech', this)">Architecture Stacks</button>
+          </div>
+          <button class="admin-add-btn admin-only" onclick="openAddStoryModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>+ Add New Dispatch/Blueprint</span>
+          </button>
         </div>
 
-        <!-- Stories Grid -->
+
+        
+        <!-- Stories Grid (Dynamic Content from CMS) -->
         <div class="stories-grid" id="storiesContainer">
-          
-          <!-- Story 1 -->
-          <article class="story-card" data-category="blueprint" onclick="openStoryModal('solo-trial')">
-            <div class="story-meta">
-              <span class="story-category">Trial Playbook</span>
-              <span class="story-read-time">6 min read</span>
-            </div>
-            <h3 class="story-title">The Solo Trial-Firm Engine: Monetizing Hard Skills Without Burning Out</h3>
-            <p class="story-snippet">
-              Why traditional startup lore encourages you to gamble everything on one moonshot, and how a portfolio of micro-trials creates asymmetric upside while guaranteeing cash flow.
-            </p>
-            <div class="story-footer">
-              <span class="story-author">Created by Anandovsky</span>
-              <span class="read-link">
-                Read Blueprint
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </span>
-            </div>
-          </article>
-
-          <!-- Story 2 -->
-          <article class="story-card" data-category="tech" onclick="openStoryModal('vercel-stack')">
-            <div class="story-meta">
-              <span class="story-category">Architecture Stacks</span>
-              <span class="story-read-time">8 min read</span>
-            </div>
-            <h3 class="story-title">Deploying Production MVPs to Vercel in 48 Hours: The Clean Stack</h3>
-            <p class="story-snippet">
-              A breakdown of the exact zero-friction setup: Next.js edge functions, Tailwind, Supabase RLS, and Stripe billing. No bloated AWS consoles, no Kubernetes overhead.
-            </p>
-            <div class="story-footer">
-              <span class="story-author">Created by Anandovsky</span>
-              <span class="read-link">
-                Read Blueprint
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </span>
-            </div>
-          </article>
-
-          <!-- Story 3 -->
-          <article class="story-card" data-category="philosophy" onclick="openStoryModal('unproven-risk')">
-            <div class="story-meta">
-              <span class="story-category">Philosophy &amp; Mindset</span>
-              <span class="story-read-time">5 min read</span>
-            </div>
-            <h3 class="story-title">The Fallacy of the 12-Month Build: Testing Markets on Day 3</h3>
-            <p class="story-snippet">
-              Code is the cheapest asset; attention and customer validation are the rarest. How to structure your development rhythm so real feedback dictates every git commit.
-            </p>
-            <div class="story-footer">
-              <span class="story-author">Created by Anandovsky</span>
-              <span class="read-link">
-                Read Blueprint
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </span>
-            </div>
-          </article>
-
-          <!-- Story 4 -->
-          <article class="story-card" data-category="tech" onclick="openStoryModal('android-niche')">
-            <div class="story-meta">
-              <span class="story-category">Architecture Stacks</span>
-              <span class="story-read-time">7 min read</span>
-            </div>
-            <h3 class="story-title">Android Tools as Asymmetric Assets: Building Offline-First Utilities</h3>
-            <p class="story-snippet">
-              Why the Android ecosystem remains a goldmine for independent engineers who prioritize utility, battery optimization, and low latency over flashy VC trends.
-            </p>
-            <div class="story-footer">
-              <span class="story-author">Created by Anandovsky</span>
-              <span class="read-link">
-                Read Blueprint
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </span>
-            </div>
-          </article>
-
-          <!-- Story 5 -->
-          <article class="story-card" data-category="blueprint" onclick="openStoryModal('skill-monetization')">
-            <div class="story-meta">
-              <span class="story-category">Trial Playbook</span>
-              <span class="story-read-time">9 min read</span>
-            </div>
-            <h3 class="story-title">How to Audit Your Existing Technical Skills and Package Your First $2k Sprint</h3>
-            <p class="story-snippet">
-              Step-by-step checklist to identify repetitive pains companies pay to eliminate today, packaging them into standardized 14-day deliverables.
-            </p>
-            <div class="story-footer">
-              <span class="story-author">Created by Anandovsky</span>
-              <span class="read-link">
-                Read Blueprint
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </span>
-            </div>
-          </article>
-
-          <!-- Story 6 -->
-          <article class="story-card" data-category="philosophy" onclick="openStoryModal('solo-leverage')">
-            <div class="story-meta">
-              <span class="story-category">Philosophy &amp; Mindset</span>
-              <span class="story-read-time">4 min read</span>
-            </div>
-            <h3 class="story-title">Solo Leverage in the Era of Autonomous Developer AI</h3>
-            <p class="story-snippet">
-              How a single determined engineer with systematic toolchains can out-execute a committee of twenty engineers paralyzed by sprint retrospectives.
-            </p>
-            <div class="story-footer">
-              <span class="story-author">Created by Anandovsky</span>
-              <span class="read-link">
-                Read Blueprint
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </span>
-            </div>
-          </article>
-
+          <!-- Dynamically populated via renderStories() -->
         </div>
-
       </div>
     </section>
 
@@ -2078,193 +2112,26 @@
           </p>
         </div>
 
-        <!-- Project Filter Pills -->
-        <div class="filter-pills-bar">
-          <button class="filter-pill active" onclick="filterProjects('all', this)">All Projects</button>
-          <button class="filter-pill" onclick="filterProjects('language', this)">Language Learning</button>
-          <button class="filter-pill" onclick="filterProjects('android', this)">Android Tools</button>
-          <button class="filter-pill" onclick="filterProjects('web', this)">Web Platforms</button>
+        
+        <div class="section-controls-header">
+          <div class="filter-pills-bar" style="margin-bottom: 0;">
+            <button class="filter-pill active" onclick="filterProjects('all', this)">All Projects</button>
+            <button class="filter-pill" onclick="filterProjects('language', this)">Language Learning</button>
+            <button class="filter-pill" onclick="filterProjects('android', this)">Android Tools</button>
+            <button class="filter-pill" onclick="filterProjects('web', this)">Web Platforms</button>
+          </div>
+          <button class="admin-add-btn admin-only" onclick="openAddProjectModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>+ Add New Project</span>
+          </button>
         </div>
 
-        <!-- Projects Grid -->
+
+        
+        <!-- Projects Grid (Dynamic Content from CMS) -->
         <div class="projects-grid" id="projectsContainer">
-          
-          <!-- Project 1: Language App -->
-          <div class="project-card" data-category="language">
-            <div class="project-top-row">
-              <span class="project-badge">&#9679; Deployed on Vercel</span>
-              <span class="project-platform-tag">Web &amp; PWA</span>
-            </div>
-            <h3 class="project-title">LingoPulse AI</h3>
-            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky <span style="opacity: 0.4;">|</span> Tester: Sreegovind</div>
-            <p class="project-desc">
-              Context-driven language learning platform with audio voice synthesis, interactive spaced-repetition drills, and low-latency speech feedback loops.
-            </p>
-            <div class="tech-stack-row">
-              <span class="tech-tag">Next.js Edge</span>
-              <span class="tech-tag">Web Audio API</span>
-              <span class="tech-tag">TailwindCSS</span>
-              <span class="tech-tag">Vercel</span>
-            </div>
-            <div class="project-card-footer">
-              <a href="#contact" class="project-link-btn">
-                <span>View Architecture</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
-                <span>Live Demo</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Project 2: Language Flashcard & Reader -->
-          <div class="project-card" data-category="language">
-            <div class="project-top-row">
-              <span class="project-badge">&#9679; Production Release</span>
-              <span class="project-platform-tag">Vercel Cloud</span>
-            </div>
-            <h3 class="project-title">LexiFlow Reader</h3>
-            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky <span style="opacity: 0.4;">|</span> Tester: Gayathri</div>
-            <p class="project-desc">
-              Bilingual speed reader and vocabulary extraction utility for polyglots, offering immediate tokenization and sync with local browser databases.
-            </p>
-            <div class="tech-stack-row">
-              <span class="tech-tag">TypeScript</span>
-              <span class="tech-tag">IndexedDB</span>
-              <span class="tech-tag">Vercel KV</span>
-              <span class="tech-tag">WASM Parser</span>
-            </div>
-            <div class="project-card-footer">
-              <a href="#contact" class="project-link-btn">
-                <span>Case Study</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
-                <span>Launch App</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Project 3: Android Tool -->
-          <div class="project-card" data-category="android">
-            <div class="project-top-row">
-              <span class="project-badge beta">&#9679; Active Beta</span>
-              <span class="project-platform-tag">Android Native</span>
-            </div>
-            <h3 class="project-title">DroidSprint Telemetry</h3>
-            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
-            <p class="project-desc">
-              Lightweight developer utility for real-time memory pressure monitoring, frame-drop debugging, and battery temperature profiling on Android devices.
-            </p>
-            <div class="tech-stack-row">
-              <span class="tech-tag">Kotlin</span>
-              <span class="tech-tag">Jetpack Compose</span>
-              <span class="tech-tag">NDK / C++</span>
-              <span class="tech-tag">Room DB</span>
-            </div>
-            <div class="project-card-footer">
-              <a href="#contact" class="project-link-btn">
-                <span>View Specs</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-              <a href="#contact" class="project-demo-btn">
-                <span>Get APK</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Project 4: Android Utility -->
-          <div class="project-card" data-category="android">
-            <div class="project-top-row">
-              <span class="project-badge">&#9679; Open Utility</span>
-              <span class="project-platform-tag">Android SDK 34</span>
-            </div>
-            <h3 class="project-title">TaskMesh Offline P2P</h3>
-            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
-            <p class="project-desc">
-              Zero-cloud task synchronization utility using local Wi-Fi Direct and Bluetooth mesh protocols for high-security fieldwork and developer logs.
-            </p>
-            <div class="tech-stack-row">
-              <span class="tech-tag">Kotlin Coroutines</span>
-              <span class="tech-tag">Wi-Fi Direct</span>
-              <span class="tech-tag">CRDTs</span>
-              <span class="tech-tag">Crypto</span>
-            </div>
-            <div class="project-card-footer">
-              <a href="#contact" class="project-link-btn">
-                <span>System Diagram</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-              <a href="#contact" class="project-demo-btn">
-                <span>Source Code</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Project 5: Web Platform -->
-          <div class="project-card" data-category="web">
-            <div class="project-top-row">
-              <span class="project-badge">&#9679; Live Platform</span>
-              <span class="project-platform-tag">Cloud Infrastructure</span>
-            </div>
-            <h3 class="project-title">OmniLedger Micro-Billing</h3>
-            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
-            <p class="project-desc">
-              Lightweight subscription &amp; pay-per-trial checkout module designed for solo developers to validate willingness-to-pay within 5 minutes of launch.
-            </p>
-            <div class="tech-stack-row">
-              <span class="tech-tag">Stripe API</span>
-              <span class="tech-tag">Node.js</span>
-              <span class="tech-tag">PostgreSQL</span>
-              <span class="tech-tag">Webhooks</span>
-            </div>
-            <div class="project-card-footer">
-              <a href="#contact" class="project-link-btn">
-                <span>Integration Docs</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
-                <span>Live Test</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Project 6: Web Platform -->
-          <div class="project-card" data-category="web">
-            <div class="project-top-row">
-              <span class="project-badge beta">&#9679; Experimental</span>
-              <span class="project-platform-tag">Developer Studio</span>
-            </div>
-            <h3 class="project-title">PromptForge Deterministic Lab</h3>
-            <div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Created by Anandovsky</div>
-            <p class="project-desc">
-              Regression testing and schema evaluation workbench for structured AI outputs, testing system prompt resilience across edge micro-services.
-            </p>
-            <div class="tech-stack-row">
-              <span class="tech-tag">React</span>
-              <span class="tech-tag">Zod Schemas</span>
-              <span class="tech-tag">Vercel Serverless</span>
-              <span class="tech-tag">Monaco</span>
-            </div>
-            <div class="project-card-footer">
-              <a href="#contact" class="project-link-btn">
-                <span>View Schema</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
-                <span>Workbench</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-
+          <!-- Dynamically populated via renderProjects() -->
         </div>
-
       </div>
     </section>
   </main>
@@ -2311,6 +2178,8 @@
             <li class="footer-link-item"><a href="#section-you">For You (Blueprints)</a></li>
             <li class="footer-link-item"><a href="#section-projects">Projects &amp; Demos</a></li>
             <li class="footer-link-item"><a href="#contact">Client Inquiries</a></li>
+            <li class="footer-link-item"><button onclick="handleAdminAuthClick()" style="background: none; border: none; padding: 0; font: inherit; color: var(--text-on-espresso-subtle); cursor: pointer; text-decoration: underline;">Admin Portal</button></li>
+
           </ul>
         </div>
 
@@ -2395,9 +2264,743 @@
     </div>
   </div>
 
-  <!-- JavaScript Functionality -->
+  
+  <!-- MODAL: Admin Login -->
+  <div class="modal-overlay" id="adminLoginModal" onclick="closeModalOnBackdrop(event, 'adminLoginModal')">
+    <div class="modal-box" style="max-width: 440px;">
+      <button class="modal-close-btn" onclick="closeModal('adminLoginModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="modal-icon-circle" style="background: rgba(217, 119, 6, 0.1); border-color: var(--accent-gold); color: var(--accent-gold);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <h3 class="modal-title" style="font-size: 1.5rem;">Studio CMS Login</h3>
+      <p class="modal-desc" style="font-size: 0.88rem;">Authenticate to manage portfolio projects, blueprints, and live content.</p>
+      
+      <form id="adminLoginForm" onsubmit="handleAdminLoginSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary); font-size: 0.78rem;" for="adminUsernameInput">Username</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="adminUsernameInput" required placeholder="admin" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary); font-size: 0.78rem;" for="adminPasswordInput">Password</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="password" id="adminPasswordInput" required placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <div id="adminLoginError" style="display: none; font-size: 0.82rem; color: #DC2626; background: #FEF2F2; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #FCA5A5;">
+          Invalid credentials. Use admin / smicky123.
+        </div>
+        <button type="submit" class="form-submit-btn" style="width: 100%; margin-top: 4px;">
+          <span>Unlock Admin Studio</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Project Edit / Add CMS -->
+  <div class="modal-overlay" id="projectCmsModal" onclick="closeModalOnBackdrop(event, 'projectCmsModal')">
+    <div class="modal-box" style="max-width: 680px; max-height: 88vh; overflow-y: auto;">
+      <button class="modal-close-btn" onclick="closeModal('projectCmsModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h3 class="modal-title" id="projectCmsModalTitle" style="text-align: left; margin-bottom: 6px;">Manage Project</h3>
+      <p class="modal-desc" style="text-align: left; margin-bottom: 22px;">Configure deployment specs, categories, badges, and attribution.</p>
+
+      <form id="projectCmsForm" onsubmit="handleProjectCmsSave(event)" style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="projectCmsId" />
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="projectFormTitle">Project Title</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormTitle" required placeholder="e.g. LingoPulse AI" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="projectFormCategory">Category</label>
+            <select class="form-select" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" id="projectFormCategory" required>
+              <option value="language">Language Learning</option>
+              <option value="android">Android Tools</option>
+              <option value="web">Web Platforms</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="projectFormBadge">Status Badge</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormBadge" required placeholder="● Deployed on Vercel" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="projectFormPlatform">Platform Tag</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormPlatform" required placeholder="e.g. Web &amp; PWA / Android Native" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="projectFormAttribution">Creator &amp; Tester Attribution</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormAttribution" required placeholder="Created by Anandovsky | Tester: Sreegovind" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="projectFormDesc">Description</label>
+          <textarea class="form-textarea" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary); min-height: 85px;" id="projectFormDesc" required placeholder="Describe the application features, value proposition, and architecture..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="projectFormTech">Tech Stack (Comma-separated)</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormTech" required placeholder="Next.js Edge, Web Audio API, TailwindCSS, Vercel" />
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="projectFormDemoUrl">Live Demo URL</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormDemoUrl" required placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="projectFormCaseUrl">Case Study / Specs Anchor</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="projectFormCaseUrl" required placeholder="#contact" />
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+          <button type="button" class="filter-pill" onclick="closeModal('projectCmsModal')" style="padding: 10px 20px;">Cancel</button>
+          <button type="submit" class="form-submit-btn" style="padding: 10px 24px;">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Story / Blueprint Edit / Add CMS -->
+  <div class="modal-overlay" id="storyCmsModal" onclick="closeModalOnBackdrop(event, 'storyCmsModal')">
+    <div class="modal-box" style="max-width: 720px; max-height: 88vh; overflow-y: auto;">
+      <button class="modal-close-btn" onclick="closeModal('storyCmsModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h3 class="modal-title" id="storyCmsModalTitle" style="text-align: left; margin-bottom: 6px;">Manage Blueprint / Dispatch</h3>
+      <p class="modal-desc" style="text-align: left; margin-bottom: 22px;">Create or edit tactical essays, philosophies, and open frameworks.</p>
+
+      <form id="storyCmsForm" onsubmit="handleStoryCmsSave(event)" style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="storyCmsId" />
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="storyFormTitle">Dispatch Title</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="storyFormTitle" required placeholder="e.g. The Solo Trial-Firm Engine" />
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="storyFormCategory">Category Badge Name</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="storyFormCategory" required placeholder="Trial Playbook" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="storyFormCategoryKey">Category Filter Key</label>
+            <select class="form-select" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" id="storyFormCategoryKey" required>
+              <option value="blueprint">Trial Playbooks (blueprint)</option>
+              <option value="philosophy">Philosophy &amp; Mindset (philosophy)</option>
+              <option value="tech">Architecture Stacks (tech)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="storyFormReadTime">Read Time</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="storyFormReadTime" required placeholder="6 min read" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="storyFormAuthor">Author Attribution</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="storyFormAuthor" required placeholder="Created by Anandovsky" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="storyFormSnippet">Card Snippet / Summary</label>
+          <textarea class="form-textarea" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary); min-height: 80px;" id="storyFormSnippet" required placeholder="A brief 1-2 sentence preview for the card layout..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="storyFormContent">Full Article Body (HTML / Paragraphs)</label>
+          <textarea class="form-textarea" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary); min-height: 180px; font-family: var(--font-mono); font-size: 0.84rem;" id="storyFormContent" required placeholder="<p>Full article paragraphs...</p>&#10;<h4>Key Subheading</h4>&#10;<blockquote>Quote highlight...</blockquote>"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+          <button type="button" class="filter-pill" onclick="closeModal('storyCmsModal')" style="padding: 10px 20px;">Cancel</button>
+          <button type="submit" class="form-submit-btn" style="padding: 10px 24px;">Save Dispatch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FLOATING ADMIN STATUS PILL (Shown when authenticated) -->
+  <div class="admin-floating-status admin-only" id="adminFloatingPill">
+    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
+    <span>Admin Session: <strong>smicky123</strong></span>
+    <span class="logout-link" onclick="adminLogout()">Logout</span>
+  </div>
+
+  
+  <!-- JavaScript Functionality with LocalStorage Admin CMS -->
   <script>
-    // --- Interactive Gateway Buttons & Smooth Scroll / Focus ---
+    // --- Data Repositories (Default Seed Data) ---
+    const DEFAULT_PROJECTS = [
+      {
+        id: 'lingopulse',
+        category: 'language',
+        badge: '● Deployed on Vercel',
+        badgeType: 'success',
+        platform: 'Web & PWA',
+        title: 'LingoPulse AI',
+        attribution: 'Created by Anandovsky | Tester: Sreegovind',
+        desc: 'Context-driven language learning platform with audio voice synthesis, interactive spaced-repetition drills, and low-latency speech feedback loops.',
+        tech: ['Next.js Edge', 'Web Audio API', 'TailwindCSS', 'Vercel'],
+        demoUrl: 'https://vercel.com',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'lexiflow',
+        category: 'language',
+        badge: '● Production Release',
+        badgeType: 'success',
+        platform: 'Vercel Cloud',
+        title: 'LexiFlow Reader',
+        attribution: 'Created by Anandovsky | Tester: Gayathri',
+        desc: 'Bilingual speed reader and vocabulary extraction utility for polyglots, offering immediate tokenization and sync with local browser databases.',
+        tech: ['TypeScript', 'IndexedDB', 'Vercel KV', 'WASM Parser'],
+        demoUrl: 'https://vercel.com',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'droidsprint',
+        category: 'android',
+        badge: '● Active Beta',
+        badgeType: 'beta',
+        platform: 'Android Native',
+        title: 'DroidSprint Telemetry',
+        attribution: 'Created by Anandovsky',
+        desc: 'Lightweight developer utility for real-time memory pressure monitoring, frame-drop debugging, and battery temperature profiling on Android devices.',
+        tech: ['Kotlin', 'Jetpack Compose', 'NDK / C++', 'Room DB'],
+        demoUrl: '#contact',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'taskmesh',
+        category: 'android',
+        badge: '● Open Utility',
+        badgeType: 'success',
+        platform: 'Android SDK 34',
+        title: 'TaskMesh Offline P2P',
+        attribution: 'Created by Anandovsky',
+        desc: 'Zero-cloud task synchronization utility using local Wi-Fi Direct and Bluetooth mesh protocols for high-security fieldwork and developer logs.',
+        tech: ['Kotlin Coroutines', 'Wi-Fi Direct', 'CRDTs', 'Crypto'],
+        demoUrl: '#contact',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'omniledger',
+        category: 'web',
+        badge: '● Live Platform',
+        badgeType: 'success',
+        platform: 'Cloud Infrastructure',
+        title: 'OmniLedger Micro-Billing',
+        attribution: 'Created by Anandovsky',
+        desc: 'Lightweight subscription & pay-per-trial checkout module designed for solo developers to validate willingness-to-pay within 5 minutes of launch.',
+        tech: ['Stripe API', 'Node.js', 'PostgreSQL', 'Webhooks'],
+        demoUrl: 'https://vercel.com',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'promptforge',
+        category: 'web',
+        badge: '● Experimental',
+        badgeType: 'beta',
+        platform: 'Developer Studio',
+        title: 'PromptForge Deterministic Lab',
+        attribution: 'Created by Anandovsky',
+        desc: 'Regression testing and schema evaluation workbench for structured AI outputs, testing system prompt resilience across edge micro-services.',
+        tech: ['React', 'Zod Schemas', 'Vercel Serverless', 'Monaco'],
+        demoUrl: 'https://vercel.com',
+        caseUrl: '#contact'
+      }
+    ];
+
+    const DEFAULT_STORIES = [
+      {
+        id: 'solo-trial',
+        category: 'Trial Playbook',
+        categoryKey: 'blueprint',
+        readTime: '6 min read',
+        title: 'The Solo Trial-Firm Engine: Monetizing Hard Skills Without Burning Out',
+        snippet: 'Why traditional startup lore encourages you to gamble everything on one moonshot, and how a portfolio of micro-trials creates asymmetric upside while guaranteeing cash flow.',
+        author: 'Created by Anandovsky',
+        content: `
+          <p>The tech industry preaches an all-or-nothing doctrine: quit your role, burn your savings, raise angel money, and gamble 24 months on a single unverified vision. For 98% of creators, this yields burnout and zero revenue.</p>
+          <h4>The Trial-Firm Alternative</h4>
+          <p>A trial-firm operates under an experimental thesis: treat your development abilities like an investment portfolio. Instead of committing to one monolithic project, run time-boxed 14-day trials to test concrete business hypotheses.</p>
+          <blockquote>"The goal is not to build a finished empire on day one, but to locate immediate willingness-to-pay with minimal wasted syntax."</blockquote>
+          <h4>Three Core Principles:</h4>
+          <p><strong>1. Asymmetric Velocity:</strong> Standard agencies take three weeks to draft an agreement. A solo engineer with automated scaffolding can launch a functional MVP while others are scheduling Zoom syncs.</p>
+          <p><strong>2. Direct Monetization:</strong> Charge clients for rapid de-risking, and allocate 20% of profits into internal micro-SaaS trials.</p>
+          <p><strong>3. Relentless Self-Sufficiency:</strong> Zero debt, minimal subscriptions, and maximum ownership.</p>
+        `
+      },
+      {
+        id: 'vercel-stack',
+        category: 'Architecture Stacks',
+        categoryKey: 'tech',
+        readTime: '8 min read',
+        title: 'Deploying Production MVPs to Vercel in 48 Hours: The Clean Stack',
+        snippet: 'A breakdown of the exact zero-friction setup: Next.js edge functions, Tailwind, Supabase RLS, and Stripe billing. No bloated AWS consoles, no Kubernetes overhead.',
+        author: 'Created by Anandovsky',
+        content: `
+          <p>Over-engineering kills more early-stage products than competitors ever will. If you're setting up a Kubernetes cluster before you have three paying customers, you are running away from user validation.</p>
+          <h4>The 48-Hour Architecture:</h4>
+          <p>Here is the exact battle-tested stack deployed across my solo trials:</p>
+          <p><strong>Frontend:</strong> Next.js App Router deployed natively to Vercel. Instant edge routing, server actions for simple DB mutations, and automated preview branches for fast feedback.</p>
+          <p><strong>Data Tier:</strong> Supabase (Postgres with Row Level Security). You get instant authentication, secure DB access, and real-time subscriptions without configuring an auth server.</p>
+          <p><strong>Styling:</strong> TailwindCSS with pre-built component structures. No custom CSS bugs, flawless responsive breakpoints on mobile.</p>
+          <blockquote>"Keep your deployment pipeline to 'git push'. The instant you require a manual deployment checklist, your iteration cycle is compromised."</blockquote>
+        `
+      },
+      {
+        id: 'unproven-risk',
+        category: 'Philosophy & Mindset',
+        categoryKey: 'philosophy',
+        readTime: '5 min read',
+        title: 'The Fallacy of the 12-Month Build: Testing Markets on Day 3',
+        snippet: 'Code is the cheapest asset; attention and customer validation are the rarest. How to structure your development rhythm so real feedback dictates every git commit.',
+        author: 'Created by Anandovsky',
+        content: `
+          <p>It feels safe to code in isolation. The compiler doesn't reject your pricing model, and your local test suite doesn't cancel its subscription. But building in hiding is the highest-risk strategy in software.</p>
+          <h4>The Micro-Trial Method</h4>
+          <p>Before writing a single line of backend logic, validate that anyone actually cares about the outcome:</p>
+          <p>1. Deploy a single-page landing page highlighting the core proposition and a mock checkout or waitlist trigger.</p>
+          <p>2. Direct targeted traffic via niche developer forums or organic social discourse.</p>
+          <p>3. If fewer than 5% of visitors attempt to sign up or click 'Start Trial', pivot the proposition before spending 300 hours debugging database schemas.</p>
+        `
+      },
+      {
+        id: 'android-niche',
+        category: 'Architecture Stacks',
+        categoryKey: 'tech',
+        readTime: '7 min read',
+        title: 'Android Tools as Asymmetric Assets: Building Offline-First Utilities',
+        snippet: 'Why the Android ecosystem remains a goldmine for independent engineers who prioritize utility, battery optimization, and low latency over flashy VC trends.',
+        author: 'Created by Anandovsky',
+        content: `
+          <p>While the Silicon Valley hivemind obsesses over web SaaS, the global Android market of 3+ billion devices remains an extraordinary playground for solo builders.</p>
+          <h4>Why Android Utilities Win:</h4>
+          <p>1. <strong>Local Computation:</strong> Users value tools that work on trains, remote sites, or during connectivity drops. An offline-first app utilizing Room DB and Kotlin Coroutines provides an immediate competitive edge.</p>
+          <p>2. <strong>Direct Utility Over Vanity:</strong> Developers and field engineers will pay for tools that solve immediate operational pain points&mdash;network profiling, file extraction, diagnostic metrics.</p>
+          <p>3. <strong>High Retention:</strong> A good Android developer tool installed on a handset stays installed for years, unlike web tabs that are closed and forgotten.</p>
+        `
+      },
+      {
+        id: 'skill-monetization',
+        category: 'Trial Playbook',
+        categoryKey: 'blueprint',
+        readTime: '9 min read',
+        title: 'How to Audit Your Existing Technical Skills and Package Your First $2k Sprint',
+        snippet: 'Step-by-step checklist to identify repetitive pains companies pay to eliminate today, packaging them into standardized 14-day deliverables.',
+        author: 'Created by Anandovsky',
+        content: `
+          <p>Most developers underestimate how much non-technical founders struggle with basic implementation tasks: connecting Stripe webhooks, configuring custom domains, or setting up auth tables.</p>
+          <h4>Step 1: Inventory Your Repetitive Solves</h4>
+          <p>What did you spend the last 6 months doing in your day job or hobby work? Migrating schemas? Optimizing Next.js bundle sizes? Building Android background workers?</p>
+          <h4>Step 2: The Fixed-Horizon Offer</h4>
+          <p>Never sell raw hourly labor. Package a definitive outcome: <em>"In 14 days, we will launch an end-to-end payment and authentication flow for your web product, or you receive a full refund."</em></p>
+          <p>Standardizing the scope protects your calendar while giving the buyer total budget predictability.</p>
+        `
+      },
+      {
+        id: 'solo-leverage',
+        category: 'Philosophy & Mindset',
+        categoryKey: 'philosophy',
+        readTime: '4 min read',
+        title: 'Solo Leverage in the Era of Autonomous Developer AI',
+        snippet: 'How a single determined engineer with systematic toolchains can out-execute a committee of twenty engineers paralyzed by sprint retrospectives.',
+        author: 'Created by Anandovsky',
+        content: `
+          <p>Ten years ago, launching a cross-platform software company required a frontend engineer, a backend engineer, a mobile developer, an infrastructure specialist, and an operations lead.</p>
+          <p>Today, a solo engineer operating with modern agentic tools and unified deployment engines can maintain that entire surface area alone.</p>
+          <blockquote>"The bottleneck is no longer how fast you type code; it is the clarity of your business hypothesis and the discipline of your architectural choices."</blockquote>
+          <p>Maintain minimal external dependencies, write readable modular code, and focus on delivering direct value to the end user.</p>
+        `
+      }
+    ];
+
+    // --- State Managers (LocalStorage Persistence) ---
+    const STORAGE_KEY_AUTH = 'anandovsky_admin_session';
+    const STORAGE_KEY_PROJECTS = 'anandovsky_projects_data';
+    const STORAGE_KEY_STORIES = 'anandovsky_stories_data';
+
+    function loadProjects() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_PROJECTS);
+        return saved ? JSON.parse(saved) : DEFAULT_PROJECTS;
+      } catch (e) {
+        return DEFAULT_PROJECTS;
+      }
+    }
+
+    function saveProjects(data) {
+      localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(data));
+    }
+
+    function loadStories() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_STORIES);
+        return saved ? JSON.parse(saved) : DEFAULT_STORIES;
+      } catch (e) {
+        return DEFAULT_STORIES;
+      }
+    }
+
+    function saveStories(data) {
+      localStorage.setItem(STORAGE_KEY_STORIES, JSON.stringify(data));
+    }
+
+    let currentProjects = loadProjects();
+    let currentStories = loadStories();
+    let currentStoryFilter = 'all';
+    let currentProjectFilter = 'all';
+
+    // --- Dynamic Renderers for Projects & Stories ---
+    function renderStories(filter = currentStoryFilter) {
+      currentStoryFilter = filter;
+      const container = document.getElementById('storiesContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+      const filtered = currentStories.filter(s => filter === 'all' || s.categoryKey === filter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">No dispatches found in this category.</div>';
+        return;
+      }
+
+      filtered.forEach(story => {
+        const article = document.createElement('article');
+        article.className = 'story-card';
+        article.setAttribute('data-category', story.categoryKey);
+        article.onclick = () => openStoryModal(story.id);
+
+        article.innerHTML = `
+          <div class="admin-card-actions admin-only" onclick="event.stopPropagation()">
+            <button class="admin-action-pill" onclick="event.stopPropagation(); openEditStoryModal('${story.id}')">✎ Edit</button>
+            <button class="admin-action-pill delete" onclick="event.stopPropagation(); deleteStory('${story.id}')">✕ Delete</button>
+          </div>
+          <div class="story-meta">
+            <span class="story-category">${escapeHtml(story.category)}</span>
+            <span class="story-read-time">${escapeHtml(story.readTime)}</span>
+          </div>
+          <h3 class="story-title">${escapeHtml(story.title)}</h3>
+          <p class="story-snippet">${escapeHtml(story.snippet)}</p>
+          <div class="story-footer">
+            <span class="story-author">${escapeHtml(story.author || 'Created by Anandovsky')}</span>
+            <span class="read-link">
+              Read Blueprint
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </span>
+          </div>
+        `;
+        container.appendChild(article);
+      });
+    }
+
+    function renderProjects(filter = currentProjectFilter) {
+      currentProjectFilter = filter;
+      const container = document.getElementById('projectsContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+      const filtered = currentProjects.filter(p => filter === 'all' || p.category === filter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">No projects found in this category.</div>';
+        return;
+      }
+
+      filtered.forEach(proj => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.setAttribute('data-category', proj.category);
+
+        const techSpans = (proj.tech || []).map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('');
+        const badgeClass = proj.badgeType === 'beta' ? 'project-badge beta' : 'project-badge';
+
+        card.innerHTML = `
+          <div class="admin-card-actions admin-only">
+            <button class="admin-action-pill" onclick="openEditProjectModal('${proj.id}')">✎ Edit</button>
+            <button class="admin-action-pill delete" onclick="deleteProject('${proj.id}')">✕ Delete</button>
+          </div>
+          <div class="project-top-row">
+            <span class="${badgeClass}">${escapeHtml(proj.badge)}</span>
+            <span class="project-platform-tag">${escapeHtml(proj.platform)}</span>
+          </div>
+          <h3 class="project-title">${escapeHtml(proj.title)}</h3>
+          ${proj.attribution ? `<div style="margin-bottom: 8px; font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">${escapeHtml(proj.attribution)}</div>` : ''}
+          <p class="project-desc">${escapeHtml(proj.desc)}</p>
+          <div class="tech-stack-row">
+            ${techSpans}
+          </div>
+          <div class="project-card-footer">
+            <a href="${proj.caseUrl || '#contact'}" class="project-link-btn">
+              <span>View Specs / Architecture</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+            <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
+              <span>Launch / Demo</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // --- Admin Authentication Management ---
+    function isAdminLoggedIn() {
+      return localStorage.getItem(STORAGE_KEY_AUTH) === 'active';
+    }
+
+    function checkAdminSession() {
+      const loggedIn = isAdminLoggedIn();
+      if (loggedIn) {
+        document.body.classList.add('admin-authenticated');
+        const label = document.getElementById('adminBtnLabel');
+        if (label) label.textContent = 'Admin: Active';
+      } else {
+        document.body.classList.remove('admin-authenticated');
+        const label = document.getElementById('adminBtnLabel');
+        if (label) label.textContent = 'Admin';
+      }
+    }
+
+    function handleAdminAuthClick() {
+      if (isAdminLoggedIn()) {
+        adminLogout();
+      } else {
+        document.getElementById('adminLoginError').style.display = 'none';
+        document.getElementById('adminLoginForm').reset();
+        openModal('adminLoginModal');
+      }
+    }
+
+    function handleAdminLoginSubmit(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUsernameInput').value.trim();
+      const pass = document.getElementById('adminPasswordInput').value.trim();
+
+      // Credential check
+      if (user === 'admin' && pass === 'smicky123') {
+        localStorage.setItem(STORAGE_KEY_AUTH, 'active');
+        checkAdminSession();
+        closeModal('adminLoginModal');
+      } else {
+        document.getElementById('adminLoginError').style.display = 'block';
+      }
+    }
+
+    function adminLogout() {
+      if (confirm('Log out of Studio Admin session?')) {
+        localStorage.removeItem(STORAGE_KEY_AUTH);
+        checkAdminSession();
+      }
+    }
+
+    // --- Project CMS Functions ---
+    function openAddProjectModal() {
+      document.getElementById('projectCmsModalTitle').textContent = '+ Add New Project';
+      document.getElementById('projectCmsId').value = '';
+      document.getElementById('projectFormTitle').value = '';
+      document.getElementById('projectFormCategory').value = 'language';
+      document.getElementById('projectFormBadge').value = '● Deployed on Vercel';
+      document.getElementById('projectFormPlatform').value = 'Web & PWA';
+      document.getElementById('projectFormAttribution').value = 'Created by Anandovsky';
+      document.getElementById('projectFormDesc').value = '';
+      document.getElementById('projectFormTech').value = 'Next.js, TypeScript, TailwindCSS';
+      document.getElementById('projectFormDemoUrl').value = 'https://vercel.com';
+      document.getElementById('projectFormCaseUrl').value = '#contact';
+
+      openModal('projectCmsModal');
+    }
+
+    function openEditProjectModal(id) {
+      const proj = currentProjects.find(p => p.id === id);
+      if (!proj) return;
+
+      document.getElementById('projectCmsModalTitle').textContent = '✎ Edit Project: ' + proj.title;
+      document.getElementById('projectCmsId').value = proj.id;
+      document.getElementById('projectFormTitle').value = proj.title || '';
+      document.getElementById('projectFormCategory').value = proj.category || 'language';
+      document.getElementById('projectFormBadge').value = proj.badge || '● Deployed on Vercel';
+      document.getElementById('projectFormPlatform').value = proj.platform || 'Web & PWA';
+      document.getElementById('projectFormAttribution').value = proj.attribution || 'Created by Anandovsky';
+      document.getElementById('projectFormDesc').value = proj.desc || '';
+      document.getElementById('projectFormTech').value = (proj.tech || []).join(', ');
+      document.getElementById('projectFormDemoUrl').value = proj.demoUrl || 'https://vercel.com';
+      document.getElementById('projectFormCaseUrl').value = proj.caseUrl || '#contact';
+
+      openModal('projectCmsModal');
+    }
+
+    function handleProjectCmsSave(e) {
+      e.preventDefault();
+      const id = document.getElementById('projectCmsId').value;
+      const title = document.getElementById('projectFormTitle').value.trim();
+      const category = document.getElementById('projectFormCategory').value;
+      const badge = document.getElementById('projectFormBadge').value.trim();
+      const platform = document.getElementById('projectFormPlatform').value.trim();
+      const attribution = document.getElementById('projectFormAttribution').value.trim();
+      const desc = document.getElementById('projectFormDesc').value.trim();
+      const tech = document.getElementById('projectFormTech').value.split(',').map(s => s.trim()).filter(Boolean);
+      const demoUrl = document.getElementById('projectFormDemoUrl').value.trim();
+      const caseUrl = document.getElementById('projectFormCaseUrl').value.trim();
+
+      const badgeType = badge.toLowerCase().includes('beta') || badge.toLowerCase().includes('exp') ? 'beta' : 'success';
+
+      if (id) {
+        // Edit existing
+        const idx = currentProjects.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          currentProjects[idx] = {
+            ...currentProjects[idx],
+            title, category, badge, badgeType, platform, attribution, desc, tech, demoUrl, caseUrl
+          };
+        }
+      } else {
+        // Create new
+        const newId = 'proj-' + Date.now();
+        currentProjects.unshift({
+          id: newId,
+          title, category, badge, badgeType, platform, attribution, desc, tech, demoUrl, caseUrl
+        });
+      }
+
+      saveProjects(currentProjects);
+      renderProjects();
+      closeModal('projectCmsModal');
+    }
+
+    function deleteProject(id) {
+      if (confirm('Are you sure you want to delete this project?')) {
+        currentProjects = currentProjects.filter(p => p.id !== id);
+        saveProjects(currentProjects);
+        renderProjects();
+      }
+    }
+
+    // --- Story CMS Functions ---
+    function openAddStoryModal() {
+      document.getElementById('storyCmsModalTitle').textContent = '+ Add New Dispatch/Blueprint';
+      document.getElementById('storyCmsId').value = '';
+      document.getElementById('storyFormTitle').value = '';
+      document.getElementById('storyFormCategory').value = 'Trial Playbook';
+      document.getElementById('storyFormCategoryKey').value = 'blueprint';
+      document.getElementById('storyFormReadTime').value = '5 min read';
+      document.getElementById('storyFormAuthor').value = 'Created by Anandovsky';
+      document.getElementById('storyFormSnippet').value = '';
+      document.getElementById('storyFormContent').value = '<p>Write your detailed blueprint breakdown here...</p>\n<h4>Tactical Framework</h4>\n<p>Actionable guidance...</p>\n<blockquote>"High-velocity validation precedes high-scale investment."</blockquote>';
+
+      openModal('storyCmsModal');
+    }
+
+    function openEditStoryModal(id) {
+      const story = currentStories.find(s => s.id === id);
+      if (!story) return;
+
+      document.getElementById('storyCmsModalTitle').textContent = '✎ Edit Dispatch: ' + story.title;
+      document.getElementById('storyCmsId').value = story.id;
+      document.getElementById('storyFormTitle').value = story.title || '';
+      document.getElementById('storyFormCategory').value = story.category || 'Trial Playbook';
+      document.getElementById('storyFormCategoryKey').value = story.categoryKey || 'blueprint';
+      document.getElementById('storyFormReadTime').value = story.readTime || '5 min read';
+      document.getElementById('storyFormAuthor').value = story.author || 'Created by Anandovsky';
+      document.getElementById('storyFormSnippet').value = story.snippet || '';
+      document.getElementById('storyFormContent').value = story.content || '';
+
+      openModal('storyCmsModal');
+    }
+
+    function handleStoryCmsSave(e) {
+      e.preventDefault();
+      const id = document.getElementById('storyCmsId').value;
+      const title = document.getElementById('storyFormTitle').value.trim();
+      const category = document.getElementById('storyFormCategory').value.trim();
+      const categoryKey = document.getElementById('storyFormCategoryKey').value;
+      const readTime = document.getElementById('storyFormReadTime').value.trim();
+      const author = document.getElementById('storyFormAuthor').value.trim();
+      const snippet = document.getElementById('storyFormSnippet').value.trim();
+      const content = document.getElementById('storyFormContent').value.trim();
+
+      if (id) {
+        // Edit existing
+        const idx = currentStories.findIndex(s => s.id === id);
+        if (idx !== -1) {
+          currentStories[idx] = {
+            ...currentStories[idx],
+            title, category, categoryKey, readTime, author, snippet, content
+          };
+        }
+      } else {
+        // Create new
+        const newId = 'story-' + Date.now();
+        currentStories.unshift({
+          id: newId,
+          title, category, categoryKey, readTime, author, snippet, content
+        });
+      }
+
+      saveStories(currentStories);
+      renderStories();
+      closeModal('storyCmsModal');
+    }
+
+    function deleteStory(id) {
+      if (confirm('Are you sure you want to delete this dispatch?')) {
+        currentStories = currentStories.filter(s => s.id !== id);
+        saveStories(currentStories);
+        renderStories();
+      }
+    }
+
+    // --- Interactive Story Reading Modal ---
+    function openStoryModal(storyId) {
+      const story = currentStories.find(s => s.id === storyId);
+      if (!story) return;
+
+      document.getElementById('storyModalCategory').textContent = story.category;
+      document.getElementById('storyModalTitle').textContent = story.title;
+      document.getElementById('storyModalContent').innerHTML = story.content;
+
+      openModal('storyReaderModal');
+    }
+
+    // --- Filter Functionality for UI Pills ---
+    function filterStories(category, btnElement) {
+      const pills = btnElement.parentElement.querySelectorAll('.filter-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      btnElement.classList.add('active');
+      renderStories(category);
+    }
+
+    function filterProjects(category, btnElement) {
+      const pills = btnElement.parentElement.querySelectorAll('.filter-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      btnElement.classList.add('active');
+      renderProjects(category);
+    }
+
+    // --- Smooth Scroll & Active Nav ---
     document.querySelectorAll('[data-target]').forEach(trigger => {
       trigger.addEventListener('click', function(e) {
         const targetId = this.getAttribute('data-target');
@@ -2405,8 +3008,6 @@
         
         if (targetElement) {
           e.preventDefault();
-          
-          // Calculate offset taking fixed header into account
           const headerHeight = document.getElementById('siteHeader').offsetHeight;
           const elementPosition = targetElement.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerHeight + 10;
@@ -2416,20 +3017,17 @@
             behavior: 'smooth'
           });
 
-          // Visual focus pulse on the targeted section
           targetElement.style.transition = 'box-shadow 0.6s ease';
-          targetElement.style.boxShadow = '0 0 45px rgba(245, 158, 11, 0.16)';
+          targetElement.style.boxShadow = '0 0 45px rgba(217, 119, 6, 0.16)';
           setTimeout(() => {
             targetElement.style.boxShadow = 'none';
           }, 1500);
 
-          // Update active state in nav
           updateActiveNav(targetId);
         }
       });
     });
 
-    // --- Active Nav Link Updating on Scroll ---
     const sections = ['section-me', 'section-you', 'section-projects'];
     window.addEventListener('scroll', () => {
       const scrollY = window.pageYOffset;
@@ -2469,21 +3067,16 @@
       mobileMenuBtn.addEventListener('click', toggleMobileMenu);
     }
 
-    // --- Contact / Trial Inquiry Form Submission ---
+    // --- Inquiry Form Submission ---
     function handleInquirySubmit(event) {
       event.preventDefault();
-
       const name = document.getElementById('clientName').value.trim();
       const track = document.getElementById('serviceTrack').value;
 
-      // Populate Modal Content
       document.getElementById('modalApplicantName').textContent = name || 'Founder';
       document.getElementById('modalTrackName').textContent = track;
 
-      // Show Feedback Modal
       openModal('inquirySuccessModal');
-
-      // Reset form fields
       document.getElementById('trialInquiryForm').reset();
     }
 
@@ -2510,136 +3103,19 @@
       }
     }
 
-    // Close on Escape key
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        closeModal('inquirySuccessModal');
-        closeModal('storyReaderModal');
+        ['inquirySuccessModal', 'storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'storyCmsModal'].forEach(id => closeModal(id));
       }
     });
 
-    // --- Story Content Database for Interactive Reading ---
-    const storyDatabase = {
-      'solo-trial': {
-        category: 'Trial Playbook',
-        title: 'The Solo Trial-Firm Engine: Monetizing Hard Skills Without Burning Out',
-        content: `
-          <p>The tech industry preaches an all-or-nothing doctrine: quit your role, burn your savings, raise angel money, and gamble 24 months on a single unverified vision. For 98% of creators, this yields burnout and zero revenue.</p>
-          <h4>The Trial-Firm Alternative</h4>
-          <p>A trial-firm operates under an experimental thesis: treat your development abilities like an investment portfolio. Instead of committing to one monolithic project, run time-boxed 14-day trials to test concrete business hypotheses.</p>
-          <blockquote>"The goal is not to build a finished empire on day one, but to locate immediate willingness-to-pay with minimal wasted syntax."</blockquote>
-          <h4>Three Core Principles:</h4>
-          <p><strong>1. Asymmetric Velocity:</strong> Standard agencies take three weeks to draft an agreement. A solo engineer with automated scaffolding can launch a functional MVP while others are scheduling Zoom syncs.</p>
-          <p><strong>2. Direct Monetization:</strong> Charge clients for rapid de-risking, and allocate 20% of profits into internal micro-SaaS trials.</p>
-          <p><strong>3. Relentless Self-Sufficiency:</strong> Zero debt, minimal subscriptions, and maximum ownership.</p>
-        `
-      },
-      'vercel-stack': {
-        category: 'Architecture Stacks',
-        title: 'Deploying Production MVPs to Vercel in 48 Hours: The Clean Stack',
-        content: `
-          <p>Over-engineering kills more early-stage products than competitors ever will. If you're setting up a Kubernetes cluster before you have three paying customers, you are running away from user validation.</p>
-          <h4>The 48-Hour Architecture:</h4>
-          <p>Here is the exact battle-tested stack deployed across my solo trials:</p>
-          <p><strong>Frontend:</strong> Next.js App Router deployed natively to Vercel. Instant edge routing, server actions for simple DB mutations, and automated preview branches for fast feedback.</p>
-          <p><strong>Data Tier:</strong> Supabase (Postgres with Row Level Security). You get instant authentication, secure DB access, and real-time subscriptions without configuring an auth server.</p>
-          <p><strong>Styling:</strong> TailwindCSS with pre-built component structures. No custom CSS bugs, flawless responsive breakpoints on mobile.</p>
-          <blockquote>"Keep your deployment pipeline to 'git push'. The instant you require a manual deployment checklist, your iteration cycle is compromised."</blockquote>
-        `
-      },
-      'unproven-risk': {
-        category: 'Philosophy & Mindset',
-        title: 'The Fallacy of the 12-Month Build: Testing Markets on Day 3',
-        content: `
-          <p>It feels safe to code in isolation. The compiler doesn't reject your pricing model, and your local test suite doesn't cancel its subscription. But building in hiding is the highest-risk strategy in software.</p>
-          <h4>The Micro-Trial Method</h4>
-          <p>Before writing a single line of backend logic, validate that anyone actually cares about the outcome:</p>
-          <p>1. Deploy a single-page landing page highlighting the core proposition and a mock checkout or waitlist trigger.</p>
-          <p>2. Direct targeted traffic via niche developer forums or organic social discourse.</p>
-          <p>3. If fewer than 5% of visitors attempt to sign up or click 'Start Trial', pivot the proposition before spending 300 hours debugging database schemas.</p>
-        `
-      },
-      'android-niche': {
-        category: 'Architecture Stacks',
-        title: 'Android Tools as Asymmetric Assets: Building Offline-First Utilities',
-        content: `
-          <p>While the Silicon Valley hivemind obsesses over web SaaS, the global Android market of 3+ billion devices remains an extraordinary playground for solo builders.</p>
-          <h4>Why Android Utilities Win:</h4>
-          <p>1. <strong>Local Computation:</strong> Users value tools that work on trains, remote sites, or during connectivity drops. An offline-first app utilizing Room DB and Kotlin Coroutines provides an immediate competitive edge.</p>
-          <p>2. <strong>Direct Utility Over Vanity:</strong> Developers and field engineers will pay for tools that solve immediate operational pain points&mdash;network profiling, file extraction, diagnostic metrics.</p>
-          <p>3. <strong>High Retention:</strong> A good Android developer tool installed on a handset stays installed for years, unlike web tabs that are closed and forgotten.</p>
-        `
-      },
-      'skill-monetization': {
-        category: 'Trial Playbook',
-        title: 'How to Audit Your Existing Technical Skills and Package Your First $2k Sprint',
-        content: `
-          <p>Most developers underestimate how much non-technical founders struggle with basic implementation tasks: connecting Stripe webhooks, configuring custom domains, or setting up auth tables.</p>
-          <h4>Step 1: Inventory Your Repetitive Solves</h4>
-          <p>What did you spend the last 6 months doing in your day job or hobby work? Migrating schemas? Optimizing Next.js bundle sizes? Building Android background workers?</p>
-          <h4>Step 2: The Fixed-Horizon Offer</h4>
-          <p>Never sell raw hourly labor. Package a definitive outcome: <em>"In 14 days, we will launch an end-to-end payment and authentication flow for your web product, or you receive a full refund."</em></p>
-          <p>Standardizing the scope protects your calendar while giving the buyer total budget predictability.</p>
-        `
-      },
-      'solo-leverage': {
-        category: 'Philosophy & Mindset',
-        title: 'Solo Leverage in the Era of Autonomous Developer AI',
-        content: `
-          <p>Ten years ago, launching a cross-platform software company required a frontend engineer, a backend engineer, a mobile developer, an infrastructure specialist, and an operations lead.</p>
-          <p>Today, a solo engineer operating with modern agentic tools and unified deployment engines can maintain that entire surface area alone.</p>
-          <blockquote>"The bottleneck is no longer how fast you type code; it is the clarity of your business hypothesis and the discipline of your architectural choices."</blockquote>
-          <p>Maintain minimal external dependencies, write readable modular code, and focus on delivering direct value to the end user.</p>
-        `
-      }
-    };
-
-    function openStoryModal(storyKey) {
-      const data = storyDatabase[storyKey];
-      if (!data) return;
-
-      document.getElementById('storyModalCategory').textContent = data.category;
-      document.getElementById('storyModalTitle').textContent = data.title;
-      document.getElementById('storyModalContent').innerHTML = data.content;
-
-      openModal('storyReaderModal');
-    }
-
-    // --- Story Category Filter Functionality ---
-    function filterStories(category, btnElement) {
-      // Update pill UI
-      const pills = btnElement.parentElement.querySelectorAll('.filter-pill');
-      pills.forEach(p => p.classList.remove('active'));
-      btnElement.classList.add('active');
-
-      // Filter cards
-      const cards = document.querySelectorAll('.story-card');
-      cards.forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    // --- Projects Category Filter Functionality ---
-    function filterProjects(category, btnElement) {
-      // Update pill UI
-      const pills = btnElement.parentElement.querySelectorAll('.filter-pill');
-      pills.forEach(p => p.classList.remove('active'));
-      btnElement.classList.add('active');
-
-      // Filter cards
-      const cards = document.querySelectorAll('.project-card');
-      cards.forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
+    // --- Initial Boot ---
+    window.addEventListener('DOMContentLoaded', () => {
+      checkAdminSession();
+      renderStories();
+      renderProjects();
+    });
   </script>
 </body>
 </html>
+
