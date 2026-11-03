@@ -1901,10 +1901,8 @@
           <!-- Dynamically populated via renderServices() -->
         </div>
 
-        </div>
-
-        <!-- Interactive Inquiry & Contact Form Section -->
-        <div class="inquiry-split-layout" id="contact">
+        <!-- Direct Founder Contact Section -->
+        <div class="inquiry-split-layout" id="contact" style="margin-top: 60px;">
           <div class="inquiry-info">
             <span class="section-tag">// Direct Founder Channel</span>
             <h3>Ready to test your venture?</h3>
@@ -1934,41 +1932,41 @@
             </div>
           </div>
 
-          <!-- Inquiry Form -->
-          <form class="inquiry-form" id="trialInquiryForm" onsubmit="handleInquirySubmit(event)">
-            <div class="form-group-row">
-              <div class="form-group">
-                <label class="form-label" for="serviceTrack">Engagement Track</label>
-                <select class="form-select" id="serviceTrack" required>
-                  <option value="Rapid MVP Trial (14-21 Days)">Rapid MVP Trial (14-21 Days)</option>
-                  <option value="Custom Web Platform / Next.js">Custom Web Platform / Next.js</option>
-                  <option value="Native Android Tool / App">Native Android Tool / App</option>
-                  <option value="Architecture &amp; De-risking Audit">Architecture &amp; De-risking Audit</option>
-                </select>
+          <!-- Direct Email Proposal Card -->
+          <div class="direct-email-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(217, 119, 6, 0.35); border-radius: var(--radius-md); padding: 36px 32px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: rgba(217, 119, 6, 0.15); border: 1px solid var(--accent-gold); color: var(--accent-gold-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
               </div>
-              <div class="form-group">
-                <label class="form-label" for="timelineBudget">Target Timeline / Horizon</label>
-                <select class="form-select" id="timelineBudget">
-                  <option value="Immediate Sprint (< 3 weeks)">Immediate Sprint (&lt; 3 weeks)</option>
-                  <option value="Next 30-60 Days">Next 30-60 Days</option>
-                  <option value="Exploratory Consultation">Exploratory Consultation</option>
-                </select>
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 2px;">Direct Founder Channel</span>
+                <h4 style="color: #FFFFFF; font-size: 1.3rem; font-weight: 700; margin: 0; letter-spacing: -0.01em;">anand.com@gmail.com</h4>
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="projectBrief">Project Objective &amp; Requirements</label>
-              <textarea class="form-textarea" id="projectBrief" required placeholder="Describe the core business hypothesis, target users, and what needs to be built or validated..."></textarea>
+            <p style="color: var(--text-on-espresso-subtle); font-size: 0.92rem; line-height: 1.65; margin: 0;">
+              Skip the forms and send your trial proposal directly. Describe your venture concept, desired deliverables, and target timeline. Every message is reviewed personally by Anandovsky with a direct technical assessment within 12 hours.
+            </p>
+
+            <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="font-family: var(--font-mono); font-size: 0.9rem; color: #FFFFFF; user-select: all;">
+                anand.com@gmail.com
+              </div>
+              <button type="button" id="copyEmailBtn" onclick="copyEmailAddress(this)" style="background: rgba(217, 119, 6, 0.2); border: 1px solid rgba(217, 119, 6, 0.4); color: var(--accent-gold-light); padding: 5px 12px; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+                Copy Email
+              </button>
             </div>
 
-            <button type="submit" class="form-submit-btn">
-              <span>Submit Trial Proposal &rarr; Email anand.com@gmail.com</span>
+            <a href="mailto:anand.com@gmail.com?subject=Trial%20Proposal%20Inquiry&body=Hi%20Anandovsky%2C%0A%0AI%20would%20like%20to%20discuss%20a%20trial%20sprint%20%2F%20engineering%20engagement.%0A%0A-%20Engagement%20Track%20(Rapid%20MVP%20%2F%20Custom%20Web%20Platform%20%2F%20Android%20Tool%20%2F%20Audit)%3A%20%0A-%20Target%20Timeline%3A%20%0A-%20Project%20Objective%20%26%20Requirements%3A%20%0A%0ABest%20regards%2C%0A" class="form-submit-btn" style="text-decoration: none; justify-content: center; width: 100%; text-align: center; margin-top: 4px;">
+              <span>Send Direct Proposal</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </button>
-            <div style="margin-top: 10px; font-size: 0.78rem; color: var(--text-muted); text-align: center;">
-              Submitting launches your email client pre-addressed to <strong style="color: var(--accent-gold);">anand.com@gmail.com</strong> with your proposal specs.
+            </a>
+
+            <div style="font-size: 0.76rem; color: var(--text-on-espresso-subtle); text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
+              <span>Direct engineer response &bull; Q4 / Q1 Trial Sprints Open</span>
             </div>
-          </form>
+          </div>
         </div>
 
       </div>
@@ -2137,41 +2135,6 @@
 
     </div>
   </footer>
-
-  <!-- MODAL: Custom Inquiry Feedback -->
-  <div class="modal-overlay" id="inquirySuccessModal" onclick="closeModalOnBackdrop(event, 'inquirySuccessModal')">
-    <div class="modal-box">
-      <button class="modal-close-btn" onclick="closeModal('inquirySuccessModal')" aria-label="Close modal">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <div class="modal-icon-circle">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <h3 class="modal-title">Email Dispatch Triggered</h3>
-      <p class="modal-desc">
-        Your trial proposal has been compiled and dispatched to <strong>anand.com@gmail.com</strong> via your email client.
-      </p>
-      <div class="modal-details-card">
-        <div class="modal-details-row">
-          <span>Recipient:</span>
-          <span class="modal-details-val">anand.com@gmail.com</span>
-        </div>
-        <div class="modal-details-row">
-          <span>Selected Track:</span>
-          <span class="modal-details-val" id="modalTrackName">Rapid MVP Trial</span>
-        </div>
-        <div class="modal-details-row">
-          <span>Target Horizon:</span>
-          <span class="modal-details-val" id="modalTimelineName">Immediate Sprint (&lt; 3 weeks)</span>
-        </div>
-        <div class="modal-details-row">
-          <span>Response Window:</span>
-          <span class="modal-details-val" style="color: #10b981;">&lt; 12 Hours Direct</span>
-        </div>
-      </div>
-      <button class="modal-action-btn" onclick="closeModal('inquirySuccessModal')">Dismiss &amp; Continue Exploring</button>
-    </div>
-  </div>
 
   <!-- MODAL: Story / Blueprint Reader -->
   <div class="modal-overlay" id="storyReaderModal" onclick="closeModalOnBackdrop(event, 'storyReaderModal')">
@@ -2414,6 +2377,51 @@
   <!-- JavaScript Functionality with LocalStorage Admin CMS -->
   <script>
     // --- Data Repositories (Default Seed Data) ---
+    const DEFAULT_SERVICES = [
+      {
+        id: 'srv-1',
+        title: 'Rapid MVP Trial Sprint',
+        isPopular: false,
+        popularBadge: '',
+        iconSvg: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>',
+        description: 'Transform an unverified hypothesis into a live, interactive web or mobile application with analytics, billing, and auth in under 3 weeks.',
+        features: [
+          'Zero to Vercel/Android deployment',
+          'Payment & micro-checkout integration',
+          'Quantitative user action telemetry'
+        ],
+        timeline: 'Typical Horizon: 14 to 21 Days'
+      },
+      {
+        id: 'srv-2',
+        title: 'Full-Stack & Custom Platforms',
+        isPopular: true,
+        popularBadge: 'High Demand',
+        iconSvg: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>',
+        description: 'Bespoke web applications, high-performance dashboards, and responsive frontends engineered for instant speed, modular scaling, and clean code.',
+        features: [
+          'Next.js, TypeScript, Tailwind, Edge APIs',
+          'Postgres / Supabase / Redis architecture',
+          'Sub-50ms TTFB & 99+ Lighthouse scores'
+        ],
+        timeline: 'Typical Horizon: Sprint-Based / Retainer'
+      },
+      {
+        id: 'srv-3',
+        title: 'Android Engineering & Tools',
+        isPopular: false,
+        popularBadge: '',
+        iconSvg: '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line>',
+        description: 'Native Android apps, developer utilities, and offline-first mobile tools with Kotlin, Jetpack Compose, and background system services.',
+        features: [
+          'Kotlin & Modern Jetpack Compose UI',
+          'Local Room DB & background workers',
+          'Play Console release pipeline readiness'
+        ],
+        timeline: 'Typical Horizon: 3 to 5 Weeks'
+      }
+    ];
+
     const DEFAULT_PROJECTS = [
       {
         id: 'lingopulse',
@@ -2501,86 +2509,51 @@
         category: 'Trial Playbook',
         categoryKey: 'blueprint',
         readTime: '6 min read',
-        title: 'The Solo Trial-Firm Engine: Monetizing Hard Skills Without Burning Out',
-        snippet: 'Why traditional startup lore encourages you to gamble everything on one moonshot, and how a portfolio of micro-trials creates asymmetric upside while guaranteeing cash flow.',
+        title: 'The Solo Trial-Firm Engine: Rapid Validation Architecture',
+        snippet: 'How to pressure-test web & mobile applications in under three weeks without external equity, unnecessary staff, or over-engineered infrastructure.',
         author: 'Created by Anandovsky',
         content: `
-          <p>The tech industry preaches an all-or-nothing doctrine: quit your role, burn your savings, raise angel money, and gamble 24 months on a single unverified vision. For 98% of creators, this yields burnout and zero revenue.</p>
-          <h4>The Trial-Firm Alternative</h4>
-          <p>A trial-firm operates under an experimental thesis: treat your development abilities like an investment portfolio. Instead of committing to one monolithic project, run time-boxed 14-day trials to test concrete business hypotheses.</p>
-          <blockquote>"The goal is not to build a finished empire on day one, but to locate immediate willingness-to-pay with minimal wasted syntax."</blockquote>
-          <h4>Three Core Principles:</h4>
-          <p><strong>1. Asymmetric Velocity:</strong> Standard agencies take three weeks to draft an agreement. A solo engineer with automated scaffolding can launch a functional MVP while others are scheduling Zoom syncs.</p>
-          <p><strong>2. Direct Monetization:</strong> Charge clients for rapid de-risking, and allocate 20% of profits into internal micro-SaaS trials.</p>
-          <p><strong>3. Relentless Self-Sufficiency:</strong> Zero debt, minimal subscriptions, and maximum ownership.</p>
+          <p>Most software ventures fail not because the code was broken, but because the founder spent six months building something nobody was willing to pull out a credit card for.</p>
+          <p>A "Trial Firm" operates on inverted engineering principles: we do not build features to satisfy an arbitrary backlog. We engineer high-precision instrumented prototypes designed to extract market signals within fourteen days.</p>
+          <h4>The 3-Phase Verification Lifecycle</h4>
+          <p><strong>1. The Surface Probe:</strong> High-fidelity frontend, interactive UI, realistic sample workflows, and a direct value proposition.</p>
+          <p><strong>2. Telemetry Over Opinions:</strong> Zero vanity metrics. We measure time-to-first-interaction, checkout intent, and return frequency.</p>
+          <p><strong>3. The Hard Fork:</strong> If the signal is absent, kill the trial with zero emotional sunk-cost. If the signal is intense, scale the codebase into production.</p>
+          <blockquote>"Speed of validation is the only competitive moat that cannot be bought by incumbents."</blockquote>
         `
       },
       {
-        id: 'vercel-stack',
-        category: 'Architecture Stacks',
-        categoryKey: 'tech',
-        readTime: '8 min read',
-        title: 'Deploying Production MVPs to Vercel in 48 Hours: The Clean Stack',
-        snippet: 'A breakdown of the exact zero-friction setup: Next.js edge functions, Tailwind, Supabase RLS, and Stripe billing. No bloated AWS consoles, no Kubernetes overhead.',
-        author: 'Created by Anandovsky',
-        content: `
-          <p>Over-engineering kills more early-stage products than competitors ever will. If you're setting up a Kubernetes cluster before you have three paying customers, you are running away from user validation.</p>
-          <h4>The 48-Hour Architecture:</h4>
-          <p>Here is the exact battle-tested stack deployed across my solo trials:</p>
-          <p><strong>Frontend:</strong> Next.js App Router deployed natively to Vercel. Instant edge routing, server actions for simple DB mutations, and automated preview branches for fast feedback.</p>
-          <p><strong>Data Tier:</strong> Supabase (Postgres with Row Level Security). You get instant authentication, secure DB access, and real-time subscriptions without configuring an auth server.</p>
-          <p><strong>Styling:</strong> TailwindCSS with pre-built component structures. No custom CSS bugs, flawless responsive breakpoints on mobile.</p>
-          <blockquote>"Keep your deployment pipeline to 'git push'. The instant you require a manual deployment checklist, your iteration cycle is compromised."</blockquote>
-        `
-      },
-      {
-        id: 'unproven-risk',
+        id: 'monetize-skills',
         category: 'Philosophy & Mindset',
         categoryKey: 'philosophy',
         readTime: '5 min read',
-        title: 'The Fallacy of the 12-Month Build: Testing Markets on Day 3',
-        snippet: 'Code is the cheapest asset; attention and customer validation are the rarest. How to structure your development rhythm so real feedback dictates every git commit.',
+        title: 'Monetizing Deep Technical Fluency Without Consulting Debt',
+        snippet: 'Trading hours for dollars in client work is an unscalable trap. Here is how to package custom development into repeatable, high-leverage software products.',
         author: 'Created by Anandovsky',
         content: `
-          <p>It feels safe to code in isolation. The compiler doesn't reject your pricing model, and your local test suite doesn't cancel its subscription. But building in hiding is the highest-risk strategy in software.</p>
-          <h4>The Micro-Trial Method</h4>
-          <p>Before writing a single line of backend logic, validate that anyone actually cares about the outcome:</p>
-          <p>1. Deploy a single-page landing page highlighting the core proposition and a mock checkout or waitlist trigger.</p>
-          <p>2. Direct targeted traffic via niche developer forums or organic social discourse.</p>
-          <p>3. If fewer than 5% of visitors attempt to sign up or click 'Start Trial', pivot the proposition before spending 300 hours debugging database schemas.</p>
+          <p>Hourly contracting gives you cash flow, but robs you of compounding equity. The trial-firm approach bridges this dilemma by productizing software expertise into modular platforms.</p>
+          <h4>Rules of Sovereign Engineering</h4>
+          <p>Never sign agreements where you surrender reusable architectural components. Every module you write should accelerate the launch of your next five applications.</p>
+          <p>Focus on micro-verticals: language tooling, developer telemetry, offline utilities, and specialized commerce pipelines.</p>
         `
       },
       {
-        id: 'android-niche',
+        id: 'stack-philosophy',
         category: 'Architecture Stacks',
         categoryKey: 'tech',
-        readTime: '7 min read',
-        title: 'Android Tools as Asymmetric Assets: Building Offline-First Utilities',
-        snippet: 'Why the Android ecosystem remains a goldmine for independent engineers who prioritize utility, battery optimization, and low latency over flashy VC trends.',
+        readTime: '8 min read',
+        title: 'Zero-Bloat Engineering: Next.js Edge, Android Native & Serverless',
+        snippet: 'A pragmatic technical breakdown of why minimal dependencies and edge deployments outperform complex microservices for solo engineers.',
         author: 'Created by Anandovsky',
         content: `
-          <p>While the Silicon Valley hivemind obsesses over web SaaS, the global Android market of 3+ billion devices remains an extraordinary playground for solo builders.</p>
-          <h4>Why Android Utilities Win:</h4>
-          <p>1. <strong>Local Computation:</strong> Users value tools that work on trains, remote sites, or during connectivity drops. An offline-first app utilizing Room DB and Kotlin Coroutines provides an immediate competitive edge.</p>
-          <p>2. <strong>Direct Utility Over Vanity:</strong> Developers and field engineers will pay for tools that solve immediate operational pain points&mdash;network profiling, file extraction, diagnostic metrics.</p>
-          <p>3. <strong>High Retention:</strong> A good Android developer tool installed on a handset stays installed for years, unlike web tabs that are closed and forgotten.</p>
-        `
-      },
-      {
-        id: 'skill-monetization',
-        category: 'Trial Playbook',
-        categoryKey: 'blueprint',
-        readTime: '9 min read',
-        title: 'How to Audit Your Existing Technical Skills and Package Your First $2k Sprint',
-        snippet: 'Step-by-step checklist to identify repetitive pains companies pay to eliminate today, packaging them into standardized 14-day deliverables.',
-        author: 'Created by Anandovsky',
-        content: `
-          <p>Most developers underestimate how much non-technical founders struggle with basic implementation tasks: connecting Stripe webhooks, configuring custom domains, or setting up auth tables.</p>
-          <h4>Step 1: Inventory Your Repetitive Solves</h4>
-          <p>What did you spend the last 6 months doing in your day job or hobby work? Migrating schemas? Optimizing Next.js bundle sizes? Building Android background workers?</p>
-          <h4>Step 2: The Fixed-Horizon Offer</h4>
-          <p>Never sell raw hourly labor. Package a definitive outcome: <em>"In 14 days, we will launch an end-to-end payment and authentication flow for your web product, or you receive a full refund."</em></p>
-          <p>Standardizing the scope protects your calendar while giving the buyer total budget predictability.</p>
+          <p>Kubernetes clusters and multi-region distributed databases are engineering vanity for 99% of early ventures. You do not need distributed consensus to validate product-market fit.</p>
+          <h4>The Pragmatic Solo Stack</h4>
+          <ul>
+            <li><strong>Frontend / Edge:</strong> Next.js on Vercel with Edge middleware for sub-50ms response times globally.</li>
+            <li><strong>Mobile Core:</strong> Native Kotlin with Jetpack Compose & local Room persistence for zero-latency user flows.</li>
+            <li><strong>State & Auth:</strong> Supabase / Postgres with row-level security or stateless serverless JWT verification.</li>
+          </ul>
+          <p>Keep your stack lean, inspectable, and instantly deployable.</p>
         `
       },
       {
@@ -2600,49 +2573,139 @@
       }
     ];
 
-    // --- State Managers (LocalStorage Persistence) ---
+    // --- State Managers (LocalStorage Persistence with Safe Default Merging) ---
     const STORAGE_KEY_AUTH = 'anandovsky_admin_session';
+    const STORAGE_KEY_SERVICES = 'anandovsky_services_data';
     const STORAGE_KEY_PROJECTS = 'anandovsky_projects_data';
     const STORAGE_KEY_STORIES = 'anandovsky_stories_data';
+
+    function loadServices() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_SERVICES);
+        if (!saved) return [...DEFAULT_SERVICES];
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          return [...DEFAULT_SERVICES];
+        }
+        return parsed;
+      } catch (e) {
+        return [...DEFAULT_SERVICES];
+      }
+    }
+
+    function saveServices(data) {
+      try {
+        localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(data));
+      } catch (e) {
+        console.error('Error saving services:', e);
+      }
+    }
 
     function loadProjects() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY_PROJECTS);
-        return saved ? JSON.parse(saved) : DEFAULT_PROJECTS;
+        if (!saved) return [...DEFAULT_PROJECTS];
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          return [...DEFAULT_PROJECTS];
+        }
+        return parsed;
       } catch (e) {
-        return DEFAULT_PROJECTS;
+        return [...DEFAULT_PROJECTS];
       }
     }
 
     function saveProjects(data) {
-      localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(data));
+      try {
+        localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(data));
+      } catch (e) {
+        console.error('Error saving projects:', e);
+      }
     }
 
     function loadStories() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY_STORIES);
-        return saved ? JSON.parse(saved) : DEFAULT_STORIES;
+        if (!saved) return [...DEFAULT_STORIES];
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          return [...DEFAULT_STORIES];
+        }
+        return parsed;
       } catch (e) {
-        return DEFAULT_STORIES;
+        return [...DEFAULT_STORIES];
       }
     }
 
     function saveStories(data) {
-      localStorage.setItem(STORAGE_KEY_STORIES, JSON.stringify(data));
+      try {
+        localStorage.setItem(STORAGE_KEY_STORIES, JSON.stringify(data));
+      } catch (e) {
+        console.error('Error saving stories:', e);
+      }
     }
 
+    // Active in-memory state
+    let currentServices = loadServices();
     let currentProjects = loadProjects();
     let currentStories = loadStories();
     let currentStoryFilter = 'all';
     let currentProjectFilter = 'all';
 
-    // --- Dynamic Renderers for Projects & Stories ---
+    // --- Dynamic Renderers ---
+    function renderServices() {
+      const container = document.getElementById('servicesContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+      if (!currentServices || currentServices.length === 0) {
+        currentServices = [...DEFAULT_SERVICES];
+      }
+
+      currentServices.forEach(srv => {
+        const card = document.createElement('div');
+        card.className = srv.isPopular ? 'service-card highlighted' : 'service-card';
+
+        const featuresHtml = (srv.features || []).map(f => `
+          <li class="service-feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>${escapeHtml(f)}</span>
+          </li>
+        `).join('');
+
+        const popularBadgeHtml = srv.isPopular && srv.popularBadge ? `<div class="popular-badge">${escapeHtml(srv.popularBadge)}</div>` : '';
+        const iconSvg = srv.iconSvg || '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>';
+
+        card.innerHTML = `
+          <div class="admin-card-actions admin-only">
+            <button class="admin-action-pill" onclick="openEditServiceModal('${srv.id}')">✎ Edit</button>
+            <button class="admin-action-pill delete" onclick="deleteService('${srv.id}')">✕ Delete</button>
+          </div>
+          ${popularBadgeHtml}
+          <div class="service-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${iconSvg}</svg>
+          </div>
+          <h3 class="service-title">${escapeHtml(srv.title)}</h3>
+          <p class="service-description">${escapeHtml(srv.description)}</p>
+          <ul class="service-features">
+            ${featuresHtml}
+          </ul>
+          <div class="service-timeline">${escapeHtml(srv.timeline)}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
     function renderStories(filter = currentStoryFilter) {
       currentStoryFilter = filter;
       const container = document.getElementById('storiesContainer');
       if (!container) return;
 
       container.innerHTML = '';
+      if (!currentStories || currentStories.length === 0) {
+        currentStories = [...DEFAULT_STORIES];
+      }
+
       const filtered = currentStories.filter(s => filter === 'all' || s.categoryKey === filter);
 
       if (filtered.length === 0) {
@@ -2685,6 +2748,10 @@
       if (!container) return;
 
       container.innerHTML = '';
+      if (!currentProjects || currentProjects.length === 0) {
+        currentProjects = [...DEFAULT_PROJECTS];
+      }
+
       const filtered = currentProjects.filter(p => filter === 'all' || p.category === filter);
 
       if (filtered.length === 0) {
@@ -2790,6 +2857,116 @@
       }
     }
 
+    // --- Service CMS Functions ---
+    function openAddServiceModal() {
+      const titleElem = document.getElementById('serviceCmsModalTitle');
+      if (titleElem) titleElem.textContent = '+ Add New Service';
+      
+      const idElem = document.getElementById('serviceCmsId');
+      if (idElem) idElem.value = '';
+      
+      const nameElem = document.getElementById('serviceFormTitle');
+      if (nameElem) nameElem.value = '';
+      
+      const badgeElem = document.getElementById('serviceFormPopularBadge');
+      if (badgeElem) badgeElem.value = '';
+      
+      const timeElem = document.getElementById('serviceFormTimeline');
+      if (timeElem) timeElem.value = 'Typical Horizon: 14 to 21 Days';
+      
+      const descElem = document.getElementById('serviceFormDesc');
+      if (descElem) descElem.value = '';
+      
+      const featElem = document.getElementById('serviceFormFeatures');
+      if (featElem) featElem.value = 'Zero to Vercel/Android deployment\nPayment & micro-checkout integration\nQuantitative user action telemetry';
+
+      openModal('serviceCmsModal');
+    }
+
+    function openEditServiceModal(id) {
+      const srv = currentServices.find(s => s.id === id);
+      if (!srv) return;
+
+      const titleElem = document.getElementById('serviceCmsModalTitle');
+      if (titleElem) titleElem.textContent = '✎ Edit Service: ' + srv.title;
+      
+      const idElem = document.getElementById('serviceCmsId');
+      if (idElem) idElem.value = srv.id;
+      
+      const nameElem = document.getElementById('serviceFormTitle');
+      if (nameElem) nameElem.value = srv.title || '';
+      
+      const badgeElem = document.getElementById('serviceFormPopularBadge');
+      if (badgeElem) badgeElem.value = srv.popularBadge || '';
+      
+      const timeElem = document.getElementById('serviceFormTimeline');
+      if (timeElem) timeElem.value = srv.timeline || '';
+      
+      const descElem = document.getElementById('serviceFormDesc');
+      if (descElem) descElem.value = srv.description || '';
+      
+      const featElem = document.getElementById('serviceFormFeatures');
+      if (featElem) featElem.value = (srv.features || []).join('\n');
+
+      openModal('serviceCmsModal');
+    }
+
+    function handleServiceCmsSave(e) {
+      e.preventDefault();
+      const id = document.getElementById('serviceCmsId').value;
+      const title = document.getElementById('serviceFormTitle').value.trim();
+      const popularBadge = document.getElementById('serviceFormPopularBadge').value.trim();
+      const timeline = document.getElementById('serviceFormTimeline').value.trim();
+      const description = document.getElementById('serviceFormDesc').value.trim();
+      const rawFeatures = document.getElementById('serviceFormFeatures').value;
+      const features = rawFeatures.split('\n').map(s => s.trim()).filter(Boolean);
+      const isPopular = Boolean(popularBadge);
+
+      if (id) {
+        // Edit existing
+        const idx = currentServices.findIndex(s => s.id === id);
+        if (idx !== -1) {
+          currentServices[idx] = {
+            ...currentServices[idx],
+            title,
+            popularBadge,
+            isPopular,
+            timeline,
+            description,
+            features
+          };
+        }
+      } else {
+        // Create new
+        const newId = 'srv-' + Date.now();
+        currentServices.push({
+          id: newId,
+          title,
+          popularBadge,
+          isPopular,
+          iconSvg: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>',
+          timeline,
+          description,
+          features
+        });
+      }
+
+      saveServices(currentServices);
+      renderServices();
+      closeModal('serviceCmsModal');
+    }
+
+    function deleteService(id) {
+      if (confirm('Are you sure you want to delete this service offering?')) {
+        currentServices = currentServices.filter(s => s.id !== id);
+        if (currentServices.length === 0) {
+          currentServices = [...DEFAULT_SERVICES];
+        }
+        saveServices(currentServices);
+        renderServices();
+      }
+    }
+
     // --- Project CMS Functions ---
     function openAddProjectModal() {
       document.getElementById('projectCmsModalTitle').textContent = '+ Add New Project';
@@ -2867,6 +3044,9 @@
     function deleteProject(id) {
       if (confirm('Are you sure you want to delete this project?')) {
         currentProjects = currentProjects.filter(p => p.id !== id);
+        if (currentProjects.length === 0) {
+          currentProjects = [...DEFAULT_PROJECTS];
+        }
         saveProjects(currentProjects);
         renderProjects();
       }
@@ -2941,6 +3121,9 @@
     function deleteStory(id) {
       if (confirm('Are you sure you want to delete this dispatch?')) {
         currentStories = currentStories.filter(s => s.id !== id);
+        if (currentStories.length === 0) {
+          currentStories = [...DEFAULT_STORIES];
+        }
         saveStories(currentStories);
         renderStories();
       }
@@ -2973,6 +3156,25 @@
       renderProjects(category);
     }
 
+    // --- Copy Email Helper ---
+    function copyEmailAddress(btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('anand.com@gmail.com').then(() => {
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy Email'; }, 2000);
+        });
+      } else {
+        const temp = document.createElement('input');
+        temp.value = 'anand.com@gmail.com';
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy Email'; }, 2000);
+      }
+    }
+
     // --- Smooth Scroll & Active Nav ---
     document.querySelectorAll('[data-target]').forEach(trigger => {
       trigger.addEventListener('click', function(e) {
@@ -2991,16 +3193,16 @@
           });
 
           targetElement.style.transition = 'box-shadow 0.6s ease';
-          targetElement.style.boxShadow = '0 0 45px rgba(217, 119, 6, 0.16)';
+          targetElement.style.boxShadow = '0 0 45px rgba(217, 119, 6, 0.25)';
           setTimeout(() => {
-            targetElement.style.boxShadow = 'none';
-          }, 1500);
-
-          updateActiveNav(targetId);
+            targetElement.style.boxShadow = '';
+          }, 1800);
         }
       });
     });
 
+    
+    // --- ScrollSpy Active Nav ---
     const sections = ['section-me', 'section-you', 'section-projects'];
     window.addEventListener('scroll', () => {
       const scrollY = window.pageYOffset;
@@ -3028,7 +3230,7 @@
       });
     }
 
-    // --- Mobile Menu Toggle ---
+    // --- Mobile Drawer Menu ---
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileDrawer = document.getElementById('mobileDrawer');
 
@@ -3038,33 +3240,6 @@
 
     if (mobileMenuBtn) {
       mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    }
-
-    // --- Inquiry Form Submission ---
-    function handleInquirySubmit(event) {
-      event.preventDefault();
-      const track = document.getElementById('serviceTrack').value;
-      const timeline = document.getElementById('timelineBudget').value;
-      const brief = document.getElementById('projectBrief').value.trim();
-
-      const subject = encodeURIComponent('New Trial Proposal / Engagement Inquiry');
-      const body = encodeURIComponent(
-        `Engagement Track: ${track}\nTarget Timeline / Horizon: ${timeline}\n\nProject Objective & Requirements:\n${brief}\n\n---\nDispatched via Anandovsky Studio (anandovsky.com)`
-      );
-
-      const mailtoUrl = `mailto:anand.com@gmail.com?subject=${subject}&body=${body}`;
-
-      // Trigger user's mail client
-      window.location.href = mailtoUrl;
-
-      // Update feedback modal details
-      const trackElem = document.getElementById('modalTrackName');
-      if (trackElem) trackElem.textContent = track;
-      const timelineElem = document.getElementById('modalTimelineName');
-      if (timelineElem) timelineElem.textContent = timeline;
-
-      openModal('inquirySuccessModal');
-      document.getElementById('trialInquiryForm').reset();
     }
 
     // --- Modal Management ---
@@ -3092,7 +3267,7 @@
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        ['inquirySuccessModal', 'storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'storyCmsModal', 'serviceCmsModal'].forEach(id => closeModal(id));
+        ['storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'serviceCmsModal', 'storyCmsModal'].forEach(id => closeModal(id));
       }
     });
 
