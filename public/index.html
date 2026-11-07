@@ -1576,20 +1576,17 @@
     }
 
   
-    /* Admin CMS Styling */
+    /* Admin CMS Styling - Exclusively for Studio Admin */
     .admin-only {
       display: none !important;
     }
-    body.admin-authenticated .admin-only,
-    body.client-authenticated .admin-only {
+    body.admin-authenticated .admin-only {
       display: inline-flex !important;
     }
-    body.admin-authenticated .admin-only-block,
-    body.client-authenticated .admin-only-block {
+    body.admin-authenticated .admin-only-block {
       display: block !important;
     }
-    body.admin-authenticated .admin-only-flex,
-    body.client-authenticated .admin-only-flex {
+    body.admin-authenticated .admin-only-flex {
       display: flex !important;
     }
 
@@ -2675,7 +2672,6 @@
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                   <span>+ Add Milestone</span>
                 </button>
-                <button type="button" class="filter-pill admin-only" onclick="resetMilestonesToDefault()" style="font-size: 0.74rem; padding: 5px 12px; background: rgba(0,0,0,0.05); color: var(--text-secondary);">Reset Defaults</button>
               </div>
             </div>
 
@@ -3811,11 +3807,15 @@
         const popularBadgeHtml = srv.isPopular && srv.popularBadge ? `<div class="popular-badge">${escapeHtml(srv.popularBadge)}</div>` : '';
         const iconSvg = srv.iconSvg || '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>';
 
-        card.innerHTML = `
+        const adminActionsHtml = (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()) ? `
           <div class="admin-card-actions admin-only">
             <button class="admin-action-pill" onclick="openEditServiceModal('${srv.id}')">✎ Edit</button>
             <button class="admin-action-pill delete" onclick="deleteService('${srv.id}')">✕ Delete</button>
           </div>
+        ` : '';
+
+        card.innerHTML = `
+          ${adminActionsHtml}
           ${popularBadgeHtml}
           <div class="service-icon">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${iconSvg}</svg>
@@ -3854,11 +3854,15 @@
         article.setAttribute('data-category', story.categoryKey);
         article.onclick = () => openStoryModal(story.id);
 
-        article.innerHTML = `
+        const adminActionsHtml = (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()) ? `
           <div class="admin-card-actions admin-only" onclick="event.stopPropagation()">
             <button class="admin-action-pill" onclick="event.stopPropagation(); openEditStoryModal('${story.id}')">✎ Edit</button>
             <button class="admin-action-pill delete" onclick="event.stopPropagation(); deleteStory('${story.id}')">✕ Delete</button>
           </div>
+        ` : '';
+
+        article.innerHTML = `
+          ${adminActionsHtml}
           <div class="story-meta">
             <span class="story-category">${escapeHtml(story.category)}</span>
             <span class="story-read-time">${escapeHtml(story.readTime)}</span>
@@ -3967,11 +3971,15 @@
           }
         }
 
-        card.innerHTML = `
+        const adminActionsHtml = (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()) ? `
           <div class="admin-card-actions admin-only">
             <button class="admin-action-pill" onclick="openEditProjectModal('${proj.id}')">✎ Edit</button>
             <button class="admin-action-pill delete" onclick="deleteProject('${proj.id}')">✕ Delete</button>
           </div>
+        ` : '';
+
+        card.innerHTML = `
+          ${adminActionsHtml}
           <div class="project-top-row">
             <span class="${badgeClass}">${escapeHtml(proj.badge)}</span>
             <span class="project-platform-tag">${escapeHtml(proj.platform)}</span>
@@ -4026,13 +4034,18 @@
         document.body.classList.add('admin-authenticated');
         const label = document.getElementById('adminBtnLabel');
         if (label) label.textContent = 'Admin: Active';
-        renderMilestones();
+        renderServices();
+        renderStories();
         renderProjects();
+        renderMilestones();
       } else {
         document.body.classList.remove('admin-authenticated');
         const label = document.getElementById('adminBtnLabel');
         if (label) label.textContent = 'Admin';
+        renderServices();
+        renderStories();
         renderProjects();
+        renderMilestones();
       }
     }
 
@@ -4072,6 +4085,7 @@
 
     // --- Service CMS Functions ---
     function openAddServiceModal() {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can add services.'); return; }
       const titleElem = document.getElementById('serviceCmsModalTitle');
       if (titleElem) titleElem.textContent = '+ Add New Service';
       
@@ -4097,6 +4111,7 @@
     }
 
     function openEditServiceModal(id) {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can edit services.'); return; }
       const srv = currentServices.find(s => s.id === id);
       if (!srv) return;
 
@@ -4126,6 +4141,7 @@
 
     function handleServiceCmsSave(e) {
       e.preventDefault();
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can save services.'); return; }
       const id = document.getElementById('serviceCmsId').value;
       const title = document.getElementById('serviceFormTitle').value.trim();
       const popularBadge = document.getElementById('serviceFormPopularBadge').value.trim();
@@ -4174,6 +4190,7 @@
     }
 
     function deleteService(id) {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can delete services.'); return; }
       if (confirm('Are you sure you want to delete this service offering?')) {
         const deletedItem = currentServices.find(s => s.id === id);
         currentServices = currentServices.filter(s => s.id !== id);
@@ -4191,6 +4208,7 @@
 
     // --- Project CMS Functions ---
     function openAddProjectModal() {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can add portfolio projects.'); return; }
       document.getElementById('projectCmsModalTitle').textContent = '+ Add New Project';
       document.getElementById('projectCmsId').value = '';
       document.getElementById('projectFormTitle').value = '';
@@ -4207,6 +4225,7 @@
     }
 
     function openEditProjectModal(id) {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can edit portfolio projects.'); return; }
       const proj = currentProjects.find(p => p.id === id);
       if (!proj) return;
 
@@ -4294,6 +4313,7 @@
 
     function handleProjectCmsSave(e) {
       e.preventDefault();
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can save portfolio projects.'); return; }
       const id = document.getElementById('projectCmsId').value;
       const title = document.getElementById('projectFormTitle').value.trim();
       const category = document.getElementById('projectFormCategory').value;
@@ -4346,6 +4366,7 @@
     }
 
     function deleteProject(id) {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can delete portfolio projects.'); return; }
       if (confirm('Are you sure you want to delete this project?')) {
         const deletedItem = currentProjects.find(p => p.id !== id);
         currentProjects = currentProjects.filter(p => p.id !== id);
@@ -4363,6 +4384,7 @@
 
     // --- Story CMS Functions ---
     function openAddStoryModal() {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can add blueprints & stories.'); return; }
       document.getElementById('storyCmsModalTitle').textContent = '+ Add New Dispatch/Blueprint';
       document.getElementById('storyCmsId').value = '';
       document.getElementById('storyFormTitle').value = '';
@@ -4377,6 +4399,7 @@
     }
 
     function openEditStoryModal(id) {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can edit blueprints & stories.'); return; }
       const story = currentStories.find(s => s.id === id);
       if (!story) return;
 
@@ -4395,6 +4418,7 @@
 
     function handleStoryCmsSave(e) {
       e.preventDefault();
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can save blueprints & stories.'); return; }
       const id = document.getElementById('storyCmsId').value;
       const title = document.getElementById('storyFormTitle').value.trim();
       const category = document.getElementById('storyFormCategory').value.trim();
@@ -4432,6 +4456,7 @@
     }
 
     function deleteStory(id) {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can delete blueprints & stories.'); return; }
       if (confirm('Are you sure you want to delete this dispatch?')) {
         const deletedItem = currentStories.find(s => s.id === id);
         currentStories = currentStories.filter(s => s.id !== id);
@@ -4723,12 +4748,17 @@
         renderDeliverables();
         renderMilestones();
         renderProjects();
+        renderServices();
+        renderStories();
       } else {
         document.body.classList.remove('client-authenticated');
         if (clientBtnLabel) clientBtnLabel.textContent = 'Client Portal';
         if (lockedView) lockedView.style.display = 'block';
         if (authView) authView.style.display = 'none';
         renderProjects();
+        renderMilestones();
+        renderServices();
+        renderStories();
       }
     }
 
@@ -4961,12 +4991,17 @@
           <button class="admin-action-pill" onclick="openEditMilestoneModal('${m.id}')" style="font-size: 0.72rem; padding: 3px 10px; margin-left: auto;">✎ Edit</button>
         ` : '';
 
+        const adminDeleteBtnHtml = (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()) ? `
+          <button class="admin-action-pill delete" onclick="deleteMilestone('${m.id}')" style="font-size: 0.72rem; padding: 3px 10px; margin-left: 4px;">✕ Delete</button>
+        ` : '';
+
         card.innerHTML = `
           <div class="milestone-top-row">
             <span class="milestone-status-badge ${m.badgeClass || 'in-progress'}">${escapeHtml(m.statusBadge)}</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
               <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">${escapeHtml(m.platform)}</span>
               ${editBtnHtml}
+              ${adminDeleteBtnHtml}
             </div>
           </div>
           <div>
@@ -5004,6 +5039,7 @@
     }
 
     function openAddMilestoneModal() {
+      if (!isAdminLoggedIn()) { showToast('Only Studio Admin can add new milestones.'); return; }
       document.getElementById('milestoneCmsModalTitle').textContent = '+ Add New Milestone';
       document.getElementById('milestoneFormId').value = '';
       document.getElementById('milestoneFormTitle').value = '';
@@ -5090,6 +5126,24 @@
       renderMilestones();
       closeModal('milestoneCmsModal');
       showToast('Milestone saved & synced to cloud database in real time');
+    }
+
+    function deleteMilestone(id) {
+      if (!isAdminLoggedIn()) {
+        showToast('Only Studio Admin can delete sprint milestones.');
+        return;
+      }
+      const m = currentMilestones.find(item => item.id === id);
+      const title = m ? m.title : id;
+      if (confirm('Are you sure you want to delete sprint milestone: ' + title + '?')) {
+        currentMilestones = currentMilestones.filter(item => item.id !== id);
+        saveMilestones(currentMilestones);
+        pushContentToCloud('milestones', currentMilestones, { action: 'delete', id });
+        renderMilestones();
+        const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+        sendEditEmailNotification('Active Sprint Milestone (Deleted)', title, 'Milestone ID ' + id + ' (' + title + ') was deleted by Admin.', session);
+        showToast('Milestone deleted & cloud database updated');
+      }
     }
 
     function resetMilestonesToDefault() {
