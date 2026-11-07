@@ -2,16 +2,20 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/public/downloads/:match*",
+      "destination": "/downloads/:match*"
+    },
+    {
+      "source": "/downloads/:match*",
+      "destination": "/downloads/:match*"
+    },
+    {
       "source": "/dashboard",
       "destination": "/index.html"
     },
     {
       "source": "/deliverables",
       "destination": "/index.html"
-    },
-    {
-      "source": "/downloads/:match*",
-      "destination": "/public/downloads/:match*"
     }
   ],
   "headers": [

@@ -23,8 +23,10 @@
     }
 
     :root {
-      /* Warm Ivory / Cream Backgrounds */
-      --bg-base: #FBF9F5;
+      /* Warm Cream & Soft Yellow Theme Aesthetics (#FDFBD4) */
+      --bg-base: #FDFBD4;
+      --bg-cream: #FDFBD4;
+      --bg-base-alt: #FBF9F5;
       --bg-surface: #FAF7F2;
       --bg-surface-elevated: #FFFFFF;
       --bg-card: #FFFFFF;
@@ -1556,14 +1558,53 @@
     .admin-only {
       display: none !important;
     }
-    body.admin-authenticated .admin-only {
+    body.admin-authenticated .admin-only,
+    body.client-authenticated .admin-only {
       display: inline-flex !important;
     }
-    body.admin-authenticated .admin-only-block {
+    body.admin-authenticated .admin-only-block,
+    body.client-authenticated .admin-only-block {
       display: block !important;
     }
-    body.admin-authenticated .admin-only-flex {
+    body.admin-authenticated .admin-only-flex,
+    body.client-authenticated .admin-only-flex {
       display: flex !important;
+    }
+
+    /* Registered Users Button & Quick Selector */
+    .registered-users-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent-gold-light);
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .registered-users-btn:hover {
+      background: rgba(255, 255, 255, 0.16) !important;
+      border-color: var(--accent-gold) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px);
+    }
+    .custom-generate-qa-btn {
+      background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3) !important;
+      cursor: pointer;
+    }
+    .custom-generate-qa-btn:hover {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+      transform: translateY(-1px);
+      color: #FFFFFF !important;
     }
 
     .admin-auth-trigger {
@@ -2485,7 +2526,7 @@
               <input class="form-input" type="password" id="gatePasswordInput" required placeholder="••••••••" autocomplete="current-password" />
             </div>
             <div id="gateLoginError" style="display: none; font-size: 0.82rem; color: #FCA5A5; background: rgba(220, 38, 38, 0.2); padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid rgba(220, 38, 38, 0.4);">
-              Invalid credentials. Use <strong>smicky123</strong> or one of the quick selector accounts below.
+              Invalid credentials. Use <strong>smicky123</strong> or click <strong>Registered Users</strong> below for one-click access.
             </div>
             <button type="submit" class="form-submit-btn" style="width: 100%; margin-top: 6px;">
               <span>Unlock Dashboard &amp; Deliverables</span>
@@ -2493,8 +2534,18 @@
             </button>
           </form>
 
-          <div style="margin-top: 26px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
-            <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
+          <!-- Registered Users Quick Selector Toggle Button -->
+          <div style="margin-top: 18px; text-align: center;">
+            <button type="button" id="toggleDemoPillsBtn" onclick="toggleDemoReviewPills()" class="registered-users-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span>Registered Users</span>
+              <svg id="regUsersChevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.25s ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+          </div>
+
+          <!-- Hidden by default; revealed when clicking 'Registered Users' -->
+          <div id="demoPillsContainer" style="display: none; margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 18px; transition: all 0.3s ease;">
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; text-align: center;">
               ⚡ One-Click Review Access (Demo Testing)
             </div>
             <div class="quick-login-pills">
@@ -2529,6 +2580,9 @@
                 <div style="font-size: 0.78rem; color: var(--text-on-espresso-subtle); display: flex; align-items: center; gap: 6px; margin-top: 3px;">
                   <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
                   <span>Active Session &bull; Private Deliverables Channel</span>
+                  <span class="identity-role-badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.72rem; padding: 2px 8px; border-radius: var(--radius-full); margin-left: 6px;">
+                    <span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:#10B981; margin-right:4px;"></span>Logged-In Inline Editing: Active
+                  </span>
                 </div>
               </div>
             </div>
@@ -2563,189 +2617,46 @@
 
           <!-- TAB 1: MILESTONE TRACKING -->
           <div id="dashTabMilestones" class="dash-tab-content">
-            <div class="milestones-grid">
-              
-              <!-- FreeIt Milestone -->
-              <div class="milestone-card">
-                <div class="milestone-top-row">
-                  <span class="milestone-status-badge in-progress">Sprint 03 &bull; Release Candidate</span>
-                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">Android Native</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0;">Active Sprint Milestones</h3>
+                <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 3px;">
+                  Real-time milestone tracking, flexible QA schedules, and live APK downloads. Click <strong>✎ Edit</strong> on any card to update.
                 </div>
-                <div>
-                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">FreeIt &mdash; Freedom Utility Tool</h3>
-                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Assigned QA Lead: Sreegovind</div>
-                  <div style="margin-top: 6px;">
-                    <span class="milestone-status-badge in-progress" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.73rem; background: rgba(217, 119, 6, 0.08); border: 1px solid rgba(217, 119, 6, 0.28); color: var(--accent-gold-dark); line-height: 1.4;">
-                      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); flex-shrink: 0;"></span>
-                      <span>Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).</span>
-                    </span>
-                  </div>
-                </div>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
-                  Zero-cloud background process scheduler and memory pressure monitor. Designed to prevent OS process killing during developer sessions.
-                </p>
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
-                    <span>Milestone Progress</span>
-                    <strong style="color: var(--accent-gold);">85%</strong>
-                  </div>
-                  <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 85%;"></div>
-                  </div>
-                </div>
-                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
-                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
-                  <div style="color: var(--text-secondary);">Android 14/15 battery wake-lock benchmark &amp; log parser validation. Target: Nov 12, 2026.</div>
-                </div>
-                <button type="button" class="apk-download-btn" onclick="downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt')">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Download Test APK (v1.4.2-rc3 &bull; 18.4 MB)</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="admin-add-btn admin-only" onclick="openAddMilestoneModal()" style="font-size: 0.78rem; padding: 6px 14px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ Add Milestone</span>
                 </button>
+                <button type="button" class="filter-pill admin-only" onclick="resetMilestonesToDefault()" style="font-size: 0.74rem; padding: 5px 12px; background: rgba(0,0,0,0.05); color: var(--text-secondary);">Reset Defaults</button>
               </div>
-
-              <!-- Pocket Catalog Milestone -->
-              <div class="milestone-card">
-                <div class="milestone-top-row">
-                  <span class="milestone-status-badge in-progress">Sprint 02 &bull; Feature Verification</span>
-                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">PWA + Android APK</span>
-                </div>
-                <div>
-                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Pocket Catalog &mdash; Offline B2B</h3>
-                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Assigned: Client Partner &amp; Sreegovind</div>
-                  <div style="margin-top: 6px;">
-                    <span class="milestone-status-badge in-progress" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.73rem; background: rgba(217, 119, 6, 0.08); border: 1px solid rgba(217, 119, 6, 0.28); color: var(--accent-gold-dark); line-height: 1.4;">
-                      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); flex-shrink: 0;"></span>
-                      <span>Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).</span>
-                    </span>
-                  </div>
-                </div>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
-                  Offline-first product directory, high-speed SKU search, and barcode scanning for field sales teams without reliable mobile coverage.
-                </p>
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
-                    <span>Milestone Progress</span>
-                    <strong style="color: var(--accent-gold);">70%</strong>
-                  </div>
-                  <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 70%;"></div>
-                  </div>
-                </div>
-                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
-                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
-                  <div style="color: var(--text-secondary);">Offline SQLite sync under network throttling &amp; CSV export. Target: Nov 20, 2026.</div>
-                </div>
-                <a href="/public/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="apk-download-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Download Official APK (v2.1.0 &bull; 18.7 MB)</span>
-                </a>
-              </div>
-
-              <!-- LingoPulse & LexiFlow Milestone -->
-              <div class="milestone-card">
-                <div class="milestone-top-row">
-                  <span class="milestone-status-badge review">Pre-Deployment &bull; QA Sign-Off</span>
-                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">Next.js Edge + WASM</span>
-                </div>
-                <div>
-                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">LingoPulse AI &amp; LexiFlow</h3>
-                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Assigned QA Lead: Gayathri</div>
-                  <div style="margin-top: 6px;">
-                    <span class="milestone-status-badge review" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.73rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.28); color: #4F46E5; line-height: 1.4;">
-                      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4F46E5; flex-shrink: 0;"></span>
-                      <span>Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).</span>
-                    </span>
-                  </div>
-                </div>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
-                  Bilingual speed reader and French audio training engine with interactive spaced-repetition loops and WASM phonetic parsing.
-                </p>
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
-                    <span>Milestone Progress</span>
-                    <strong style="color: #4F46E5;">95%</strong>
-                  </div>
-                  <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 95%; background: linear-gradient(90deg, #4F46E5 0%, #818CF8 100%);"></div>
-                  </div>
-                </div>
-                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
-                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
-                  <div style="color: var(--text-secondary);">French/German compound verb pronunciation phonetic accuracy audit. Target: Nov 15, 2026.</div>
-                </div>
-                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  <span>Launch Edge Staging Preview (Build #84)</span>
-                </a>
-              </div>
-
-              <!-- OmniLedger Micro-Billing -->
-              <div class="milestone-card">
-                <div class="milestone-top-row">
-                  <span class="milestone-status-badge completed">Verified &bull; De-risked &amp; Live</span>
-                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">Cloud API</span>
-                </div>
-                <div>
-                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">OmniLedger Micro-Billing</h3>
-                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Client Partner Trial Complete</div>
-                </div>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
-                  Sub-50ms pay-per-trial micro-checkout module with idempotent Stripe webhooks and Supabase Postgres telemetry.
-                </p>
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
-                    <span>Milestone Progress</span>
-                    <strong style="color: #059669;">100%</strong>
-                  </div>
-                  <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 100%; background: #059669;"></div>
-                  </div>
-                </div>
-                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
-                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Delivery Status:</div>
-                  <div style="color: var(--text-secondary);">Production checkout ready. De-risking audit report delivered to client.</div>
-                </div>
-                <button type="button" class="apk-download-btn" style="background: #059669; border-color: #059669;" onclick="showToast('OmniLedger production webhook docs open in new tab.')">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>View Production Specs &amp; Audit</span>
-                </button>
-              </div>
-
             </div>
+
+            <!-- Dynamically populated via renderMilestones() -->
+            <div class="milestones-grid" id="milestonesContainer"></div>
           </div>
 
-          <!-- TAB 2: DOWNLOAD TEST BUILDS & APK VAULT -->
           <div id="dashTabBuilds" class="dash-tab-content" style="display: none;">
-            <div style="margin-bottom: 24px; padding: 16px 20px; background: rgba(217, 119, 6, 0.08); border: 1px solid var(--border-gold); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary);">Test builds are signed for internal testing by designated QA (Sreegovind, Gayathri) and active clients.</span>
-              </div>
-              <button class="filter-pill" onclick="downloadAllApks()" style="background: var(--bg-espresso); color: #FFFFFF; border: none; padding: 6px 16px;">
-                <span>Download All Builds (.zip)</span>
-              </button>
-            </div>
-
             <div class="builds-grid">
               
-              <!-- FreeIt APK Build -->
+              <!-- FreeIt Build Card -->
               <div class="build-card">
                 <div>
                   <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
-                    <div class="build-icon-badge">
+                    <div class="build-icon-badge" style="background: rgba(217, 119, 6, 0.1); border-color: rgba(217, 119, 6, 0.3); color: var(--accent-gold);">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
                     </div>
-                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(16, 185, 129, 0.1); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● v1.4.2-preview-rc3</span>
+                    <span class="milestone-status-badge delivered">● Production Live</span>
                   </div>
-                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">FreeIt Android APK</h3>
-                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Package: com.anandovsky.freeit</div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">FreeIt &mdash; Resale and Declutter App</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Package: com.smicky.freeit &bull; Version Code 5</div>
                   <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
-                    Release candidate build with battery wake-lock optimization, SQLite crash recovery, and frame-rate diagnostics.
+                    A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.
                   </p>
                   <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                    <div>Size: <strong>18.4 MB</strong> &bull; Target: <strong>Android 15 (API 35)</strong></div>
-                    <div>SHA-256: <code>a7f93b82...4d09ec</code> (Signed)</div>
-                    <div>Assigned Lead Tester: <strong style="color: var(--accent-gold);">Sreegovind</strong></div>
+                    <div>Target: <strong>Android 16 (API level 36)</strong> &bull; Version: <strong>Code 5</strong></div>
+                    <div>Assigned QA Lead: <strong style="color: var(--accent-gold);">Sreegovind</strong></div>
                     <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--border-subtle); color: var(--accent-gold-dark); font-size: 0.73rem; line-height: 1.4;">
                       &bull; Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).
                     </div>
@@ -2753,57 +2664,56 @@
                 </div>
                 <button type="button" class="apk-download-btn" onclick="downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt')">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Download FreeIt APK (18.4 MB)</span>
+                  <span>Download Test Package (18.4 MB)</span>
                 </button>
               </div>
 
-              <!-- Pocket Catalog APK Build -->
-              <div class="build-card">
+              <!-- Pocket Catalog Official APK Build Card -->
+              <div class="build-card" style="border: 1.5px solid var(--accent-gold); box-shadow: 0 4px 18px rgba(217, 119, 6, 0.12);">
                 <div>
                   <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
-                    <div class="build-icon-badge">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <div class="build-icon-badge" style="background: rgba(217, 119, 6, 0.15); border-color: var(--accent-gold); color: var(--accent-gold);">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                     </div>
-                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(217, 119, 6, 0.1); color: var(--accent-gold-dark); border: 1px solid rgba(217, 119, 6, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● v2.1.0-beta.2</span>
+                    <span class="milestone-status-badge in-progress" style="background: #10B981; color: #FFFFFF; font-weight: 700;">● Official APK Ready</span>
                   </div>
-                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Pocket Catalog APK</h3>
-                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Package: com.anandovsky.pocketcatalog</div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Pocket Catalog &mdash; Asset Inventory</h3>
+                  <div style="font-size: 0.78rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700; margin-bottom: 12px;">Asset: pocket-catalog.apk (18.7 MB)</div>
                   <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
-                    Offline-first catalog build with mock barcode scanner integration and instant 10,000 product vector search.
+                    An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.
                   </p>
                   <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                    <div>Size: <strong>18.7 MB</strong> &bull; Target: <strong>Android 14 (API 34)</strong></div>
-                    <div>SHA-256: <code>366b98ab...d35321</code> (Verified Compiled APK)</div>
+                    <div>Size: <strong>18.7 MB</strong> &bull; Target: <strong>Android 14+ (API 34+)</strong></div>
+                    <div>SHA-256: <code>366b98ab...d35321</code> (Compiled Official APK)</div>
                     <div>Assigned QA / Client: <strong style="color: var(--accent-gold);">Sreegovind &amp; Client</strong></div>
                     <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--border-subtle); color: var(--accent-gold-dark); font-size: 0.73rem; line-height: 1.4;">
                       &bull; Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).
                     </div>
                   </div>
                 </div>
-                <a href="/public/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="apk-download-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
+                <a href="/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="apk-download-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                   <span>Download Pocket Catalog APK (18.7 MB)</span>
                 </a>
               </div>
 
-              <!-- LingoPulse / LexiFlow Edge Staging Preview -->
+              <!-- Guten App Edge Staging Preview -->
               <div class="build-card">
                 <div>
                   <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
                     <div class="build-icon-badge" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: #4F46E5;">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </div>
-                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(99, 102, 241, 0.1); color: #4F46E5; border: 1px solid rgba(99, 102, 241, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● Vercel Build #84</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(99, 102, 241, 0.1); color: #4F46E5; border: 1px solid rgba(99, 102, 241, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● Vercel Build #92</span>
                   </div>
-                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">LingoPulse Voice Engine PWA</h3>
-                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Deployment: staging.lingopulse.vercel.app</div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Guten App &mdash; German Learning</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Deployment: staging.gutenapp.vercel.app</div>
                   <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
-                    Interactive speech synthesis test environment with low-latency audio buffer and French verb conjugation training loops.
+                    It is a German language learning web application. Features interactive spaced-repetition drills, phonetic tokenization, and German case training loops.
                   </p>
                   <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
                     <div>Environment: <strong>Vercel Edge Runtime</strong></div>
                     <div>Linguist Lead: <strong style="color: #4F46E5;">Gayathri</strong></div>
-                    <div>Audio Parser: <strong>WebAudio + WASM Core</strong></div>
                     <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--border-subtle); color: #4F46E5; font-size: 0.73rem; line-height: 1.4;">
                       &bull; Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).
                     </div>
@@ -2811,14 +2721,91 @@
                 </div>
                 <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  <span>Launch Edge Staging Preview</span>
+                  <span>Launch Guten App Preview</span>
                 </a>
+              </div>
+
+              <!-- Parlez App Preview -->
+              <div class="build-card">
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
+                    <div class="build-icon-badge" style="background: rgba(14, 165, 233, 0.1); border-color: rgba(14, 165, 233, 0.3); color: #0284C7;">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(14, 165, 233, 0.1); color: #0284C7; border: 1px solid rgba(14, 165, 233, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● Vercel Build #41</span>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Parlez App &mdash; French Learning</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Deployment: staging.parlezapp.vercel.app</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                    A French learning web application with audio speech synthesis, irregular verb conjugation drill engines, and pronunciation feedback loops.
+                  </p>
+                  <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>Environment: <strong>Vercel Edge</strong></div>
+                    <div>Assigned QA: <strong style="color: #0284C7;">Sreegovind</strong></div>
+                    <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--border-subtle); color: #0284C7; font-size: 0.73rem; line-height: 1.4;">
+                      &bull; Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).
+                    </div>
+                  </div>
+                </div>
+                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #0284C7; border-color: #0284C7;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>Launch Parlez App Preview</span>
+                </a>
+              </div>
+
+              <!-- Any Syllabus Assessment Generator Build Card -->
+              <div class="build-card">
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
+                    <div class="build-icon-badge" style="background: rgba(217, 119, 6, 0.1); border-color: rgba(217, 119, 6, 0.3); color: var(--accent-gold);">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+                    <span class="milestone-status-badge in-progress">● Live Utility</span>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Any Syllabus Assessment Generator</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Web Utility &bull; Automated Scoring Rubrics</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                    A comprehensive Q&A generator web utility capable of turning any syllabus or instructional curriculum into structured assessment tests with automated grading rubrics.
+                  </p>
+                  <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>Utility Mode: <strong>Adaptive Exam Generator</strong></div>
+                    <div>Output: <strong>Structured Q&A + Marking Schemas</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="custom-generate-qa-btn" onclick="openAssessmentGeneratorModal()" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 18px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.86rem; margin-top: 10px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>Generate Q&amp;A</span>
+                </button>
+              </div>
+
+              <!-- Multi-Venture Daily Tracker Build Card -->
+              <div class="build-card">
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
+                    <div class="build-icon-badge" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #10B981;">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <span class="milestone-status-badge delivered">● Active Ops</span>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Multi-Venture Daily Tracker</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Operating Rhythm: Day's Activity Time Slots</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                    A schedule-tracking and operating rhythm application structured around "Day's activity" time slots to coordinate parallel engineering ventures.
+                  </p>
+                  <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>Architecture: <strong>Local-First Time Matrix</strong></div>
+                    <div>Sprint Rhythm: <strong>Active Daily Allocations</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="apk-download-btn" onclick="showToast('Active Rhythm: Tracking parallel venture time blocks')" style="background: #10B981; border-color: #10B981;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  <span>View Day's Activity Slots</span>
+                </button>
               </div>
 
             </div>
           </div>
 
-          <!-- TAB 3: DELIVERABLES STATUS LOG -->
           <div id="dashTabDeliverables" class="dash-tab-content" style="display: none;">
             
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
@@ -3229,28 +3216,94 @@
 
     const DEFAULT_PROJECTS = [
       {
-        id: 'lingopulse',
+        id: 'freeit',
+        category: 'android',
+        badge: '● Google Play Store Production',
+        badgeType: 'success',
+        platform: 'Android 16 (API 36) &bull; Version Code 5',
+        title: 'FreeIt — Resale and Declutter App',
+        attribution: 'Created by Anandovsky | Tester: Sreegovind & Gayathri',
+        desc: 'A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.',
+        tech: ['Android SDK 36', 'WebView Core', 'Google Play Store', 'Version Code 5'],
+        demoUrl: '#section-dashboard',
+        caseUrl: '#section-dashboard'
+      },
+      {
+        id: 'pocket-catalog',
+        category: 'android',
+        badge: '● Test Build Evaluated',
+        badgeType: 'beta',
+        platform: 'Android APK (18.7 MB) + PWA',
+        title: 'Pocket Catalog — Asset Inventory',
+        attribution: 'Created by Anandovsky | Tester: Sreegovind & Client Partner',
+        desc: 'An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.',
+        tech: ['Android APK (18.7 MB)', 'Offline SQLite', 'Barcode Scanner', 'PWA Core'],
+        demoUrl: '/downloads/pocket-catalog.apk',
+        caseUrl: '#section-dashboard'
+      },
+      {
+        id: 'guten-app',
         category: 'language',
         badge: '● Deployed on Vercel',
         badgeType: 'success',
         platform: 'Web & PWA',
-        title: 'LingoPulse AI',
-        attribution: 'Created by Anandovsky | Tester: Sreegovind',
-        desc: 'Context-driven language learning platform with audio voice synthesis, interactive spaced-repetition drills, and low-latency speech feedback loops.',
-        tech: ['Next.js Edge', 'Web Audio API', 'TailwindCSS', 'Vercel'],
+        title: 'Guten App',
+        attribution: 'Created by Anandovsky | Tester: Gayathri',
+        desc: 'It is a German language learning web application.',
+        tech: ['Next.js Edge', 'Web Audio API', 'German Grammar Core', 'Vercel'],
         demoUrl: 'https://vercel.com',
         caseUrl: '#contact'
       },
       {
-        id: 'lexiflow',
+        id: 'parlez-app',
         category: 'language',
-        badge: '● Production Release',
+        badge: '● Deployed on Vercel',
         badgeType: 'success',
-        platform: 'Vercel Cloud',
-        title: 'LexiFlow Reader',
-        attribution: 'Created by Anandovsky | Tester: Gayathri',
-        desc: 'Bilingual speed reader and vocabulary extraction utility for polyglots, offering immediate tokenization and sync with local browser databases.',
-        tech: ['TypeScript', 'IndexedDB', 'Vercel KV', 'WASM Parser'],
+        platform: 'Web Platform',
+        title: 'Parlez App',
+        attribution: 'Created by Anandovsky | Tester: Sreegovind',
+        desc: 'A French learning web application.',
+        tech: ['Next.js', 'Speech Synthesis', 'French Conjugation Engine', 'Vercel Edge'],
+        demoUrl: 'https://vercel.com',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'any-syllabus',
+        category: 'web',
+        badge: '● Live Web Utility',
+        badgeType: 'success',
+        platform: 'Curriculum Q&A Engine',
+        title: 'Any Syllabus Assessment Generator',
+        attribution: 'Created by Anandovsky',
+        desc: 'A comprehensive Q&A generator web utility capable of turning any syllabus or instructional curriculum into structured assessment tests with automated grading rubrics.',
+        tech: ['React', 'Prompt Chains', 'Schema Validation', 'Vercel Serverless'],
+        hasGenerateQa: true,
+        demoUrl: '#assessment-generator',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'daily-tracker',
+        category: 'web',
+        badge: '● Active Workflow',
+        badgeType: 'success',
+        platform: 'Productivity System',
+        title: 'Multi-Venture Daily Tracker',
+        attribution: 'Created by Anandovsky',
+        desc: 'A schedule-tracking and operating rhythm application structured around "Day\'s activity" time slots.',
+        tech: ['Local-First DB', 'Time-Block Matrix', 'IndexedDB', 'TailwindCSS'],
+        demoUrl: '#section-dashboard',
+        caseUrl: '#contact'
+      },
+      {
+        id: 'omniledger',
+        category: 'web',
+        badge: '● Live Platform',
+        badgeType: 'success',
+        platform: 'Cloud Infrastructure',
+        title: 'OmniLedger Micro-Billing',
+        attribution: 'Created by Anandovsky',
+        desc: 'Lightweight subscription & pay-per-trial checkout module designed for solo developers to validate willingness-to-pay within 5 minutes of launch.',
+        tech: ['Stripe API', 'Node.js', 'PostgreSQL', 'Webhooks'],
         demoUrl: 'https://vercel.com',
         caseUrl: '#contact'
       },
@@ -3278,19 +3331,6 @@
         desc: 'Zero-cloud task synchronization utility using local Wi-Fi Direct and Bluetooth mesh protocols for high-security fieldwork and developer logs.',
         tech: ['Kotlin Coroutines', 'Wi-Fi Direct', 'CRDTs', 'Crypto'],
         demoUrl: '#contact',
-        caseUrl: '#contact'
-      },
-      {
-        id: 'omniledger',
-        category: 'web',
-        badge: '● Live Platform',
-        badgeType: 'success',
-        platform: 'Cloud Infrastructure',
-        title: 'OmniLedger Micro-Billing',
-        attribution: 'Created by Anandovsky',
-        desc: 'Lightweight subscription & pay-per-trial checkout module designed for solo developers to validate willingness-to-pay within 5 minutes of launch.',
-        tech: ['Stripe API', 'Node.js', 'PostgreSQL', 'Webhooks'],
-        demoUrl: 'https://vercel.com',
         caseUrl: '#contact'
       },
       {
@@ -3381,8 +3421,132 @@
     // --- State Managers (LocalStorage Persistence with Safe Default Merging) ---
     const STORAGE_KEY_AUTH = 'anandovsky_admin_session';
     const STORAGE_KEY_SERVICES = 'anandovsky_services_data';
-    const STORAGE_KEY_PROJECTS = 'anandovsky_projects_data';
+    const STORAGE_KEY_PROJECTS = 'anandovsky_projects_data_v4';
     const STORAGE_KEY_STORIES = 'anandovsky_stories_data';
+
+        // --- Milestones Data & State Manager ---
+    const STORAGE_KEY_MILESTONES = 'anandovsky_milestones_data_v4';
+
+    const DEFAULT_MILESTONES = [
+      {
+        id: 'mile-freeit',
+        title: 'FreeIt — Resale and Declutter App',
+        statusBadge: 'Sprint 03 &bull; Release Candidate',
+        badgeClass: 'in-progress',
+        platform: 'Android Native &bull; API 36',
+        assigned: 'Assigned QA Lead: Sreegovind',
+        flexibleNote: 'Testing in Progress (Flexible Schedule &mdash; active during testers\' free time around exam schedules).',
+        desc: 'A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.',
+        progress: 85,
+        nextDeliverable: 'Android 16 wake-lock benchmark & log parser validation. Target: Nov 12, 2026.',
+        actionType: 'apk',
+        actionLabel: 'Download Test APK (v1.4.2-rc3 &bull; 18.4 MB)',
+        actionTarget: 'FreeIt-v1.4.2-preview.apk',
+        actionParam: 18.4
+      },
+      {
+        id: 'mile-pocket',
+        title: 'Pocket Catalog — Asset Inventory',
+        statusBadge: 'Sprint 02 &bull; Feature Verification',
+        badgeClass: 'in-progress',
+        platform: 'PWA + Android APK',
+        assigned: 'Assigned: Client Partner & Sreegovind',
+        flexibleNote: 'Testing in Progress (Flexible Schedule &mdash; active during testers\' free time around exam schedules).',
+        desc: 'An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.',
+        progress: 70,
+        nextDeliverable: 'Offline SQLite sync under network throttling & CSV export. Target: Nov 20, 2026.',
+        actionType: 'apk_official',
+        actionLabel: 'Download Official APK (v2.1.0 &bull; 18.7 MB)',
+        actionTarget: '/downloads/pocket-catalog.apk',
+        actionParam: 18.7
+      },
+      {
+        id: 'mile-guten',
+        title: 'Guten App',
+        statusBadge: 'Staging Candidate &bull; Production Audit',
+        badgeClass: 'in-progress',
+        platform: 'Web & PWA',
+        assigned: 'Assigned Linguist Lead: Gayathri',
+        flexibleNote: 'Testing in Progress (Flexible Schedule &mdash; active during testers\' free time around exam schedules).',
+        desc: 'It is a German language learning web application.',
+        progress: 95,
+        nextDeliverable: 'German grammatical case training loop & phonetic audio buffer review. Target: Nov 16, 2026.',
+        actionType: 'link',
+        actionLabel: 'Launch Staging Preview (staging.gutenapp.vercel.app)',
+        actionTarget: 'https://vercel.com',
+        actionParam: 0
+      },
+      {
+        id: 'mile-parlez',
+        title: 'Parlez App',
+        statusBadge: 'Beta Review &bull; Active Testing',
+        badgeClass: 'in-progress',
+        platform: 'Web Platform',
+        assigned: 'Assigned QA: Sreegovind',
+        flexibleNote: 'Testing in Progress (Flexible Schedule &mdash; active during testers\' free time around exam schedules).',
+        desc: 'A French learning web application.',
+        progress: 80,
+        nextDeliverable: 'French irregular verb speech synthesis & audio conjugation drills. Target: Nov 22, 2026.',
+        actionType: 'link',
+        actionLabel: 'Launch French Learning Preview',
+        actionTarget: 'https://vercel.com',
+        actionParam: 0
+      },
+      {
+        id: 'mile-syllabus',
+        title: 'Any Syllabus Assessment Generator',
+        statusBadge: 'Live Web Utility &bull; Sprint 01',
+        badgeClass: 'in-progress',
+        platform: 'Cloud Utility',
+        assigned: 'Assigned: Solo Platform & Client Partner',
+        flexibleNote: '',
+        desc: 'A comprehensive Q&A generator web utility capable of turning any syllabus or instructional curriculum into structured assessment tests with automated grading rubrics.',
+        progress: 90,
+        nextDeliverable: 'Curriculum schema parser & export to PDF/Markdown. Target: Nov 25, 2026.',
+        actionType: 'generate_qa',
+        actionLabel: 'Generate Q&A',
+        actionTarget: 'modal',
+        actionParam: 0
+      },
+      {
+        id: 'mile-tracker',
+        title: 'Multi-Venture Daily Tracker',
+        statusBadge: 'Production Active &bull; Daily Ops',
+        badgeClass: 'in-progress',
+        platform: 'Productivity System',
+        assigned: 'Operating Rhythm: Anandovsky',
+        flexibleNote: '',
+        desc: 'A schedule-tracking and operating rhythm application structured around "Day\'s activity" time slots.',
+        progress: 100,
+        nextDeliverable: 'Daily time slot allocation telemetry & multi-venture burn charts. Target: Nov 30, 2026.',
+        actionType: 'tracker',
+        actionLabel: 'Open Daily Operating Rhythm',
+        actionTarget: '#section-dashboard',
+        actionParam: 0
+      }
+    ];
+
+    function loadMilestones() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_MILESTONES);
+        if (!saved) return [...DEFAULT_MILESTONES];
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length === 0) return [...DEFAULT_MILESTONES];
+        return parsed;
+      } catch (e) {
+        return [...DEFAULT_MILESTONES];
+      }
+    }
+
+    function saveMilestones(data) {
+      try {
+        localStorage.setItem(STORAGE_KEY_MILESTONES, JSON.stringify(data));
+      } catch (e) {
+        console.error('Error saving milestones:', e);
+      }
+    }
+
+    let currentMilestones = loadMilestones();
 
     function loadServices() {
       try {
@@ -3572,6 +3736,31 @@
         const techSpans = (proj.tech || []).map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('');
         const badgeClass = proj.badgeType === 'beta' ? 'project-badge beta' : 'project-badge';
 
+        // Custom action buttons based on project features
+        let actionButtonsHtml = '';
+        if (proj.hasGenerateQa || proj.id === 'any-syllabus' || (proj.title && proj.title.includes('Any Syllabus'))) {
+          actionButtonsHtml = `
+            <button type="button" class="custom-generate-qa-btn" onclick="openAssessmentGeneratorModal()" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 15px; border-radius: var(--radius-sm); font-size: 0.78rem; font-family: var(--font-mono);">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>Generate Q&amp;A</span>
+            </button>
+          `;
+        } else if (proj.id === 'pocket-catalog' || (proj.title && proj.title.includes('Pocket Catalog'))) {
+          actionButtonsHtml = `
+            <a href="/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="project-demo-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
+              <span>Download APK</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </a>
+          `;
+        } else {
+          actionButtonsHtml = `
+            <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
+              <span>Launch / Demo</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          `;
+        }
+
         card.innerHTML = `
           <div class="admin-card-actions admin-only">
             <button class="admin-action-pill" onclick="openEditProjectModal('${proj.id}')">✎ Edit</button>
@@ -3602,10 +3791,7 @@
               <span>View Specs / Architecture</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
-            <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
-              <span>Launch / Demo</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
+            ${actionButtonsHtml}
           </div>
         `;
         container.appendChild(card);
@@ -3633,6 +3819,8 @@
         document.body.classList.add('admin-authenticated');
         const label = document.getElementById('adminBtnLabel');
         if (label) label.textContent = 'Admin: Active';
+        renderMilestones();
+        renderProjects();
       } else {
         document.body.classList.remove('admin-authenticated');
         const label = document.getElementById('adminBtnLabel');
@@ -4087,22 +4275,22 @@
     // Client & Collaborator Dashboard Functionality
     // ==========================================================================
     const STORAGE_KEY_CLIENT_AUTH = 'anandovsky_client_session';
-    const STORAGE_KEY_DELIVERABLES = 'anandovsky_deliverables_data';
+    const STORAGE_KEY_DELIVERABLES = 'anandovsky_deliverables_data_v4';
 
     const DEFAULT_DELIVERABLES = [
       {
         id: 'del-1',
-        project: 'FreeIt',
-        title: 'Android 14/15 Background Process Memory Benchmark',
+        project: 'FreeIt — Resale and Declutter App',
+        title: 'Android 16 (API 36) Background Memory Benchmark & Version Code 5 QA',
         collaborator: 'Sreegovind',
         role: 'Lead QA / Android Engineering',
         status: 'In Progress',
         targetDate: 'Nov 12, 2026',
-        notes: 'CPU wake-lock telemetry under aggressive OS background killers. Testing in Progress (Flexible Schedule — active during testers\' free time around exam schedules).'
+        notes: 'CPU wake-lock telemetry under Android 16 background killers. Testing in Progress (Flexible Schedule — active during testers\' free time around exam schedules).'
       },
       {
         id: 'del-2',
-        project: 'Pocket Catalog',
+        project: 'Pocket Catalog — Asset Inventory',
         title: 'Offline SQLite DB Stress Test (10k SKUs & Barcode Mock)',
         collaborator: 'Sreegovind',
         role: 'Lead QA / Android Engineering',
@@ -4112,26 +4300,46 @@
       },
       {
         id: 'del-3',
-        project: 'LingoPulse AI',
-        title: 'French Academy Audio Phonetic Accuracy & Concurrency Audit',
+        project: 'Guten App',
+        title: 'German Case Drill & Audio Concurrency Audit',
         collaborator: 'Gayathri',
         role: 'Linguist & Bilingual Product Reviewer',
         status: 'In Review',
-        targetDate: 'Nov 11, 2026',
-        notes: 'Phonetic tokenization evaluation for French compound verbs. Testing in Progress (Flexible Schedule — active during testers\' free time around exam schedules).'
+        targetDate: 'Nov 16, 2026',
+        notes: 'It is a German language learning web application. Testing in Progress (Flexible Schedule — active during testers\' free time around exam schedules).'
       },
       {
         id: 'del-4',
-        project: 'LexiFlow Reader',
-        title: 'WASM Bilingual Token Stream Parsing Sign-Off',
-        collaborator: 'Gayathri',
-        role: 'Linguist & Bilingual Product Reviewer',
-        status: 'Verified',
-        targetDate: 'Nov 04, 2026',
-        notes: 'High-frequency bilingual vocabulary corpus extraction verified.'
+        project: 'Parlez App',
+        title: 'French Irregular Verb Conjugation & Speech Synthesis Test Suite',
+        collaborator: 'Sreegovind',
+        role: 'Lead QA & Language Testing',
+        status: 'In Progress',
+        targetDate: 'Nov 22, 2026',
+        notes: 'A French learning web application with audio feedback. Testing in Progress (Flexible Schedule — active during testers\' free time around exam schedules).'
       },
       {
         id: 'del-5',
+        project: 'Any Syllabus Assessment Generator',
+        title: 'Curriculum Schema Parser & Automated Grading Rubrics Sign-Off',
+        collaborator: 'Client Partner',
+        role: 'Client Venture Partner',
+        status: 'Delivered',
+        targetDate: 'Nov 08, 2026',
+        notes: 'Custom "Generate Q&A" action button and schema validation rubrics signed off.'
+      },
+      {
+        id: 'del-6',
+        project: 'Multi-Venture Daily Tracker',
+        title: '"Day\'s activity" Time Slot Allocations & Operating Rhythm Sign-Off',
+        collaborator: 'Anandovsky',
+        role: 'Studio Owner & Solo Engineering',
+        status: 'Verified',
+        targetDate: 'Nov 06, 2026',
+        notes: 'Schedule-tracking operating rhythm structured around "Day\'s activity" time slots.'
+      },
+      {
+        id: 'del-7',
         project: 'OmniLedger Micro-Billing',
         title: 'Production Stripe Webhooks & Sub-50ms Edge Audit',
         collaborator: 'Client Partner',
@@ -4139,16 +4347,6 @@
         status: 'Delivered',
         targetDate: 'Nov 02, 2026',
         notes: 'Production payment webhook handlers verified on Vercel Edge.'
-      },
-      {
-        id: 'del-6',
-        project: 'Custom Web Platform',
-        title: 'Sprint 01 De-risking Architecture & Supabase RLS Report',
-        collaborator: 'Client Partner',
-        role: 'Client Venture Partner',
-        status: 'Delivered',
-        targetDate: 'Oct 28, 2026',
-        notes: 'Full technical architecture de-risking documentation signed off.'
       }
     ];
 
@@ -4210,6 +4408,8 @@
         if (userRole) userRole.textContent = session.role || 'Venture Partner';
 
         renderDeliverables();
+        renderMilestones();
+        renderProjects();
       } else {
         document.body.classList.remove('client-authenticated');
         if (clientBtnLabel) clientBtnLabel.textContent = 'Client Portal';
@@ -4388,6 +4588,353 @@
     }
 
     // --- Deliverables Renderer ---
+    
+    // --- Milestone Dynamic Rendering & Inline Editing ---
+    function renderMilestones() {
+      const container = document.getElementById('milestonesContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+      if (!currentMilestones || currentMilestones.length === 0) {
+        currentMilestones = [...DEFAULT_MILESTONES];
+      }
+
+      const isAuthed = (isAdminLoggedIn() || isClientLoggedIn());
+
+      currentMilestones.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'milestone-card';
+
+        let actionBtnHtml = '';
+        if (m.actionType === 'apk_official') {
+          actionBtnHtml = `
+            <a href="/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="apk-download-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>${escapeHtml(m.actionLabel || 'Download Official APK (18.7 MB)')}</span>
+            </a>
+          `;
+        } else if (m.actionType === 'apk') {
+          actionBtnHtml = `
+            <button type="button" class="apk-download-btn" onclick="downloadApk('${m.actionTarget}', ${m.actionParam || 18.4}, '${escapeHtml(m.title)}')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>${escapeHtml(m.actionLabel)}</span>
+            </button>
+          `;
+        } else if (m.actionType === 'generate_qa') {
+          actionBtnHtml = `
+            <button type="button" class="custom-generate-qa-btn" onclick="openAssessmentGeneratorModal()" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.86rem; margin-top: 4px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>Generate Q&amp;A</span>
+            </button>
+          `;
+        } else if (m.actionType === 'tracker') {
+          actionBtnHtml = `
+            <button type="button" class="apk-download-btn" onclick="showToast('Active Rhythm: Tracking parallel venture time blocks')" style="background: #10B981; border-color: #10B981;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>View Day's Activity Slots</span>
+            </button>
+          `;
+        } else {
+          actionBtnHtml = `
+            <a href="${m.actionTarget || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>${escapeHtml(m.actionLabel || 'Launch Staging Preview')}</span>
+            </a>
+          `;
+        }
+
+        const editBtnHtml = isAuthed ? `
+          <button class="admin-action-pill" onclick="openEditMilestoneModal('${m.id}')" style="font-size: 0.72rem; padding: 3px 10px; margin-left: auto;">✎ Edit</button>
+        ` : '';
+
+        card.innerHTML = `
+          <div class="milestone-top-row">
+            <span class="milestone-status-badge ${m.badgeClass || 'in-progress'}">${escapeHtml(m.statusBadge)}</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">${escapeHtml(m.platform)}</span>
+              ${editBtnHtml}
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">${escapeHtml(m.title)}</h3>
+            <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">${escapeHtml(m.assigned)}</div>
+            ${m.flexibleNote ? `
+              <div style="margin-top: 6px;">
+                <span class="milestone-status-badge in-progress" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.73rem; background: rgba(217, 119, 6, 0.08); border: 1px solid rgba(217, 119, 6, 0.28); color: var(--accent-gold-dark); line-height: 1.4;">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); flex-shrink: 0;"></span>
+                  <span>${escapeHtml(m.flexibleNote)}</span>
+                </span>
+              </div>
+            ` : ''}
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+            ${escapeHtml(m.desc)}
+          </p>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
+              <span>Milestone Progress</span>
+              <strong style="color: var(--accent-gold);">${m.progress || 0}%</strong>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: ${m.progress || 0}%;"></div>
+            </div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
+            <div style="color: var(--text-secondary);">${escapeHtml(m.nextDeliverable)}</div>
+          </div>
+          ${actionBtnHtml}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openAddMilestoneModal() {
+      document.getElementById('milestoneCmsModalTitle').textContent = '+ Add New Milestone';
+      document.getElementById('milestoneFormId').value = '';
+      document.getElementById('milestoneFormTitle').value = '';
+      document.getElementById('milestoneFormPlatform').value = 'Android Native • API 36';
+      document.getElementById('milestoneFormStatus').value = 'Sprint 03 • In Progress';
+      document.getElementById('milestoneFormProgress').value = '75';
+      document.getElementById('milestoneFormAssigned').value = 'Assigned QA: Sreegovind';
+      document.getElementById('milestoneFormDesc').value = '';
+      document.getElementById('milestoneFormNextDeliverable').value = '';
+      openModal('milestoneCmsModal');
+    }
+
+    function openEditMilestoneModal(id) {
+      const m = currentMilestones.find(item => item.id === id);
+      if (!m) return;
+      document.getElementById('milestoneCmsModalTitle').textContent = '✎ Edit Milestone: ' + m.title;
+      document.getElementById('milestoneFormId').value = m.id;
+      document.getElementById('milestoneFormTitle').value = m.title || '';
+      document.getElementById('milestoneFormPlatform').value = m.platform || '';
+      document.getElementById('milestoneFormStatus').value = m.statusBadge || '';
+      document.getElementById('milestoneFormProgress').value = m.progress || 0;
+      document.getElementById('milestoneFormAssigned').value = m.assigned || '';
+      document.getElementById('milestoneFormDesc').value = m.desc || '';
+      document.getElementById('milestoneFormNextDeliverable').value = m.nextDeliverable || '';
+      openModal('milestoneCmsModal');
+    }
+
+    function handleMilestoneCmsSave(e) {
+      e.preventDefault();
+      const id = document.getElementById('milestoneFormId').value;
+      const title = document.getElementById('milestoneFormTitle').value.trim();
+      const platform = document.getElementById('milestoneFormPlatform').value.trim();
+      const statusBadge = document.getElementById('milestoneFormStatus').value.trim();
+      const progress = parseInt(document.getElementById('milestoneFormProgress').value, 10) || 0;
+      const assigned = document.getElementById('milestoneFormAssigned').value.trim();
+      const desc = document.getElementById('milestoneFormDesc').value.trim();
+      const nextDeliverable = document.getElementById('milestoneFormNextDeliverable').value.trim();
+
+      if (id) {
+        const idx = currentMilestones.findIndex(item => item.id === id);
+        if (idx !== -1) {
+          currentMilestones[idx].title = title;
+          currentMilestones[idx].platform = platform;
+          currentMilestones[idx].statusBadge = statusBadge;
+          currentMilestones[idx].progress = progress;
+          currentMilestones[idx].assigned = assigned;
+          currentMilestones[idx].desc = desc;
+          currentMilestones[idx].nextDeliverable = nextDeliverable;
+        }
+      } else {
+        const newId = 'mile-' + Date.now();
+        currentMilestones.push({
+          id: newId,
+          title,
+          platform,
+          statusBadge,
+          badgeClass: 'in-progress',
+          progress,
+          assigned,
+          flexibleNote: (assigned.includes('Sreegovind') || assigned.includes('Gayathri')) ? "Testing in Progress (Flexible Schedule — active during testers' free time around exam schedules)." : '',
+          desc,
+          nextDeliverable,
+          actionType: 'link',
+          actionLabel: 'Launch Preview',
+          actionTarget: '#section-dashboard'
+        });
+      }
+
+      saveMilestones(currentMilestones);
+      renderMilestones();
+      closeModal('milestoneCmsModal');
+      showToast('Milestone saved & persisted successfully!');
+    }
+
+    function resetMilestonesToDefault() {
+      if (confirm('Reset sprint milestones to original default definitions?')) {
+        currentMilestones = [...DEFAULT_MILESTONES];
+        saveMilestones(currentMilestones);
+        renderMilestones();
+        showToast('Milestones reset to default definitions.');
+      }
+    }
+
+    // --- Registered Users Toggle Handlers ---
+    function toggleDemoReviewPills() {
+      const container = document.getElementById('demoPillsContainer');
+      const chevron = document.getElementById('regUsersChevron');
+      if (!container) return;
+      const isHidden = (container.style.display === 'none' || !container.style.display);
+      container.style.display = isHidden ? 'block' : 'none';
+      if (chevron) {
+        chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    }
+
+    function toggleModalDemoReviewPills() {
+      const container = document.getElementById('modalDemoPillsContainer');
+      const chevron = document.getElementById('regModalChevron');
+      if (!container) return;
+      const isHidden = (container.style.display === 'none' || !container.style.display);
+      container.style.display = isHidden ? 'block' : 'none';
+      if (chevron) {
+        chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    }
+
+    // --- Any Syllabus Assessment Generator Logic ---
+    function openAssessmentGeneratorModal() {
+      openModal('assessmentGeneratorModal');
+      handleSyllabusSelectChange();
+    }
+
+    function handleSyllabusSelectChange() {
+      const select = document.getElementById('syllabusTopicSelect');
+      const customGroup = document.getElementById('customSyllabusGroup');
+      if (select && customGroup) {
+        customGroup.style.display = (select.value === 'custom') ? 'block' : 'none';
+      }
+    }
+
+    function runAssessmentGenerator() {
+      const topicSelect = document.getElementById('syllabusTopicSelect');
+      const customInput = document.getElementById('customSyllabusInput');
+      const rigorSelect = document.getElementById('syllabusDifficulty');
+      const countSelect = document.getElementById('syllabusCount');
+      const output = document.getElementById('assessmentOutputContent');
+      if (!output) return;
+
+      const topicVal = topicSelect ? topicSelect.value : 'android-16';
+      const rigor = rigorSelect ? rigorSelect.value : 'Rigorous';
+      const count = parseInt(countSelect ? countSelect.value : '3', 10);
+
+      let topicName = topicSelect ? topicSelect.options[topicSelect.selectedIndex].text : 'Syllabus';
+      if (topicVal === 'custom' && customInput && customInput.value.trim()) {
+        topicName = customInput.value.trim().substring(0, 80);
+      }
+
+      showToast('Synthesizing structured assessment from syllabus...');
+
+      let questionsHtml = '';
+      if (topicVal.includes('android')) {
+        questionsHtml = `
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q1 [10 Marks &bull; API 36 Lifecycle]:</div>
+            <div>Analyze how Android 16 handles background WebView process suspension under memory pressure. Detail the fallback strategy for preventing data loss during native IPC state serialization.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 4 pts for binder buffer explanation; 3 pts for onTrimMemory handler; 3 pts for Parcelable restoration proof.
+            </div>
+          </div>
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q2 [10 Marks &bull; Power Telemetry]:</div>
+            <div>Formulate an automated benchmark test suite for CPU wake-lock profiling across physical devices with aggressive OEM task killers.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 5 pts for battery-historian CSV metric mapping; 5 pts for alarm manager deferral mitigation.
+            </div>
+          </div>
+          <div>
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q3 [5 Marks &bull; Version Code 5 Release]:</div>
+            <div>Specify the continuous delivery checklist for Google Play 64-bit native binaries and ProGuard obfuscation verification.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 3 pts for mapping file upload validation; 2 pts for ABI split evaluation.
+            </div>
+          </div>
+        `;
+      } else if (topicVal.includes('french')) {
+        questionsHtml = `
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q1 [10 Marks &bull; Subjunctive Concordance]:</div>
+            <div>Explain the contextual syntactic triggers for the Subjonctif Passé in hypothetical clauses preceded by "bien que" and "à condition que". Formulate three complex compound sentences demonstrating proper mood agreement.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 4 pts for trigger identification; 3 pts for auxiliary agreement (être/avoir); 3 pts for phonological liaison.
+            </div>
+          </div>
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q2 [10 Marks &bull; Phonetic Audio Synthesis]:</div>
+            <div>Evaluate the phonological difference between nasal vowels [ɑ̃], [ɛ̃], and [ɔ̃] in fast colloquial speech drills. How should edge speech buffers isolate formant frequency shifts?</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 5 pts for phonetic feature matrix; 5 pts for Web Audio FFT frequency binning rubric.
+            </div>
+          </div>
+        `;
+      } else if (topicVal.includes('german')) {
+        questionsHtml = `
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q1 [10 Marks &bull; Wechselpräpositionen &amp; Case]:</div>
+            <div>Differentiate the syntactic governances of "Wechselpräpositionen" (an, auf, in, über, unter, vor, zwischen) in dynamic directional vs. static locational contexts. Provide rubric-graded transformation drills.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 4 pts for Akkusativ (Wohin) vs. Dativ (Wo) disambiguation; 3 pts for article contraction; 3 pts for verb prefix separation.
+            </div>
+          </div>
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q2 [10 Marks &bull; Nebensätze &amp; Verbklammer]:</div>
+            <div>Construct three subordinate clauses utilizing "weil", "obwohl", and "dass", illustrating the exact finite verb placement in the "Nachfeld" with modal auxiliaries.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 5 pts for bracket sentence hierarchy; 5 pts for double infinitive (Ersatzinfinitiv) order.
+            </div>
+          </div>
+        `;
+      } else {
+        questionsHtml = `
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q1 [10 Marks &bull; Core Theoretical Architecture]:</div>
+            <div>Deconstruct the primary structural tenets of <em>${escapeHtml(topicName)}</em>. Formulate a comparative schema evaluating its performance boundaries against legacy models.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 5 pts for system taxonomy; 5 pts for failure-mode analysis.
+            </div>
+          </div>
+          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-medium);">
+            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Q2 [10 Marks &bull; Real-World Applied Case Study]:</div>
+            <div>Design a fault-tolerant deployment scenario for <em>${escapeHtml(topicName)}</em> under latency constraints, detailing telemetry validation criteria.</div>
+            <div style="margin-top: 6px; font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-gold-dark);">
+              <strong>Grading Rubric:</strong> 4 pts for architecture topology; 3 pts for recovery SLA; 3 pts for rubric scoring precision.
+            </div>
+          </div>
+        `;
+      }
+
+      output.innerHTML = `
+        <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <strong style="color: var(--accent-gold-dark); font-family: var(--font-mono); font-size: 0.85rem;">Generated Examination Blueprint</strong>
+            <span class="milestone-status-badge in-progress" style="font-size: 0.7rem;">Rigor: ${escapeHtml(rigor)}</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary);">${escapeHtml(topicName)}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px;">Synthesized via Any Syllabus Assessment Generator &bull; Total Items: ${count}</div>
+        </div>
+        ${questionsHtml}
+      `;
+    }
+
+    function copyAssessmentText() {
+      const output = document.getElementById('assessmentOutputContent');
+      if (!output) return;
+      const text = output.innerText || output.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('Assessment rubric copied to clipboard!');
+        }).catch(() => {
+          showToast('Assessment text ready in view.');
+        });
+      } else {
+        showToast('Assessment text ready in view.');
+      }
+    }
+
     function renderDeliverables(filter = currentDeliverableFilter) {
       currentDeliverableFilter = filter;
       const tbody = document.getElementById('deliverablesTableBody');
@@ -4521,7 +5068,7 @@
     function downloadApk(filename, sizeMB, appName) {
       if (appName === 'PocketCatalog' || (filename && filename.toLowerCase().includes('pocketcatalog'))) {
         const a = document.createElement('a');
-        a.href = '/public/downloads/pocket-catalog.apk';
+        a.href = '/downloads/pocket-catalog.apk';
         a.download = 'pocket-catalog.apk';
         document.body.appendChild(a);
         a.click();
@@ -4552,7 +5099,7 @@
     function downloadAllApks() {
       // Download official compiled Pocket Catalog APK
       const a = document.createElement('a');
-      a.href = '/public/downloads/pocket-catalog.apk';
+      a.href = '/downloads/pocket-catalog.apk';
       a.download = 'pocket-catalog.apk';
       document.body.appendChild(a);
       a.click();
@@ -4579,7 +5126,7 @@
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        ['storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'serviceCmsModal', 'storyCmsModal', 'clientLoginModal', 'deliverableReportModal'].forEach(id => closeModal(id));
+        ['storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'serviceCmsModal', 'storyCmsModal', 'clientLoginModal', 'deliverableReportModal', 'milestoneCmsModal', 'assessmentGeneratorModal'].forEach(id => closeModal(id));
       }
     });
 
@@ -4588,9 +5135,11 @@
     window.addEventListener('hashchange', checkRoute);
     window.addEventListener('DOMContentLoaded', () => {
       checkAdminSession();
+      checkClientSession();
       renderServices();
       renderStories();
       renderProjects();
+      renderMilestones();
     });
   </script>
 
@@ -4624,8 +5173,15 @@
         </button>
       </form>
 
-      <div style="margin-top: 20px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
-        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">
+      <div style="margin-top: 16px; text-align: center;">
+        <button type="button" onclick="toggleModalDemoReviewPills()" class="registered-users-btn" style="background: rgba(30, 21, 18, 0.05); border: 1px solid var(--border-medium); color: var(--text-secondary);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Registered Users</span>
+          <svg id="regModalChevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+      </div>
+      <div id="modalDemoPillsContainer" style="display: none; margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; text-align: center;">
           1-Click Review Access:
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
@@ -4677,6 +5233,145 @@
           <button type="submit" class="form-submit-btn" style="padding: 9px 22px;">Log Report &bull; Email Anandovsky</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Milestone CMS (Inline Editing for Dashboard Milestones) -->
+  <div class="modal-overlay" id="milestoneCmsModal" onclick="closeModalOnBackdrop(event, 'milestoneCmsModal')">
+    <div class="modal-box" style="max-width: 620px; max-height: 88vh; overflow-y: auto;">
+      <button class="modal-close-btn" onclick="closeModal('milestoneCmsModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h3 class="modal-title" id="milestoneCmsModalTitle" style="text-align: left; margin-bottom: 6px;">✎ Edit Milestone Item</h3>
+      <p class="modal-desc" style="text-align: left; margin-bottom: 20px;">Modify active milestone details, progress percentage, next deliverables, and assigned QA testers.</p>
+
+      <form id="milestoneCmsForm" onsubmit="handleMilestoneCmsSave(event)" style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
+        <input type="hidden" id="milestoneFormId" />
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="milestoneFormTitle">Milestone Title</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="milestoneFormTitle" required placeholder="e.g. FreeIt — Resale and Declutter App" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="milestoneFormPlatform">Platform Tag</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="milestoneFormPlatform" required placeholder="e.g. Android Native • API 36" />
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="milestoneFormStatus">Status Badge</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="milestoneFormStatus" required placeholder="e.g. Sprint 03 • Release Candidate" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="milestoneFormProgress">Milestone Progress (%)</label>
+            <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="number" min="0" max="100" id="milestoneFormProgress" required placeholder="85" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="milestoneFormAssigned">Assigned Collaborator &amp; Role</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="milestoneFormAssigned" required placeholder="Assigned QA Lead: Sreegovind" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="milestoneFormDesc">Milestone Description</label>
+          <textarea class="form-textarea" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary); min-height: 80px;" id="milestoneFormDesc" required placeholder="Detailed description of features, target architecture, or release status..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="milestoneFormNextDeliverable">Next Milestone Deliverable</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="milestoneFormNextDeliverable" required placeholder="e.g. Android 16 wake-lock benchmark & log parser validation. Target: Nov 12, 2026." />
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px;">
+          <button type="button" class="filter-pill" onclick="closeModal('milestoneCmsModal')" style="padding: 9px 18px;">Cancel</button>
+          <button type="submit" class="form-submit-btn" style="padding: 9px 22px;">Save Milestone</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Any Syllabus Assessment Generator (Q&A Generator Utility) -->
+  <div class="modal-overlay" id="assessmentGeneratorModal" onclick="closeModalOnBackdrop(event, 'assessmentGeneratorModal')">
+    <div class="modal-box" style="max-width: 680px; max-height: 90vh; overflow-y: auto; text-align: left;">
+      <button class="modal-close-btn" onclick="closeModal('assessmentGeneratorModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(217, 119, 6, 0.15); border: 1px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; color: var(--accent-gold);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        </div>
+        <div>
+          <h3 class="modal-title" style="margin: 0; font-size: 1.35rem; text-align: left;">Any Syllabus Assessment Generator</h3>
+          <span style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--accent-gold-dark);">Curriculum-to-Q&amp;A Evaluation Engine</span>
+        </div>
+      </div>
+      
+      <p class="modal-desc" style="text-align: left; margin-bottom: 16px;">
+        Generate rigorous, rubric-graded assessment question sets from any instructional curriculum, exam syllabus, or technical domain.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="syllabusTopicSelect">Target Syllabus Curriculum</label>
+          <select class="form-select" id="syllabusTopicSelect" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" onchange="handleSyllabusSelectChange()">
+            <option value="android-16">Android 16 (API 36) Process Scheduling, Wake-Locks &amp; WebView IPC</option>
+            <option value="french-lang">French B2 Syntax: Subjunctive Mode, Irregular Verb Concordance &amp; Phonetics</option>
+            <option value="german-lang">German B1 Cases: Dativ/Akkusativ Prepositions &amp; Verb Position in Nebensätze</option>
+            <option value="offline-db">Offline-First Mobile Systems: SQLite Sync, Conflict CRDTs &amp; Barcode Indexing</option>
+            <option value="custom">-- Custom Syllabus Topic (Enter Below) --</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="customSyllabusGroup" style="display: none;">
+          <label class="form-label" style="color: var(--text-primary);" for="customSyllabusInput">Custom Curriculum / Syllabus Outline</label>
+          <textarea class="form-textarea" id="customSyllabusInput" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary); min-height: 70px;" placeholder="Paste instructional modules, topics, learning objectives, or unit headings..."></textarea>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="syllabusDifficulty">Assessment Rigor</label>
+            <select class="form-select" id="syllabusDifficulty" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);">
+              <option value="Standard">Standard Academic Exam (5 Marks / Question)</option>
+              <option value="Rigorous">Rigorous Diagnostic / Edge Case Analysis (10 Marks / Question)</option>
+              <option value="Speed">Speed Sprint Quiz (2 Marks / Question)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: var(--text-primary);" for="syllabusCount">Number of Questions</label>
+            <select class="form-select" id="syllabusCount" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);">
+              <option value="3">3 Formative Evaluation Items</option>
+              <option value="5">5 Comprehensive Examination Items</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" class="custom-generate-qa-btn" onclick="runAssessmentGenerator()" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Generate Q&amp;A Assessment Rubric</span>
+        </button>
+      </div>
+
+      <!-- Generated Results Display -->
+      <div id="assessmentResultArea" style="background: #FAF7F2; border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); padding: 18px; margin-top: 10px; max-height: 380px; overflow-y: auto;">
+        <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">
+          Preview Assessment Rubric
+        </div>
+        <div id="assessmentOutputContent" style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6;">
+          Select a syllabus track above and click <strong>"Generate Q&amp;A Assessment Rubric"</strong> to synthesize structured exam prompts, scoring breakdowns, and expected solution benchmarks.
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 10px;">
+        <button type="button" class="filter-pill" onclick="copyAssessmentText()" id="copyAssessmentBtn" style="padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span>Copy Assessment &amp; Rubrics</span>
+        </button>
+        <button type="button" class="filter-pill" onclick="closeModal('assessmentGeneratorModal')" style="padding: 8px 18px;">Close</button>
+      </div>
     </div>
   </div>
 
