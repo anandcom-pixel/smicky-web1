@@ -375,6 +375,70 @@ async function readBody(req) {
   });
 }
 
+// Safe Merge Utility: merges incoming records into existing list by ID without wiping historical data
+function safeMergeRecords(existingList = [], incomingData = [], meta = {}) {
+  const existing = Array.isArray(existingList) ? [...existingList] : [];
+  const incoming = Array.isArray(incomingData)
+    ? incomingData
+    : (incomingData && typeof incomingData === 'object' ? [incomingData] : []);
+
+  // 1. Explicit delete action: remove specified record by ID
+  if (meta && meta.action === 'delete' && meta.id != null) {
+    return existing.filter(item => String(item.id) !== String(meta.id));
+  }
+
+  // 2. Build index of existing records to preserve all historical data
+  const mergedMap = new Map();
+  const order = [];
+
+  for (const item of existing) {
+    if (item && item.id != null) {
+      const id = String(item.id);
+      mergedMap.set(id, { ...item });
+      order.push(id);
+    }
+  }
+
+  // 3. Merge incoming records: update existing ones or append new ones
+  for (const item of incoming) {
+    if (!item || item.id == null) continue;
+    const id = String(item.id);
+    if (mergedMap.has(id)) {
+      const prev = mergedMap.get(id);
+      mergedMap.set(id, {
+        ...prev,
+        ...item,
+        updatedAt: new Date().toISOString()
+      });
+    } else {
+      mergedMap.set(id, {
+        ...item,
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+      order.unshift(id);
+    }
+  }
+
+  // 4. Return stable array preserving all historical records
+  const result = [];
+  const seen = new Set();
+  for (const id of order) {
+    if (!seen.has(id) && mergedMap.has(id)) {
+      seen.add(id);
+      result.push(mergedMap.get(id));
+    }
+  }
+  for (const [id, item] of mergedMap.entries()) {
+    if (!seen.has(id)) {
+      seen.add(id);
+      result.push(item);
+    }
+  }
+
+  return result;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
@@ -477,13 +541,41 @@ export default async function handler(req, res) {
     try {
       const body = await readBody(req);
       const section = body.section || sectionParam;
-      const data = body.data || body[section];
+      const data = body.data !== undefined ? body.data : (body.item || body[section]);
+      const meta = body.meta || {};
 
-      if (section && Array.isArray(data)) {
-        // Update specific section
-        globalThis._allContentStore[section] = data;
+      if (section) {
+        // Retrieve current existing records to merge safely with
+        if (!globalThis._allContentStore) globalThis._allContentStore = {};
+        let existingRecords = Array.isArray(globalThis._allContentStore[section])
+          ? globalThis._allContentStore[section]
+          : [];
 
-        // Persist section to Vercel KV
+        // Check Vercel KV for latest remote state before merging
+        if (KV_URL && KV_TOKEN) {
+          try {
+            const kvRes = await fetch(`${KV_URL}/get/smicky_${section}`, {
+              headers: { Authorization: `Bearer ${KV_TOKEN}` }
+            });
+            if (kvRes.ok) {
+              const kvData = await kvRes.json();
+              if (kvData && kvData.result) {
+                const parsed = typeof kvData.result === 'string' ? JSON.parse(kvData.result) : kvData.result;
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                  existingRecords = parsed;
+                }
+              }
+            }
+          } catch (kvErr) {
+            console.warn('[Vercel KV Pre-fetch Warning]', kvErr);
+          }
+        }
+
+        // Perform safe merge: merge incoming changes into existing records, preserving historical entries
+        const merged = safeMergeRecords(existingRecords, data, meta);
+        globalThis._allContentStore[section] = merged;
+
+        // Persist merged records to Vercel KV
         if (KV_URL && KV_TOKEN) {
           try {
             await fetch(`${KV_URL}/set/smicky_${section}`, {
@@ -492,7 +584,7 @@ export default async function handler(req, res) {
                 Authorization: `Bearer ${KV_TOKEN}`,
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(data)
+              body: JSON.stringify(merged)
             });
             // Also update all_content snapshot
             await fetch(`${KV_URL}/set/smicky_all_content`, {
@@ -519,7 +611,7 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
                 'Prefer': 'resolution=merge-duplicates'
               },
-              body: JSON.stringify(data)
+              body: JSON.stringify(merged)
             });
           } catch (supaErr) {
             console.warn('[Supabase Write Warning]', supaErr);
@@ -531,16 +623,19 @@ export default async function handler(req, res) {
         res.end(JSON.stringify({
           success: true,
           section: section,
-          count: data.length,
+          action: meta.action || 'safe_merge',
+          count: merged.length,
+          data: merged,
           updatedAt: new Date().toISOString(),
-          meta: body.meta || {}
+          meta: meta
         }));
         return;
       } else if (body.services || body.projects || body.stories || body.milestones) {
-        // Bulk update across sections
+        // Bulk update across sections with safe merge
         for (const s of ['services', 'projects', 'stories', 'milestones']) {
-          if (Array.isArray(body[s])) {
-            globalThis._allContentStore[s] = body[s];
+          if (body[s]) {
+            const existing = globalThis._allContentStore[s] || [];
+            globalThis._allContentStore[s] = safeMergeRecords(existing, body[s], meta);
           }
         }
 
@@ -563,7 +658,8 @@ export default async function handler(req, res) {
         res.statusCode = 200;
         res.end(JSON.stringify({
           success: true,
-          message: 'All content sections updated & persisted',
+          message: 'All content sections merged & persisted safely',
+          data: globalThis._allContentStore,
           updatedAt: new Date().toISOString()
         }));
         return;

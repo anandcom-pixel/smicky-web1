@@ -3591,6 +3591,46 @@
     let currentMilestones = loadMilestones();
 
     // --- Universal Cloud Database Integration (Vercel KV / Supabase REST) ---
+        // Safe client merge utility: combines remote cloud data with local records without losing historical data
+    function safeMergeClientArrays(localList = [], remoteList = []) {
+      const mergedMap = new Map();
+      const order = [];
+
+      // 1. Seed from remote cloud truth
+      if (Array.isArray(remoteList)) {
+        for (const item of remoteList) {
+          if (item && item.id != null) {
+            const id = String(item.id);
+            mergedMap.set(id, { ...item });
+            order.push(id);
+          }
+        }
+      }
+
+      // 2. Preserve any local items not yet in remote (drafts / offline items)
+      if (Array.isArray(localList)) {
+        for (const item of localList) {
+          if (item && item.id != null) {
+            const id = String(item.id);
+            if (!mergedMap.has(id)) {
+              mergedMap.set(id, { ...item });
+              order.push(id);
+            }
+          }
+        }
+      }
+
+      const result = [];
+      const seen = new Set();
+      for (const id of order) {
+        if (!seen.has(id) && mergedMap.has(id)) {
+          seen.add(id);
+          result.push(mergedMap.get(id));
+        }
+      }
+      return result;
+    }
+
     const API_CONTENT_URL = '/api/content';
     const API_SERVICES_URL = '/api/services';
     const API_PROJECTS_URL = '/api/projects';
@@ -3612,26 +3652,26 @@
           if (cloudData) {
             let updatedAny = false;
             if (Array.isArray(cloudData.services) && cloudData.services.length > 0) {
-              currentServices = cloudData.services;
-              saveServices(cloudData.services);
+              currentServices = safeMergeClientArrays(currentServices, cloudData.services);
+              saveServices(currentServices);
               renderServices();
               updatedAny = true;
             }
             if (Array.isArray(cloudData.projects) && cloudData.projects.length > 0) {
-              currentProjects = cloudData.projects;
-              saveProjects(cloudData.projects);
+              currentProjects = safeMergeClientArrays(currentProjects, cloudData.projects);
+              saveProjects(currentProjects);
               renderProjects();
               updatedAny = true;
             }
             if (Array.isArray(cloudData.stories) && cloudData.stories.length > 0) {
-              currentStories = cloudData.stories;
-              saveStories(cloudData.stories);
+              currentStories = safeMergeClientArrays(currentStories, cloudData.stories);
+              saveStories(currentStories);
               renderStories();
               updatedAny = true;
             }
             if (Array.isArray(cloudData.milestones) && cloudData.milestones.length > 0) {
-              currentMilestones = cloudData.milestones;
-              saveMilestones(cloudData.milestones);
+              currentMilestones = safeMergeClientArrays(currentMilestones, cloudData.milestones);
+              saveMilestones(currentMilestones);
               renderMilestones();
               updatedAny = true;
             }
@@ -3669,14 +3709,37 @@
           }
         };
 
-        // Primary push to unified content API
-        fetch(API_CONTENT_URL, {
+        // Primary push to unified content API with safe server-side merge
+        const res = await fetch(API_CONTENT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
-        }).then(res => {
-          if (res.ok) console.log(`[Universal Cloud DB] ${section} successfully saved & persisted to cloud database.`);
-        }).catch(err => console.warn(`[Universal Cloud DB] Cloud push error for ${section}:`, err));
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          // If server returned merged records, update local state to preserve complete history
+          if (json && Array.isArray(json.data) && json.data.length > 0) {
+            if (section === 'services') {
+              currentServices = json.data;
+              saveServices(json.data);
+              renderServices();
+            } else if (section === 'projects') {
+              currentProjects = json.data;
+              saveProjects(json.data);
+              renderProjects();
+            } else if (section === 'stories') {
+              currentStories = json.data;
+              saveStories(json.data);
+              renderStories();
+            } else if (section === 'milestones') {
+              currentMilestones = json.data;
+              saveMilestones(json.data);
+              renderMilestones();
+            }
+          }
+          console.log(`[Universal Cloud DB] ${section} safely merged & persisted to cloud database.`);
+        }
 
         // Secondary push to dedicated section endpoint
         const sectionEndpoint = '/api/' + section;
