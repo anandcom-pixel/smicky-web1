@@ -3003,14 +3003,14 @@
       <form id="adminLoginForm" onsubmit="handleAdminLoginSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
         <div class="form-group">
           <label class="form-label" style="color: var(--text-primary); font-size: 0.78rem;" for="adminUsernameInput">Username</label>
-          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="adminUsernameInput" required placeholder="admin" autocomplete="username" />
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="adminUsernameInput" required placeholder="Enter username" autocomplete="username" />
         </div>
         <div class="form-group">
           <label class="form-label" style="color: var(--text-primary); font-size: 0.78rem;" for="adminPasswordInput">Password</label>
           <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="password" id="adminPasswordInput" required placeholder="••••••••" autocomplete="current-password" />
         </div>
         <div id="adminLoginError" style="display: none; font-size: 0.82rem; color: #DC2626; background: #FEF2F2; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #FCA5A5;">
-          Invalid credentials. Use admin / smicky123.
+          Invalid username or password. Please try again.
         </div>
         <button type="submit" class="form-submit-btn" style="width: 100%; margin-top: 4px;">
           <span>Unlock Admin Studio</span>
@@ -3203,7 +3203,7 @@
   <!-- FLOATING ADMIN STATUS PILL (Shown when authenticated) -->
   <div class="admin-floating-status admin-only" id="adminFloatingPill">
     <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
-    <span>Admin Session: <strong>smicky123</strong></span>
+    <span>Admin Session: <strong>Active</strong></span>
     <span class="logout-link" onclick="adminLogout()">Logout</span>
   </div>
 
