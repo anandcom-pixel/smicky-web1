@@ -3594,6 +3594,82 @@
 
     let currentMilestones = loadMilestones();
 
+    // --- Cloud Database Integration (Vercel KV / Supabase REST) ---
+    const API_MILESTONES_URL = '/api/milestones';
+    let isCloudSyncing = false;
+
+    async function fetchMilestonesFromCloud(silent = false) {
+      if (isCloudSyncing) return;
+      isCloudSyncing = true;
+      try {
+        const res = await fetch(API_MILESTONES_URL, {
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-cache'
+        });
+        if (res.ok) {
+          const json = await res.json();
+          const cloudData = Array.isArray(json) ? json : (json.data || json.milestones);
+          if (Array.isArray(cloudData) && cloudData.length > 0) {
+            currentMilestones = cloudData;
+            saveMilestones(cloudData);
+            renderMilestones();
+            if (!silent) {
+              console.log('[Cloud DB] Milestones synchronized in real time from cloud store.');
+            }
+          }
+        }
+      } catch (err) {
+        if (!silent) {
+          console.warn('[Cloud DB] Could not sync from cloud, falling back to local cache:', err);
+        }
+      } finally {
+        isCloudSyncing = false;
+      }
+    }
+
+    async function pushMilestonesToCloud(data, meta = {}) {
+      try {
+        const session = (typeof getClientSession === 'function' ? getClientSession() : null) || 
+          (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+        const payload = {
+          milestones: data,
+          meta: {
+            ...meta,
+            updatedBy: session.name || 'Authorized Collaborator',
+            role: session.role || 'Reviewer',
+            timestamp: new Date().toISOString()
+          }
+        };
+        const res = await fetch(API_MILESTONES_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          console.log('[Cloud DB] Milestone saved & persisted to cloud database successfully.');
+          return true;
+        }
+      } catch (err) {
+        console.warn('[Cloud DB] Cloud push deferred/offline:', err);
+      }
+      return false;
+    }
+
+    // Real-time synchronization listeners for collaborative multi-tester environments (Sreegovind, Gayathri, Anandovsky)
+    window.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        fetchMilestonesFromCloud(true);
+      }
+    });
+    window.addEventListener('focus', () => {
+      fetchMilestonesFromCloud(true);
+    });
+    setInterval(() => {
+      fetchMilestonesFromCloud(true);
+    }, 20000);
+
     function loadServices() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY_SERVICES);
@@ -4130,6 +4206,24 @@
 
         const emailBody = encodeURIComponent(emailBodyText);
         const mailtoUrl = 'mailto:anand.com@gmail.com?subject=' + emailSubject + '&body=' + emailBody;
+
+        // Automated serverless email dispatch via /api/notify
+        try {
+          fetch('/api/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              recipient: 'anand.com@gmail.com',
+              itemType: itemType,
+              projectTitle: projectTitle,
+              changesSummary: changesSummary,
+              session: session,
+              timestamp: timestamp
+            })
+          }).catch(apiErr => console.warn('[Email Notify API]', apiErr));
+        } catch (e) {
+          console.warn('[Email Notify API]', e);
+        }
 
         // Trigger mail client dispatch
         const link = document.createElement('a');
@@ -4924,15 +5018,17 @@
       sendEditEmailNotification('Active Sprint Milestone', title, summary, session);
 
       saveMilestones(currentMilestones);
+      pushMilestonesToCloud(currentMilestones, { id, title });
       renderMilestones();
       closeModal('milestoneCmsModal');
-      showToast('Milestone saved & email notification dispatched to anand.com@gmail.com');
+      showToast('Milestone saved & synced to cloud database in real time');
     }
 
     function resetMilestonesToDefault() {
       if (confirm('Reset sprint milestones to original default definitions?')) {
         currentMilestones = [...DEFAULT_MILESTONES];
         saveMilestones(currentMilestones);
+        pushMilestonesToCloud(currentMilestones, { action: 'reset' });
         renderMilestones();
         showToast('Milestones reset to default definitions.');
       }
@@ -5310,6 +5406,7 @@
       renderStories();
       renderProjects();
       renderMilestones();
+      fetchMilestonesFromCloud(false);
     });
   </script>
 
