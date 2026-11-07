@@ -4019,6 +4019,55 @@
       openModal('projectCmsModal');
     }
 
+        // --- Automatic Email Notification on Edits (Direct to anand.com@gmail.com) ---
+    function sendEditEmailNotification(itemType, projectTitle, changesSummary, session) {
+      try {
+        const timestamp = new Date().toLocaleString('en-US', {
+          year: 'numeric', month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          timeZoneName: 'short'
+        });
+
+        const userName = (session && session.name) ? session.name : 'Authorized Collaborator';
+        const userRole = (session && session.role) ? session.role.replace(/&bull;/g, '•') : 'Reviewer';
+        const username = (session && session.username) ? session.username : 'collaborator';
+
+        const emailSubject = encodeURIComponent('[Studio Alert] ' + itemType + ' Updated: ' + projectTitle);
+
+        const emailBodyText =
+          'ANANDOVSKY STUDIO — CONTENT UPDATE NOTIFICATION\n' +
+          '===============================================\n' +
+          'Item Type: ' + itemType + '\n' +
+          'Project Title: ' + projectTitle + '\n' +
+          'Timestamp: ' + timestamp + '\n\n' +
+          'USER SESSION DETAILS:\n' +
+          '---------------------\n' +
+          'User: ' + userName + ' (@' + username + ')\n' +
+          'Role: ' + userRole + '\n\n' +
+          'UPDATED CONTENT SUMMARY:\n' +
+          '------------------------\n' +
+          changesSummary + '\n\n' +
+          '---\n' +
+          'Dispatched automatically from Anandovsky Solo Development Platform\n' +
+          'Target Recipient: anand.com@gmail.com';
+
+        const emailBody = encodeURIComponent(emailBodyText);
+        const mailtoUrl = 'mailto:anand.com@gmail.com?subject=' + emailSubject + '&body=' + emailBody;
+
+        // Trigger mail client dispatch
+        const link = document.createElement('a');
+        link.href = mailtoUrl;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          if (document.body.contains(link)) document.body.removeChild(link);
+        }, 1000);
+      } catch (err) {
+        console.error('Error generating email notification:', err);
+      }
+    }
+
     function handleProjectCmsSave(e) {
       e.preventDefault();
       const id = document.getElementById('projectCmsId').value;
@@ -4052,9 +4101,23 @@
         });
       }
 
+      // Dispatch email notification to anand.com@gmail.com
+      const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+      const summary =
+        'Project Title: ' + title + '\n' +
+        'Category: ' + category + '\n' +
+        'Status Badge: ' + badge + '\n' +
+        'Platform: ' + platform + '\n' +
+        'Attribution: ' + attribution + '\n' +
+        'Tech Stack: ' + tech.join(', ') + '\n\n' +
+        'Updated Description:\n' + desc;
+
+      sendEditEmailNotification('Portfolio Project Description', title, summary, session);
+
       saveProjects(currentProjects);
       renderProjects();
       closeModal('projectCmsModal');
+      showToast('Project description updated & email notification dispatched to anand.com@gmail.com');
     }
 
     function deleteProject(id) {
@@ -4769,10 +4832,23 @@
         });
       }
 
+      // Dispatch email notification to anand.com@gmail.com
+      const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+      const summary =
+        'Milestone Title: ' + title + '\n' +
+        'Status Badge: ' + statusBadge + '\n' +
+        'Platform: ' + platform + '\n' +
+        'Progress: ' + progress + '%\n' +
+        'Assigned Collaborator: ' + assigned + '\n' +
+        'Next Deliverable: ' + nextDeliverable + '\n\n' +
+        'Updated Milestone Description:\n' + desc;
+
+      sendEditEmailNotification('Active Sprint Milestone', title, summary, session);
+
       saveMilestones(currentMilestones);
       renderMilestones();
       closeModal('milestoneCmsModal');
-      showToast('Milestone saved & persisted successfully!');
+      showToast('Milestone saved & email notification dispatched to anand.com@gmail.com');
     }
 
     function resetMilestonesToDefault() {
