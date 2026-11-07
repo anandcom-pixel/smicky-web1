@@ -1,0 +1,112 @@
+[
+  {
+    "id": "freeit",
+    "category": "android",
+    "badge": "\u25cf Google Play Store Production",
+    "badgeType": "success",
+    "platform": "Android 16 (API 36) Native WebView",
+    "attribution": "Created by Anandovsky",
+    "title": "FreeIt \u2014 Resale and Declutter App",
+    "desc": "A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.",
+    "tech": [
+      "Android SDK",
+      "Java/Kotlin",
+      "WebView",
+      "Play Console",
+      "API 36"
+    ],
+    "demoUrl": "https://play.google.com/store/apps",
+    "caseUrl": "#contact"
+  },
+  {
+    "id": "pocket-catalog",
+    "category": "android",
+    "badge": "\u25cf Beta APK Download",
+    "badgeType": "beta",
+    "platform": "PWA + Android APK",
+    "attribution": "Created by Anandovsky",
+    "title": "Pocket Catalog \u2014 Asset Inventory",
+    "desc": "An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.",
+    "tech": [
+      "Android PWA",
+      "SQLite",
+      "Camera API",
+      "Offline Sync"
+    ],
+    "demoUrl": "/downloads/pocket-catalog.apk",
+    "caseUrl": "#contact"
+  },
+  {
+    "id": "guten-app",
+    "category": "language",
+    "badge": "\u25cf Deployed on Vercel",
+    "badgeType": "success",
+    "platform": "Web & PWA",
+    "attribution": "Created by Anandovsky",
+    "title": "Guten App",
+    "desc": "It is a German language learning web application.",
+    "tech": [
+      "Next.js",
+      "TypeScript",
+      "TailwindCSS",
+      "Vercel"
+    ],
+    "demoUrl": "https://vercel.com",
+    "caseUrl": "#contact"
+  },
+  {
+    "id": "parlez-app",
+    "category": "language",
+    "badge": "\u25cf Active Testing",
+    "badgeType": "beta",
+    "platform": "Web Platform",
+    "attribution": "Created by Anandovsky & Tester Sreegovind",
+    "title": "Parlez App",
+    "desc": "A French learning web application.",
+    "tech": [
+      "Next.js",
+      "Web Speech API",
+      "TypeScript",
+      "Vercel"
+    ],
+    "demoUrl": "https://vercel.com",
+    "caseUrl": "#contact"
+  },
+  {
+    "id": "any-syllabus",
+    "category": "utility",
+    "badge": "\u25cf Live Web Utility",
+    "badgeType": "success",
+    "platform": "Cloud Utility",
+    "attribution": "Created by Anandovsky",
+    "title": "Any Syllabus Assessment Generator",
+    "desc": "A comprehensive Q&A generator web utility capable of turning any syllabus or instructional curriculum into structured assessment tests with automated grading rubrics.",
+    "tech": [
+      "React",
+      "TypeScript",
+      "Q&A Engine",
+      "PDF Export"
+    ],
+    "demoUrl": "https://vercel.com",
+    "caseUrl": "#contact",
+    "hasGenerateQa": true
+  },
+  {
+    "id": "daily-tracker",
+    "category": "utility",
+    "badge": "\u25cf Production Active",
+    "badgeType": "success",
+    "platform": "Productivity System",
+    "attribution": "Created by Anandovsky",
+    "title": "Multi-Venture Daily Tracker",
+    "desc": "A schedule-tracking and operating rhythm application structured around \"Day's activity\" time slots.",
+    "tech": [
+      "JavaScript",
+      "Local Storage",
+      "Chart.js",
+      "PWA"
+    ],
+    "demoUrl": "https://vercel.com",
+    "caseUrl": "#contact"
+  }
+]

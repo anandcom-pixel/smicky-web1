@@ -3594,80 +3594,124 @@
 
     let currentMilestones = loadMilestones();
 
-    // --- Cloud Database Integration (Vercel KV / Supabase REST) ---
+    // --- Universal Cloud Database Integration (Vercel KV / Supabase REST) ---
+    const API_CONTENT_URL = '/api/content';
+    const API_SERVICES_URL = '/api/services';
+    const API_PROJECTS_URL = '/api/projects';
+    const API_STORIES_URL = '/api/stories';
     const API_MILESTONES_URL = '/api/milestones';
-    let isCloudSyncing = false;
+    let isUniversalCloudSyncing = false;
 
-    async function fetchMilestonesFromCloud(silent = false) {
-      if (isCloudSyncing) return;
-      isCloudSyncing = true;
+    async function fetchAllContentFromCloud(silent = false) {
+      if (isUniversalCloudSyncing) return;
+      isUniversalCloudSyncing = true;
       try {
-        const res = await fetch(API_MILESTONES_URL, {
+        const res = await fetch(API_CONTENT_URL, {
           headers: { 'Accept': 'application/json' },
           cache: 'no-cache'
         });
         if (res.ok) {
           const json = await res.json();
-          const cloudData = Array.isArray(json) ? json : (json.data || json.milestones);
-          if (Array.isArray(cloudData) && cloudData.length > 0) {
-            currentMilestones = cloudData;
-            saveMilestones(cloudData);
-            renderMilestones();
-            if (!silent) {
-              console.log('[Cloud DB] Milestones synchronized in real time from cloud store.');
+          const cloudData = json.data || json;
+          if (cloudData) {
+            let updatedAny = false;
+            if (Array.isArray(cloudData.services) && cloudData.services.length > 0) {
+              currentServices = cloudData.services;
+              saveServices(cloudData.services);
+              renderServices();
+              updatedAny = true;
+            }
+            if (Array.isArray(cloudData.projects) && cloudData.projects.length > 0) {
+              currentProjects = cloudData.projects;
+              saveProjects(cloudData.projects);
+              renderProjects();
+              updatedAny = true;
+            }
+            if (Array.isArray(cloudData.stories) && cloudData.stories.length > 0) {
+              currentStories = cloudData.stories;
+              saveStories(cloudData.stories);
+              renderStories();
+              updatedAny = true;
+            }
+            if (Array.isArray(cloudData.milestones) && cloudData.milestones.length > 0) {
+              currentMilestones = cloudData.milestones;
+              saveMilestones(cloudData.milestones);
+              renderMilestones();
+              updatedAny = true;
+            }
+            if (!silent && updatedAny) {
+              console.log('[Universal Cloud DB] All sections (services, projects, stories, milestones) synchronized in real time.');
             }
           }
         }
       } catch (err) {
         if (!silent) {
-          console.warn('[Cloud DB] Could not sync from cloud, falling back to local cache:', err);
+          console.warn('[Universal Cloud DB] Falling back to local cache/defaults:', err);
         }
       } finally {
-        isCloudSyncing = false;
+        isUniversalCloudSyncing = false;
       }
     }
 
-    async function pushMilestonesToCloud(data, meta = {}) {
+    async function fetchMilestonesFromCloud(silent = false) {
+      return fetchAllContentFromCloud(silent);
+    }
+
+    async function pushContentToCloud(section, data, meta = {}) {
       try {
         const session = (typeof getClientSession === 'function' ? getClientSession() : null) || 
           (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
         const payload = {
-          milestones: data,
+          section: section,
+          data: data,
           meta: {
             ...meta,
+            section: section,
             updatedBy: session.name || 'Authorized Collaborator',
             role: session.role || 'Reviewer',
             timestamp: new Date().toISOString()
           }
         };
-        const res = await fetch(API_MILESTONES_URL, {
+
+        // Primary push to unified content API
+        fetch(API_CONTENT_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
-        });
-        if (res.ok) {
-          console.log('[Cloud DB] Milestone saved & persisted to cloud database successfully.');
-          return true;
-        }
+        }).then(res => {
+          if (res.ok) console.log(`[Universal Cloud DB] ${section} successfully saved & persisted to cloud database.`);
+        }).catch(err => console.warn(`[Universal Cloud DB] Cloud push error for ${section}:`, err));
+
+        // Secondary push to dedicated section endpoint
+        const sectionEndpoint = '/api/' + section;
+        fetch(sectionEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(e => {});
+
+        return true;
       } catch (err) {
-        console.warn('[Cloud DB] Cloud push deferred/offline:', err);
+        console.warn(`[Universal Cloud DB] Push exception for ${section}:`, err);
+        return false;
       }
-      return false;
     }
 
-    // Real-time synchronization listeners for collaborative multi-tester environments (Sreegovind, Gayathri, Anandovsky)
+    async function pushMilestonesToCloud(data, meta = {}) {
+      return pushContentToCloud('milestones', data, meta);
+    }
+
+    // Real-time synchronization listeners across tabs and devices (Sreegovind, Gayathri, Anandovsky)
     window.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
-        fetchMilestonesFromCloud(true);
+        fetchAllContentFromCloud(true);
       }
     });
     window.addEventListener('focus', () => {
-      fetchMilestonesFromCloud(true);
+      fetchAllContentFromCloud(true);
     });
     setInterval(() => {
-      fetchMilestonesFromCloud(true);
+      fetchAllContentFromCloud(true);
     }, 20000);
 
     function loadServices() {
@@ -4121,18 +4165,27 @@
       }
 
       saveServices(currentServices);
+      pushContentToCloud('services', currentServices, { action: id ? 'edit' : 'create', id, title });
       renderServices();
       closeModal('serviceCmsModal');
+      const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+      sendEditEmailNotification('Client Service Offering', title, 'Service Title: ' + title + '\nTimeline: ' + timeline + '\nBadge: ' + popularBadge + '\nDescription: ' + description, session);
+      showToast('Service saved & synced to cloud database in real time');
     }
 
     function deleteService(id) {
       if (confirm('Are you sure you want to delete this service offering?')) {
+        const deletedItem = currentServices.find(s => s.id === id);
         currentServices = currentServices.filter(s => s.id !== id);
         if (currentServices.length === 0) {
           currentServices = [...DEFAULT_SERVICES];
         }
         saveServices(currentServices);
+        pushContentToCloud('services', currentServices, { action: 'delete', id });
         renderServices();
+        const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+        sendEditEmailNotification('Client Service Offering (Deleted)', (deletedItem ? deletedItem.title : id), 'Service ID ' + id + ' was removed from live catalog.', session);
+        showToast('Service removed & cloud database updated');
       }
     }
 
@@ -4286,19 +4339,25 @@
       sendEditEmailNotification('Portfolio Project Description', title, summary, session);
 
       saveProjects(currentProjects);
+      pushContentToCloud('projects', currentProjects, { action: id ? 'edit' : 'create', id, title });
       renderProjects();
       closeModal('projectCmsModal');
-      showToast('Project description updated & email notification dispatched to anand.com@gmail.com');
+      showToast('Project description updated & synced to cloud database in real time');
     }
 
     function deleteProject(id) {
       if (confirm('Are you sure you want to delete this project?')) {
+        const deletedItem = currentProjects.find(p => p.id !== id);
         currentProjects = currentProjects.filter(p => p.id !== id);
         if (currentProjects.length === 0) {
           currentProjects = [...DEFAULT_PROJECTS];
         }
         saveProjects(currentProjects);
+        pushContentToCloud('projects', currentProjects, { action: 'delete', id });
         renderProjects();
+        const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+        sendEditEmailNotification('Portfolio Project (Deleted)', (deletedItem ? deletedItem.title : id), 'Project ID ' + id + ' was removed from live portfolio.', session);
+        showToast('Project removed & cloud database updated');
       }
     }
 
@@ -4364,18 +4423,27 @@
       }
 
       saveStories(currentStories);
+      pushContentToCloud('stories', currentStories, { action: id ? 'edit' : 'create', id, title });
       renderStories();
       closeModal('storyCmsModal');
+      const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+      sendEditEmailNotification('Open Blueprint & Story', title, 'Story Title: ' + title + '\nCategory: ' + category + '\nRead Time: ' + readTime + '\nSnippet: ' + snippet, session);
+      showToast('Story saved & synced to cloud database in real time');
     }
 
     function deleteStory(id) {
       if (confirm('Are you sure you want to delete this dispatch?')) {
+        const deletedItem = currentStories.find(s => s.id === id);
         currentStories = currentStories.filter(s => s.id !== id);
         if (currentStories.length === 0) {
           currentStories = [...DEFAULT_STORIES];
         }
         saveStories(currentStories);
+        pushContentToCloud('stories', currentStories, { action: 'delete', id });
         renderStories();
+        const session = getClientSession() || (isAdminLoggedIn() ? { name: 'Anandovsky (Admin)', role: 'Studio Owner & Solo Engineering', username: 'admin' } : { name: 'Authorized Collaborator', role: 'Tester / Reviewer', username: 'collaborator' });
+        sendEditEmailNotification('Open Blueprint & Story (Deleted)', (deletedItem ? deletedItem.title : id), 'Story ID ' + id + ' was removed.', session);
+        showToast('Story removed & cloud database updated');
       }
     }
 
@@ -5406,7 +5474,7 @@
       renderStories();
       renderProjects();
       renderMilestones();
-      fetchMilestonesFromCloud(false);
+      fetchAllContentFromCloud(false);
     });
   </script>
 

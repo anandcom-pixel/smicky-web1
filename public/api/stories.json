@@ -1,0 +1,32 @@
+[
+  {
+    "id": "solo-trial",
+    "category": "Trial Playbook",
+    "categoryKey": "blueprint",
+    "readTime": "6 min read",
+    "title": "The Solo Trial-Firm Engine: How I Ship Fast Without Burning Out",
+    "snippet": "A complete blueprint of how a solo engineering trial-firm tests viable business models before writing massive lines of non-scalable architecture.",
+    "author": "Created by Anandovsky",
+    "content": "<p>A complete blueprint of how a solo engineering trial-firm tests viable business models before writing massive lines of non-scalable architecture.</p><h4>Phase 1: Zero-Capital Hypotheses</h4><p>Never write backend services for an audience that doesn't exist yet.</p><blockquote>\"Velocity of validation is the only real moat in solo venture engineering.\"</blockquote>"
+  },
+  {
+    "id": "android-play-store",
+    "category": "Android Architecture",
+    "categoryKey": "dispatch",
+    "readTime": "8 min read",
+    "title": "Upgrading FreeIt to Android 16 (API 36): Production Lessons Learned",
+    "snippet": "A deep dive into navigating Google Play's 2026 target SDK requirements, handling edge-to-edge system insets, and optimizing WebView render trees.",
+    "author": "Created by Anandovsky",
+    "content": "<p>Targeting Android 16 (API level 36) requires adhering to modern permission models and edge-to-edge window insets.</p><h4>Key Engineering Shifts</h4><p>1. Target API Level 36 compatibility flags.</p><p>2. Hardware-accelerated canvas layers.</p>"
+  },
+  {
+    "id": "self-paced-testing",
+    "category": "Testing Culture",
+    "categoryKey": "blueprint",
+    "readTime": "5 min read",
+    "title": "\ud83c\udf31 Pressure-Free Testing: Empowering Student QA Leads with Zero Deadlines",
+    "snippet": "Why flexible, self-paced testing produces higher quality bug reports than artificial deadlines. A model for asynchronous student collaboration.",
+    "author": "Created by Anandovsky",
+    "content": "<p>Testing should never conflict with university exams or coursework. Our collaborators (Sreegovind, Gayathri) contribute purely at their own pace.</p><blockquote>\"No monthly or yearly targets. True quality emerges when contributors test with genuine curiosity.\"</blockquote>"
+  }
+]

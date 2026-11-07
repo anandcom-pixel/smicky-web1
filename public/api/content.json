@@ -1,0 +1,288 @@
+{
+  "services": [
+    {
+      "id": "srv-1",
+      "title": "Rapid MVP Trial Sprint",
+      "isPopular": false,
+      "popularBadge": "",
+      "iconSvg": "<polygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"></polygon>",
+      "timeline": "2-Week Turnaround",
+      "description": "Transform an untested hypothesis or business premise into a functional, deployable cloud prototype before sinking significant capital.",
+      "features": [
+        "Core feature-set definition & scope lockdown",
+        "Production cloud deployment (Vercel / Supabase)",
+        "Collaborator review portal & live telemetry"
+      ]
+    },
+    {
+      "id": "srv-2",
+      "title": "Solo Engineering Full-Stack Build",
+      "isPopular": true,
+      "popularBadge": "Most Requested",
+      "iconSvg": "<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path>",
+      "timeline": "3 to 4 Weeks",
+      "description": "End-to-end solo engineering of production web utilities, mobile PWAs, or native Android WebView wrappers with dedicated QA pipelines.",
+      "features": [
+        "Modern Next.js / TypeScript architecture",
+        "Native Android WebView bundling (API 36 Ready)",
+        "Zero-overhead architecture & automated CI/CD"
+      ]
+    },
+    {
+      "id": "srv-3",
+      "title": "Architecture & Production Audit",
+      "isPopular": false,
+      "popularBadge": "",
+      "iconSvg": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\" ry=\"2\"></rect><rect x=\"9\" y=\"9\" width=\"6\" height=\"6\"></rect><line x1=\"9\" y1=\"1\" x2=\"9\" y2=\"4\"></line><line x1=\"15\" y1=\"1\" x2=\"15\" y2=\"4\"></line><line x1=\"9\" y1=\"20\" x2=\"9\" y2=\"23\"></line><line x1=\"15\" y1=\"20\" x2=\"15\" y2=\"23\"></line><line x1=\"20\" y1=\"9\" x2=\"23\" y2=\"9\"></line><line x1=\"20\" y1=\"14\" x2=\"23\" y2=\"14\"></line><line x1=\"1\" y1=\"9\" x2=\"4\" y2=\"9\"></line><line x1=\"1\" y1=\"14\" x2=\"4\" y2=\"14\"></line>",
+      "timeline": "5-Day Deep Dive",
+      "description": "Thorough codebase, performance, and security evaluation for pre-launch applications, identifying bottlenecks before release.",
+      "features": [
+        "Security & credential leak audit",
+        "Bundle size & load velocity profiling",
+        "Refactoring roadmap & technical debt triage"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "freeit",
+      "category": "android",
+      "badge": "\u25cf Google Play Store Production",
+      "badgeType": "success",
+      "platform": "Android 16 (API 36) Native WebView",
+      "attribution": "Created by Anandovsky",
+      "title": "FreeIt \u2014 Resale and Declutter App",
+      "desc": "A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.",
+      "tech": [
+        "Android SDK",
+        "Java/Kotlin",
+        "WebView",
+        "Play Console",
+        "API 36"
+      ],
+      "demoUrl": "https://play.google.com/store/apps",
+      "caseUrl": "#contact"
+    },
+    {
+      "id": "pocket-catalog",
+      "category": "android",
+      "badge": "\u25cf Beta APK Download",
+      "badgeType": "beta",
+      "platform": "PWA + Android APK",
+      "attribution": "Created by Anandovsky",
+      "title": "Pocket Catalog \u2014 Asset Inventory",
+      "desc": "An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.",
+      "tech": [
+        "Android PWA",
+        "SQLite",
+        "Camera API",
+        "Offline Sync"
+      ],
+      "demoUrl": "/downloads/pocket-catalog.apk",
+      "caseUrl": "#contact"
+    },
+    {
+      "id": "guten-app",
+      "category": "language",
+      "badge": "\u25cf Deployed on Vercel",
+      "badgeType": "success",
+      "platform": "Web & PWA",
+      "attribution": "Created by Anandovsky",
+      "title": "Guten App",
+      "desc": "It is a German language learning web application.",
+      "tech": [
+        "Next.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Vercel"
+      ],
+      "demoUrl": "https://vercel.com",
+      "caseUrl": "#contact"
+    },
+    {
+      "id": "parlez-app",
+      "category": "language",
+      "badge": "\u25cf Active Testing",
+      "badgeType": "beta",
+      "platform": "Web Platform",
+      "attribution": "Created by Anandovsky & Tester Sreegovind",
+      "title": "Parlez App",
+      "desc": "A French learning web application.",
+      "tech": [
+        "Next.js",
+        "Web Speech API",
+        "TypeScript",
+        "Vercel"
+      ],
+      "demoUrl": "https://vercel.com",
+      "caseUrl": "#contact"
+    },
+    {
+      "id": "any-syllabus",
+      "category": "utility",
+      "badge": "\u25cf Live Web Utility",
+      "badgeType": "success",
+      "platform": "Cloud Utility",
+      "attribution": "Created by Anandovsky",
+      "title": "Any Syllabus Assessment Generator",
+      "desc": "A comprehensive Q&A generator web utility capable of turning any syllabus or instructional curriculum into structured assessment tests with automated grading rubrics.",
+      "tech": [
+        "React",
+        "TypeScript",
+        "Q&A Engine",
+        "PDF Export"
+      ],
+      "demoUrl": "https://vercel.com",
+      "caseUrl": "#contact",
+      "hasGenerateQa": true
+    },
+    {
+      "id": "daily-tracker",
+      "category": "utility",
+      "badge": "\u25cf Production Active",
+      "badgeType": "success",
+      "platform": "Productivity System",
+      "attribution": "Created by Anandovsky",
+      "title": "Multi-Venture Daily Tracker",
+      "desc": "A schedule-tracking and operating rhythm application structured around \"Day's activity\" time slots.",
+      "tech": [
+        "JavaScript",
+        "Local Storage",
+        "Chart.js",
+        "PWA"
+      ],
+      "demoUrl": "https://vercel.com",
+      "caseUrl": "#contact"
+    }
+  ],
+  "stories": [
+    {
+      "id": "solo-trial",
+      "category": "Trial Playbook",
+      "categoryKey": "blueprint",
+      "readTime": "6 min read",
+      "title": "The Solo Trial-Firm Engine: How I Ship Fast Without Burning Out",
+      "snippet": "A complete blueprint of how a solo engineering trial-firm tests viable business models before writing massive lines of non-scalable architecture.",
+      "author": "Created by Anandovsky",
+      "content": "<p>A complete blueprint of how a solo engineering trial-firm tests viable business models before writing massive lines of non-scalable architecture.</p><h4>Phase 1: Zero-Capital Hypotheses</h4><p>Never write backend services for an audience that doesn't exist yet.</p><blockquote>\"Velocity of validation is the only real moat in solo venture engineering.\"</blockquote>"
+    },
+    {
+      "id": "android-play-store",
+      "category": "Android Architecture",
+      "categoryKey": "dispatch",
+      "readTime": "8 min read",
+      "title": "Upgrading FreeIt to Android 16 (API 36): Production Lessons Learned",
+      "snippet": "A deep dive into navigating Google Play's 2026 target SDK requirements, handling edge-to-edge system insets, and optimizing WebView render trees.",
+      "author": "Created by Anandovsky",
+      "content": "<p>Targeting Android 16 (API level 36) requires adhering to modern permission models and edge-to-edge window insets.</p><h4>Key Engineering Shifts</h4><p>1. Target API Level 36 compatibility flags.</p><p>2. Hardware-accelerated canvas layers.</p>"
+    },
+    {
+      "id": "self-paced-testing",
+      "category": "Testing Culture",
+      "categoryKey": "blueprint",
+      "readTime": "5 min read",
+      "title": "\ud83c\udf31 Pressure-Free Testing: Empowering Student QA Leads with Zero Deadlines",
+      "snippet": "Why flexible, self-paced testing produces higher quality bug reports than artificial deadlines. A model for asynchronous student collaboration.",
+      "author": "Created by Anandovsky",
+      "content": "<p>Testing should never conflict with university exams or coursework. Our collaborators (Sreegovind, Gayathri) contribute purely at their own pace.</p><blockquote>\"No monthly or yearly targets. True quality emerges when contributors test with genuine curiosity.\"</blockquote>"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "mile-freeit",
+      "title": "FreeIt \u2014 Resale and Declutter App",
+      "statusBadge": "Sprint 03 &bull; Release Candidate",
+      "badgeClass": "in-progress",
+      "platform": "Android Native &bull; API 36",
+      "assigned": "Assigned QA Lead: Sreegovind",
+      "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
+      "desc": "A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.",
+      "progress": 85,
+      "nextDeliverable": "Android 16 wake-lock benchmark & log parser validation. Target: Nov 12, 2026.",
+      "actionType": "apk",
+      "actionLabel": "Download Test APK (v1.4.2-rc3 &bull; 18.4 MB)",
+      "actionTarget": "FreeIt-v1.4.2-preview.apk",
+      "actionParam": 18.4
+    },
+    {
+      "id": "mile-pocket",
+      "title": "Pocket Catalog \u2014 Asset Inventory",
+      "statusBadge": "Sprint 02 &bull; Feature Verification",
+      "badgeClass": "in-progress",
+      "platform": "PWA + Android APK",
+      "assigned": "Assigned: Client Partner & Sreegovind",
+      "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
+      "desc": "An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.",
+      "progress": 70,
+      "nextDeliverable": "Offline SQLite sync under network throttling & CSV export. Target: Nov 20, 2026.",
+      "actionType": "apk_official",
+      "actionLabel": "Download Official APK (v2.1.0 &bull; 18.7 MB)",
+      "actionTarget": "/downloads/pocket-catalog.apk",
+      "actionParam": 18.7
+    },
+    {
+      "id": "mile-guten",
+      "title": "Guten App",
+      "statusBadge": "Staging Candidate &bull; Production Audit",
+      "badgeClass": "in-progress",
+      "platform": "Web & PWA",
+      "assigned": "Assigned Linguist Lead: Gayathri",
+      "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
+      "desc": "It is a German language learning web application.",
+      "progress": 95,
+      "nextDeliverable": "German grammatical case training loop & phonetic audio buffer review. Target: Nov 16, 2026.",
+      "actionType": "link",
+      "actionLabel": "Launch Staging Preview (staging.gutenapp.vercel.app)",
+      "actionTarget": "https://vercel.com",
+      "actionParam": 0
+    },
+    {
+      "id": "mile-parlez",
+      "title": "Parlez App",
+      "statusBadge": "Beta Review &bull; Active Testing",
+      "badgeClass": "in-progress",
+      "platform": "Web Platform",
+      "assigned": "Assigned QA: Sreegovind",
+      "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
+      "desc": "A French learning web application.",
+      "progress": 80,
+      "nextDeliverable": "French irregular verb speech synthesis & audio conjugation drills. Target: Nov 22, 2026.",
+      "actionType": "link",
+      "actionLabel": "Launch French Learning Preview",
+      "actionTarget": "https://vercel.com",
+      "actionParam": 0
+    },
+    {
+      "id": "mile-syllabus",
+      "title": "Any Syllabus Assessment Generator",
+      "statusBadge": "Live Web Utility &bull; Sprint 01",
+      "badgeClass": "in-progress",
+      "platform": "Cloud Utility",
+      "assigned": "Assigned: Solo Platform & Client Partner",
+      "flexibleNote": "",
+      "desc": "A comprehensive Q&A generator web utility capable of turning any syllabus or instructional curriculum into structured assessment tests with automated grading rubrics.",
+      "progress": 90,
+      "nextDeliverable": "Curriculum schema parser & export to PDF/Markdown. Target: Nov 25, 2026.",
+      "actionType": "generate_qa",
+      "actionLabel": "Generate Q&A",
+      "actionTarget": "modal",
+      "actionParam": 0
+    },
+    {
+      "id": "mile-tracker",
+      "title": "Multi-Venture Daily Tracker",
+      "statusBadge": "Production Active &bull; Daily Ops",
+      "badgeClass": "in-progress",
+      "platform": "Productivity System",
+      "assigned": "Operating Rhythm: Anandovsky",
+      "flexibleNote": "",
+      "desc": "A schedule-tracking and operating rhythm application structured around \"Day's activity\" time slots.",
+      "progress": 100,
+      "nextDeliverable": "Daily time slot allocation telemetry & multi-venture burn charts. Target: Nov 30, 2026.",
+      "actionType": "tracker",
+      "actionLabel": "Open Daily Operating Rhythm",
+      "actionTarget": "#section-dashboard",
+      "actionParam": 0
+    }
+  ]
+}
