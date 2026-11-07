@@ -2635,10 +2635,10 @@
                   <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
                   <div style="color: var(--text-secondary);">Offline SQLite sync under network throttling &amp; CSV export. Target: Nov 20, 2026.</div>
                 </div>
-                <button type="button" class="apk-download-btn" onclick="downloadApk('PocketCatalog-v2.1.0-release.apk', 14.8, 'PocketCatalog')">
+                <a href="/public/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="apk-download-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Download Test APK (v2.1.0-beta &bull; 14.8 MB)</span>
-                </button>
+                  <span>Download Official APK (v2.1.0 &bull; 18.7 MB)</span>
+                </a>
               </div>
 
               <!-- LingoPulse & LexiFlow Milestone -->
@@ -2772,18 +2772,18 @@
                     Offline-first catalog build with mock barcode scanner integration and instant 10,000 product vector search.
                   </p>
                   <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                    <div>Size: <strong>14.8 MB</strong> &bull; Target: <strong>Android 14 (API 34)</strong></div>
-                    <div>SHA-256: <code>c82e01f4...77ba29</code> (Signed)</div>
+                    <div>Size: <strong>18.7 MB</strong> &bull; Target: <strong>Android 14 (API 34)</strong></div>
+                    <div>SHA-256: <code>366b98ab...d35321</code> (Verified Compiled APK)</div>
                     <div>Assigned QA / Client: <strong style="color: var(--accent-gold);">Sreegovind &amp; Client</strong></div>
                     <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--border-subtle); color: var(--accent-gold-dark); font-size: 0.73rem; line-height: 1.4;">
                       &bull; Testing in Progress (Flexible Schedule &mdash; active during testers' free time around exam schedules).
                     </div>
                   </div>
                 </div>
-                <button type="button" class="apk-download-btn" onclick="downloadApk('PocketCatalog-v2.1.0-release.apk', 14.8, 'PocketCatalog')">
+                <a href="/public/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="apk-download-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Download Pocket Catalog APK (14.8 MB)</span>
-                </button>
+                  <span>Download Pocket Catalog APK (18.7 MB)</span>
+                </a>
               </div>
 
               <!-- LingoPulse / LexiFlow Edge Staging Preview -->
@@ -4519,6 +4519,16 @@
 
     // --- APK Download Simulator ---
     function downloadApk(filename, sizeMB, appName) {
+      if (appName === 'PocketCatalog' || (filename && filename.toLowerCase().includes('pocketcatalog'))) {
+        const a = document.createElement('a');
+        a.href = '/public/downloads/pocket-catalog.apk';
+        a.download = 'pocket-catalog.apk';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('Downloading Pocket Catalog Official APK (18.7 MB)...');
+        return;
+      }
       const dummyData = 'PK\x03\x04Android Application Package: ' + appName + ' Test Build.\n' +
         'Generated for Anandovsky Client & Collaborator Studio.\n' +
         'File: ' + filename + ' (' + sizeMB + ' MB)\n' +
@@ -4540,11 +4550,18 @@
     }
 
     function downloadAllApks() {
-      downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt');
+      // Download official compiled Pocket Catalog APK
+      const a = document.createElement('a');
+      a.href = '/public/downloads/pocket-catalog.apk';
+      a.download = 'pocket-catalog.apk';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
       setTimeout(() => {
-        downloadApk('PocketCatalog-v2.1.0-release.apk', 14.8, 'PocketCatalog');
-      }, 700);
-      showToast('Downloading all test builds (.apk packages)...');
+        downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt');
+      }, 800);
+      showToast('Downloading Pocket Catalog official APK & test packages...');
     }
 
     // --- Toast Helper ---
