@@ -1686,6 +1686,394 @@
       font-weight: 700;
     }
 
+  
+    /* ==========================================================================
+       Client & Collaborator Dashboard Styles
+       ========================================================================== */
+    .dashboard-nav-trigger {
+      background: rgba(217, 119, 6, 0.12);
+      border: 1px solid rgba(217, 119, 6, 0.38);
+      color: #F59E0B;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dashboard-nav-trigger:hover {
+      color: #FFFFFF;
+      border-color: var(--accent-gold-light);
+      background: rgba(217, 119, 6, 0.28);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+    }
+    body.client-authenticated .dashboard-nav-trigger {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #10B981;
+    }
+
+    /* Dashboard Container and Framing */
+    .dashboard-shell {
+      background: #FFFFFF;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      box-shadow: 0 10px 40px rgba(44, 30, 26, 0.06);
+      position: relative;
+    }
+
+    /* Vault Locked State Card */
+    .vault-gate-card {
+      background: linear-gradient(145deg, #1E1512 0%, #2A1D18 100%);
+      border: 1px solid rgba(217, 119, 6, 0.45);
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      color: var(--text-on-espresso);
+      box-shadow: 0 20px 50px rgba(30, 21, 18, 0.25), 0 0 35px rgba(217, 119, 6, 0.15);
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .vault-icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(217, 119, 6, 0.2);
+      border: 1.5px solid var(--accent-gold);
+      color: var(--accent-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+    }
+
+    /* Authenticated Top Ribbon */
+    .dashboard-identity-ribbon {
+      background: linear-gradient(145deg, #1E1512 0%, #291B16 100%);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--text-on-espresso);
+      box-shadow: 0 6px 20px rgba(30, 21, 18, 0.15);
+    }
+    .identity-info-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .identity-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(217, 119, 6, 0.25);
+      border: 1.5px solid var(--accent-gold-light);
+      color: var(--accent-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+    }
+    .identity-role-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      background: rgba(217, 119, 6, 0.15);
+      color: var(--accent-gold-light);
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 3px;
+    }
+
+    /* Dashboard Sub-Tabs */
+    .dashboard-tabs-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .dash-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .dash-tab-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface);
+      border-color: var(--border-medium);
+    }
+    .dash-tab-btn.active {
+      background: var(--bg-espresso);
+      color: #FFFFFF;
+      border-color: var(--bg-espresso);
+      box-shadow: 0 4px 14px rgba(30, 21, 18, 0.15);
+    }
+
+    /* Milestone Cards Grid */
+    .milestones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 35px;
+    }
+    .milestone-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all var(--transition-normal);
+      position: relative;
+    }
+    .milestone-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(44, 30, 26, 0.08);
+    }
+    .milestone-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .milestone-status-badge {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+    .milestone-status-badge.in-progress {
+      background: rgba(217, 119, 6, 0.12);
+      color: var(--accent-gold-dark);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+    }
+    .milestone-status-badge.review {
+      background: rgba(99, 102, 241, 0.12);
+      color: #4F46E5;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+    }
+    .milestone-status-badge.completed {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: rgba(44, 30, 26, 0.08);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+      border-radius: var(--radius-full);
+      transition: width 0.6s ease;
+    }
+
+    /* Test Builds & APK Vault Cards */
+    .builds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 35px;
+    }
+    .build-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      box-shadow: 0 4px 18px rgba(44, 30, 26, 0.04);
+      transition: all var(--transition-normal);
+    }
+    .build-card:hover {
+      border-color: var(--accent-gold);
+      box-shadow: 0 12px 30px rgba(44, 30, 26, 0.08);
+      transform: translateY(-3px);
+    }
+    .build-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .apk-download-btn {
+      background: var(--bg-espresso);
+      color: #FFFFFF;
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--bg-espresso);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      width: 100%;
+    }
+    .apk-download-btn:hover {
+      background: var(--accent-gold);
+      border-color: var(--accent-gold);
+      color: #FFFFFF;
+      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Deliverables Status Table/List */
+    .deliverables-table-wrap {
+      background: #FFFFFF;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      box-shadow: 0 4px 18px rgba(44, 30, 26, 0.04);
+    }
+    .deliverables-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    .deliverables-table th {
+      background: var(--bg-surface);
+      padding: 14px 18px;
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-medium);
+    }
+    .deliverables-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+      color: var(--text-primary);
+    }
+    .deliverables-table tr:last-child td {
+      border-bottom: none;
+    }
+    .deliverables-table tr:hover td {
+      background: #FAF7F2;
+    }
+    .collaborator-tag {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .collaborator-tag .collab-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .collab-dot.sree { background: #3B82F6; }
+    .collab-dot.gaya { background: #EC4899; }
+    .collab-dot.client { background: #10B981; }
+
+    /* Quick Test Login Buttons */
+    .quick-login-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .quick-login-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--text-on-espresso);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .quick-login-pill:hover {
+      background: rgba(217, 119, 6, 0.25);
+      border-color: var(--accent-gold-light);
+      color: #FFFFFF;
+    }
+
+    /* Toast Notification */
+    .dash-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-espresso);
+      border: 1px solid var(--accent-gold);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.86rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .dash-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
   </style>
 </head>
 <body>
@@ -1729,10 +2117,19 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
           Projects
         </a>
+        <a href="#section-dashboard" class="nav-link" data-target="section-dashboard" onclick="handleDashboardNavClick(event)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+          Dashboard
+        </a>
         <a href="https://anandovsky.com" target="_blank" rel="noopener noreferrer" class="nav-link" style="color: var(--accent-gold); font-weight: 700;" title="anandovsky.com">anandovsky.com ↗</a>
       </nav>
 
       <div class="nav-actions">
+        <button id="clientHeaderBtn" class="dashboard-nav-trigger" onclick="handleDashboardNavClick(event)" aria-label="Client &amp; Collaborator Portal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+          <span id="clientBtnLabel">Client Portal</span>
+        </button>
+
         <button id="adminHeaderBtn" class="admin-auth-trigger" onclick="handleAdminAuthClick()" aria-label="Admin Portal">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           <span id="adminBtnLabel">Admin</span>
@@ -1758,6 +2155,7 @@
     <a href="#section-me" class="mobile-nav-link" onclick="toggleMobileMenu()">1. For Me (Services &amp; Hiring) &rarr;</a>
     <a href="#section-you" class="mobile-nav-link" onclick="toggleMobileMenu()">2. For You (Stories &amp; Blueprints) &rarr;</a>
     <a href="#section-projects" class="mobile-nav-link" onclick="toggleMobileMenu()">3. Projects (Portfolio) &rarr;</a>
+    <a href="#section-dashboard" class="mobile-nav-link" onclick="handleDashboardNavClick(event); toggleMobileMenu();" style="color: var(--accent-gold-light);">4. Client &amp; Collaborator Dashboard &rarr;</a>
     <a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()" style="color: var(--accent-gold);">Start an Inquiry &rarr;</a>
   </div>
 
@@ -2054,6 +2452,386 @@
         </div>
       </div>
     </section>
+  
+    <!-- SECTION 4: CLIENT & COLLABORATOR DASHBOARD (/dashboard or /deliverables) -->
+    <section class="section-wrap" id="section-dashboard">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">// Private Pathway 04 &mdash; Deliverables &amp; Tracking</span>
+          <h2 class="section-title">Client &amp; Collaborator Dashboard</h2>
+          <p class="section-lead">
+            Dedicated private workspace for active milestone tracking, downloadable test builds / APKs (FreeIt, Pocket Catalog), and deliverables sign-offs for designated collaborators (Sreegovind, Gayathri) and venture clients.
+          </p>
+        </div>
+
+        <!-- AUTHENTICATION GATE (Shown when NOT authenticated) -->
+        <div id="vaultGateLockedView" class="vault-gate-card">
+          <div class="vault-icon-circle">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <h3 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; color: #FFFFFF;">Collaborator &amp; Client Vault Gate</h3>
+          <p style="font-size: 0.92rem; color: var(--text-on-espresso-subtle); line-height: 1.6; margin-bottom: 24px;">
+            Access active trial milestones, download pre-release APK binaries, and track QA deliverables assigned to Sreegovind, Gayathri, or client trial accounts.
+          </p>
+
+          <form id="vaultGateLoginForm" onsubmit="handleClientLoginSubmit(event)" style="display: flex; flex-direction: column; gap: 14px; max-width: 420px; margin: 0 auto; text-align: left;">
+            <div class="form-group">
+              <label class="form-label" for="gateUsernameInput">Collaborator ID or Client Username</label>
+              <input class="form-input" type="text" id="gateUsernameInput" required placeholder="e.g. sreegovind, gayathri, or client" autocomplete="username" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="gatePasswordInput">Passcode</label>
+              <input class="form-input" type="password" id="gatePasswordInput" required placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <div id="gateLoginError" style="display: none; font-size: 0.82rem; color: #FCA5A5; background: rgba(220, 38, 38, 0.2); padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid rgba(220, 38, 38, 0.4);">
+              Invalid credentials. Use <strong>smicky123</strong> or one of the quick selector accounts below.
+            </div>
+            <button type="submit" class="form-submit-btn" style="width: 100%; margin-top: 6px;">
+              <span>Unlock Dashboard &amp; Deliverables</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </form>
+
+          <div style="margin-top: 26px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+            <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
+              ⚡ One-Click Review Access (Demo Testing)
+            </div>
+            <div class="quick-login-pills">
+              <button type="button" class="quick-login-pill" onclick="quickLoginAs('sreegovind', 'smicky123')">
+                <span class="collab-dot sree"></span> Sreegovind (QA Lead)
+              </button>
+              <button type="button" class="quick-login-pill" onclick="quickLoginAs('gayathri', 'smicky123')">
+                <span class="collab-dot gaya"></span> Gayathri (Linguist QA)
+              </button>
+              <button type="button" class="quick-login-pill" onclick="quickLoginAs('client', 'smicky123')">
+                <span class="collab-dot client"></span> Client Venture Partner
+              </button>
+              <button type="button" class="quick-login-pill" onclick="quickLoginAs('admin', 'smicky123')">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg> Studio Admin
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUTHENTICATED DASHBOARD WORKSPACE (Shown when authenticated) -->
+        <div id="vaultAuthenticatedView" class="dashboard-shell" style="display: none;">
+          
+          <!-- Identity & Status Ribbon -->
+          <div class="dashboard-identity-ribbon">
+            <div class="identity-info-wrap">
+              <div class="identity-avatar" id="dashUserAvatar">SG</div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF;" id="dashUserName">Sreegovind</span>
+                  <span class="identity-role-badge" id="dashUserRole">Lead QA &bull; Android Engineering</span>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-on-espresso-subtle); display: flex; align-items: center; gap: 6px; margin-top: 3px;">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
+                  <span>Active Session &bull; Private Deliverables Channel</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <button class="filter-pill" onclick="openDeliverableReportModal()" style="background: rgba(217, 119, 6, 0.2); border-color: rgba(217, 119, 6, 0.5); color: #F59E0B; padding: 7px 16px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <span>Submit QA Note</span>
+              </button>
+              <button class="filter-pill" onclick="clientLogout()" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: var(--text-on-espresso); padding: 7px 16px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Lock Vault / Exit</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dashboard Sub-Tabs -->
+          <div class="dashboard-tabs-bar">
+            <button class="dash-tab-btn active" id="tabBtnMilestones" onclick="switchDashboardTab('milestones')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>
+              <span>1. Milestone Tracking</span>
+            </button>
+            <button class="dash-tab-btn" id="tabBtnBuilds" onclick="switchDashboardTab('builds')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              <span>2. Download Test Builds &amp; APKs</span>
+            </button>
+            <button class="dash-tab-btn" id="tabBtnDeliverables" onclick="switchDashboardTab('deliverables')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              <span>3. Deliverables Status Log</span>
+            </button>
+          </div>
+
+          <!-- TAB 1: MILESTONE TRACKING -->
+          <div id="dashTabMilestones" class="dash-tab-content">
+            <div class="milestones-grid">
+              
+              <!-- FreeIt Milestone -->
+              <div class="milestone-card">
+                <div class="milestone-top-row">
+                  <span class="milestone-status-badge in-progress">Sprint 03 &bull; Release Candidate</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">Android Native</span>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">FreeIt &mdash; Freedom Utility Tool</h3>
+                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Assigned QA Lead: Sreegovind</div>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+                  Zero-cloud background process scheduler and memory pressure monitor. Designed to prevent OS process killing during developer sessions.
+                </p>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
+                    <span>Milestone Progress</span>
+                    <strong style="color: var(--accent-gold);">85%</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 85%;"></div>
+                  </div>
+                </div>
+                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
+                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
+                  <div style="color: var(--text-secondary);">Android 14/15 battery wake-lock benchmark &amp; log parser validation. Target: Nov 12, 2026.</div>
+                </div>
+                <button type="button" class="apk-download-btn" onclick="downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Download Test APK (v1.4.2-rc3 &bull; 18.4 MB)</span>
+                </button>
+              </div>
+
+              <!-- Pocket Catalog Milestone -->
+              <div class="milestone-card">
+                <div class="milestone-top-row">
+                  <span class="milestone-status-badge in-progress">Sprint 02 &bull; Feature Verification</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">PWA + Android APK</span>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Pocket Catalog &mdash; Offline B2B</h3>
+                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Assigned: Client Partner &amp; Sreegovind</div>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+                  Offline-first product directory, high-speed SKU search, and barcode scanning for field sales teams without reliable mobile coverage.
+                </p>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
+                    <span>Milestone Progress</span>
+                    <strong style="color: var(--accent-gold);">70%</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 70%;"></div>
+                  </div>
+                </div>
+                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
+                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
+                  <div style="color: var(--text-secondary);">Offline SQLite sync under network throttling &amp; CSV export. Target: Nov 20, 2026.</div>
+                </div>
+                <button type="button" class="apk-download-btn" onclick="downloadApk('PocketCatalog-v2.1.0-release.apk', 14.8, 'PocketCatalog')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Download Test APK (v2.1.0-beta &bull; 14.8 MB)</span>
+                </button>
+              </div>
+
+              <!-- LingoPulse & LexiFlow Milestone -->
+              <div class="milestone-card">
+                <div class="milestone-top-row">
+                  <span class="milestone-status-badge review">Pre-Deployment &bull; QA Sign-Off</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">Next.js Edge + WASM</span>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">LingoPulse AI &amp; LexiFlow</h3>
+                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Assigned QA Lead: Gayathri</div>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+                  Bilingual speed reader and French audio training engine with interactive spaced-repetition loops and WASM phonetic parsing.
+                </p>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
+                    <span>Milestone Progress</span>
+                    <strong style="color: #4F46E5;">95%</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 95%; background: linear-gradient(90deg, #4F46E5 0%, #818CF8 100%);"></div>
+                  </div>
+                </div>
+                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
+                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Next Milestone Deliverable:</div>
+                  <div style="color: var(--text-secondary);">French/German compound verb pronunciation phonetic accuracy audit. Target: Nov 15, 2026.</div>
+                </div>
+                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>Launch Edge Staging Preview (Build #84)</span>
+                </a>
+              </div>
+
+              <!-- OmniLedger Micro-Billing -->
+              <div class="milestone-card">
+                <div class="milestone-top-row">
+                  <span class="milestone-status-badge completed">Verified &bull; De-risked &amp; Live</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">Cloud API</span>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">OmniLedger Micro-Billing</h3>
+                  <div style="font-size: 0.8rem; color: var(--accent-gold-dark); font-family: var(--font-mono); font-weight: 700;">Client Partner Trial Complete</div>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+                  Sub-50ms pay-per-trial micro-checkout module with idempotent Stripe webhooks and Supabase Postgres telemetry.
+                </p>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 6px;">
+                    <span>Milestone Progress</span>
+                    <strong style="color: #059669;">100%</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 100%; background: #059669;"></div>
+                  </div>
+                </div>
+                <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
+                  <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Delivery Status:</div>
+                  <div style="color: var(--text-secondary);">Production checkout ready. De-risking audit report delivered to client.</div>
+                </div>
+                <button type="button" class="apk-download-btn" style="background: #059669; border-color: #059669;" onclick="showToast('OmniLedger production webhook docs open in new tab.')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>View Production Specs &amp; Audit</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- TAB 2: DOWNLOAD TEST BUILDS & APK VAULT -->
+          <div id="dashTabBuilds" class="dash-tab-content" style="display: none;">
+            <div style="margin-bottom: 24px; padding: 16px 20px; background: rgba(217, 119, 6, 0.08); border: 1px solid var(--border-gold); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary);">Test builds are signed for internal testing by designated QA (Sreegovind, Gayathri) and active clients.</span>
+              </div>
+              <button class="filter-pill" onclick="downloadAllApks()" style="background: var(--bg-espresso); color: #FFFFFF; border: none; padding: 6px 16px;">
+                <span>Download All Builds (.zip)</span>
+              </button>
+            </div>
+
+            <div class="builds-grid">
+              
+              <!-- FreeIt APK Build -->
+              <div class="build-card">
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
+                    <div class="build-icon-badge">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(16, 185, 129, 0.1); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● v1.4.2-preview-rc3</span>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">FreeIt Android APK</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Package: com.anandovsky.freeit</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                    Release candidate build with battery wake-lock optimization, SQLite crash recovery, and frame-rate diagnostics.
+                  </p>
+                  <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>Size: <strong>18.4 MB</strong> &bull; Target: <strong>Android 15 (API 35)</strong></div>
+                    <div>SHA-256: <code>a7f93b82...4d09ec</code> (Signed)</div>
+                    <div>Assigned Lead Tester: <strong style="color: var(--accent-gold);">Sreegovind</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="apk-download-btn" onclick="downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Download FreeIt APK (18.4 MB)</span>
+                </button>
+              </div>
+
+              <!-- Pocket Catalog APK Build -->
+              <div class="build-card">
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
+                    <div class="build-icon-badge">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(217, 119, 6, 0.1); color: var(--accent-gold-dark); border: 1px solid rgba(217, 119, 6, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● v2.1.0-beta.2</span>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Pocket Catalog APK</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Package: com.anandovsky.pocketcatalog</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                    Offline-first catalog build with mock barcode scanner integration and instant 10,000 product vector search.
+                  </p>
+                  <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>Size: <strong>14.8 MB</strong> &bull; Target: <strong>Android 14 (API 34)</strong></div>
+                    <div>SHA-256: <code>c82e01f4...77ba29</code> (Signed)</div>
+                    <div>Assigned QA / Client: <strong style="color: var(--accent-gold);">Sreegovind &amp; Client</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="apk-download-btn" onclick="downloadApk('PocketCatalog-v2.1.0-release.apk', 14.8, 'PocketCatalog')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Download Pocket Catalog APK (14.8 MB)</span>
+                </button>
+              </div>
+
+              <!-- LingoPulse / LexiFlow Edge Staging Preview -->
+              <div class="build-card">
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px;">
+                    <div class="build-icon-badge" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: #4F46E5;">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; background: rgba(99, 102, 241, 0.1); color: #4F46E5; border: 1px solid rgba(99, 102, 241, 0.3); padding: 3px 8px; border-radius: var(--radius-full); font-weight: 700;">● Vercel Build #84</span>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">LingoPulse Voice Engine PWA</h3>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Deployment: staging.lingopulse.vercel.app</div>
+                  <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                    Interactive speech synthesis test environment with low-latency audio buffer and French verb conjugation training loops.
+                  </p>
+                  <div style="background: var(--bg-surface); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>Environment: <strong>Vercel Edge Runtime</strong></div>
+                    <div>Linguist Lead: <strong style="color: #4F46E5;">Gayathri</strong></div>
+                    <div>Audio Parser: <strong>WebAudio + WASM Core</strong></div>
+                  </div>
+                </div>
+                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>Launch Edge Staging Preview</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- TAB 3: DELIVERABLES STATUS LOG -->
+          <div id="dashTabDeliverables" class="dash-tab-content" style="display: none;">
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+              <div class="filter-pills-bar" style="margin-bottom: 0;">
+                <button class="filter-pill active" onclick="filterDeliverables('all', this)">All Deliverables</button>
+                <button class="filter-pill" onclick="filterDeliverables('Sreegovind', this)"><span class="collab-dot sree"></span> Sreegovind</button>
+                <button class="filter-pill" onclick="filterDeliverables('Gayathri', this)"><span class="collab-dot gaya"></span> Gayathri</button>
+                <button class="filter-pill" onclick="filterDeliverables('Client Partner', this)"><span class="collab-dot client"></span> Client Venture</button>
+              </div>
+              <button class="filter-pill" onclick="openDeliverableReportModal()" style="background: var(--bg-espresso); color: #FFFFFF; border: none; padding: 8px 18px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>+ Log New Deliverable Note</span>
+              </button>
+            </div>
+
+            <div class="deliverables-table-wrap">
+              <table class="deliverables-table">
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Deliverable Milestone</th>
+                    <th>Designated Collaborator</th>
+                    <th>Status</th>
+                    <th>Target Horizon</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="deliverablesTableBody">
+                  <!-- Dynamically populated via renderDeliverables() -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
   <!-- FOOTER -->
@@ -2844,6 +3622,8 @@
       if (user === 'admin' && pass === 'smicky123') {
         localStorage.setItem(STORAGE_KEY_AUTH, 'active');
         checkAdminSession();
+      checkClientSession();
+      checkRoute();
         closeModal('adminLoginModal');
       } else {
         document.getElementById('adminLoginError').style.display = 'block';
@@ -3265,13 +4045,493 @@
       }
     }
 
+    
+    // ==========================================================================
+    // Client & Collaborator Dashboard Functionality
+    // ==========================================================================
+    const STORAGE_KEY_CLIENT_AUTH = 'anandovsky_client_session';
+    const STORAGE_KEY_DELIVERABLES = 'anandovsky_deliverables_data';
+
+    const DEFAULT_DELIVERABLES = [
+      {
+        id: 'del-1',
+        project: 'FreeIt',
+        title: 'Android 14/15 Background Process Memory Benchmark',
+        collaborator: 'Sreegovind',
+        role: 'Lead QA / Android Engineering',
+        status: 'In Progress',
+        targetDate: 'Nov 12, 2026',
+        notes: 'CPU wake-lock telemetry under aggressive OS background killers.'
+      },
+      {
+        id: 'del-2',
+        project: 'Pocket Catalog',
+        title: 'Offline SQLite DB Stress Test (10k SKUs & Barcode Mock)',
+        collaborator: 'Sreegovind',
+        role: 'Lead QA / Android Engineering',
+        status: 'Queued',
+        targetDate: 'Nov 18, 2026',
+        notes: 'Cold start query benchmarks on physical hardware without WiFi.'
+      },
+      {
+        id: 'del-3',
+        project: 'LingoPulse AI',
+        title: 'French Academy Audio Phonetic Accuracy & Concurrency Audit',
+        collaborator: 'Gayathri',
+        role: 'Linguist & Bilingual Product Reviewer',
+        status: 'In Review',
+        targetDate: 'Nov 11, 2026',
+        notes: 'Phonetic tokenization evaluation for French compound verbs.'
+      },
+      {
+        id: 'del-4',
+        project: 'LexiFlow Reader',
+        title: 'WASM Bilingual Token Stream Parsing Sign-Off',
+        collaborator: 'Gayathri',
+        role: 'Linguist & Bilingual Product Reviewer',
+        status: 'Verified',
+        targetDate: 'Nov 04, 2026',
+        notes: 'High-frequency bilingual vocabulary corpus extraction verified.'
+      },
+      {
+        id: 'del-5',
+        project: 'OmniLedger Micro-Billing',
+        title: 'Production Stripe Webhooks & Sub-50ms Edge Audit',
+        collaborator: 'Client Partner',
+        role: 'Client Venture Partner',
+        status: 'Delivered',
+        targetDate: 'Nov 02, 2026',
+        notes: 'Production payment webhook handlers verified on Vercel Edge.'
+      },
+      {
+        id: 'del-6',
+        project: 'Custom Web Platform',
+        title: 'Sprint 01 De-risking Architecture & Supabase RLS Report',
+        collaborator: 'Client Partner',
+        role: 'Client Venture Partner',
+        status: 'Delivered',
+        targetDate: 'Oct 28, 2026',
+        notes: 'Full technical architecture de-risking documentation signed off.'
+      }
+    ];
+
+    function loadDeliverables() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_DELIVERABLES);
+        if (!saved) return [...DEFAULT_DELIVERABLES];
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length === 0) return [...DEFAULT_DELIVERABLES];
+        return parsed;
+      } catch (e) {
+        return [...DEFAULT_DELIVERABLES];
+      }
+    }
+
+    function saveDeliverables(data) {
+      try {
+        localStorage.setItem(STORAGE_KEY_DELIVERABLES, JSON.stringify(data));
+      } catch (e) {
+        console.error('Error saving deliverables:', e);
+      }
+    }
+
+    let currentDeliverables = loadDeliverables();
+    let currentDeliverableFilter = 'all';
+
+    function getClientSession() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_CLIENT_AUTH);
+        return saved ? JSON.parse(saved) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function isClientLoggedIn() {
+      return Boolean(getClientSession());
+    }
+
+    function checkClientSession() {
+      const session = getClientSession();
+      const clientBtnLabel = document.getElementById('clientBtnLabel');
+      const lockedView = document.getElementById('vaultGateLockedView');
+      const authView = document.getElementById('vaultAuthenticatedView');
+
+      if (session) {
+        document.body.classList.add('client-authenticated');
+        if (clientBtnLabel) clientBtnLabel.textContent = session.shortName || 'Dashboard';
+        
+        if (lockedView) lockedView.style.display = 'none';
+        if (authView) authView.style.display = 'block';
+
+        // Update identity header
+        const userAvatar = document.getElementById('dashUserAvatar');
+        const userName = document.getElementById('dashUserName');
+        const userRole = document.getElementById('dashUserRole');
+        if (userAvatar) userAvatar.textContent = session.initials || 'CP';
+        if (userName) userName.textContent = session.name || 'Collaborator';
+        if (userRole) userRole.textContent = session.role || 'Venture Partner';
+
+        renderDeliverables();
+      } else {
+        document.body.classList.remove('client-authenticated');
+        if (clientBtnLabel) clientBtnLabel.textContent = 'Client Portal';
+        if (lockedView) lockedView.style.display = 'block';
+        if (authView) authView.style.display = 'none';
+      }
+    }
+
+    function authenticateCollaborator(username, password) {
+      const u = (username || '').toLowerCase().trim();
+      const p = (password || '').trim();
+
+      const validPasswords = ['smicky123', 'collab2026', 'trialfirm2026', 'sree123', 'gaya123', 'client123'];
+      const isPassValid = validPasswords.includes(p) || p === 'smicky123';
+
+      if (!isPassValid && p !== 'smicky123') {
+        return false;
+      }
+
+      let sessionData = null;
+
+      if (u === 'sreegovind' || u === 'sree' || u === 'tester') {
+        sessionData = {
+          username: 'sreegovind',
+          name: 'Sreegovind',
+          shortName: 'Sreegovind',
+          initials: 'SG',
+          role: 'Lead QA &bull; Android Engineering'
+        };
+      } else if (u === 'gayathri' || u === 'gaya' || u === 'linguist') {
+        sessionData = {
+          username: 'gayathri',
+          name: 'Gayathri',
+          shortName: 'Gayathri',
+          initials: 'GA',
+          role: 'Linguist &bull; Bilingual UX Reviewer'
+        };
+      } else if (u === 'client' || u === 'partner' || u === 'trial') {
+        sessionData = {
+          username: 'client',
+          name: 'Venture Client Partner',
+          shortName: 'Client',
+          initials: 'CP',
+          role: 'Sprint Sponsor &bull; Product Owner'
+        };
+      } else if (u === 'admin') {
+        sessionData = {
+          username: 'admin',
+          name: 'Anandovsky (Admin)',
+          shortName: 'Admin',
+          initials: 'AN',
+          role: 'Studio Owner &bull; Solo Engineering'
+        };
+      } else {
+        // Universal guest collaborator
+        sessionData = {
+          username: u || 'collaborator',
+          name: u ? (u.charAt(0).toUpperCase() + u.slice(1)) : 'Collaborator',
+          shortName: u || 'Collaborator',
+          initials: (u ? u.substring(0, 2).toUpperCase() : 'CO'),
+          role: 'Designated Collaborator'
+        };
+      }
+
+      localStorage.setItem(STORAGE_KEY_CLIENT_AUTH, JSON.stringify(sessionData));
+      checkClientSession();
+      return true;
+    }
+
+    function handleClientLoginSubmit(e) {
+      e.preventDefault();
+      const user = document.getElementById('gateUsernameInput').value;
+      const pass = document.getElementById('gatePasswordInput').value;
+      const errorDiv = document.getElementById('gateLoginError');
+
+      if (authenticateCollaborator(user, pass)) {
+        if (errorDiv) errorDiv.style.display = 'none';
+        showToast('Collaborator Vault Unlocked &bull; Welcome ' + user);
+      } else {
+        if (errorDiv) errorDiv.style.display = 'block';
+      }
+    }
+
+    function handleClientModalLoginSubmit(e) {
+      e.preventDefault();
+      const user = document.getElementById('clientModalUsername').value;
+      const pass = document.getElementById('clientModalPassword').value;
+      const errorDiv = document.getElementById('clientModalError');
+
+      if (authenticateCollaborator(user, pass)) {
+        if (errorDiv) errorDiv.style.display = 'none';
+        closeModal('clientLoginModal');
+        showToast('Vault Unlocked &bull; Opening Dashboard');
+        showDashboardView(true);
+      } else {
+        if (errorDiv) errorDiv.style.display = 'block';
+      }
+    }
+
+    function quickLoginAs(user, pass) {
+      document.getElementById('gateUsernameInput').value = user;
+      document.getElementById('gatePasswordInput').value = pass;
+      authenticateCollaborator(user, pass);
+      showToast('Authenticated as ' + user);
+    }
+
+    function quickLoginModalAs(user) {
+      document.getElementById('clientModalUsername').value = user;
+      document.getElementById('clientModalPassword').value = 'smicky123';
+      authenticateCollaborator(user, 'smicky123');
+      closeModal('clientLoginModal');
+      showToast('Authenticated as ' + user);
+      showDashboardView(true);
+    }
+
+    function clientLogout() {
+      if (confirm('Lock Collaborator Vault and logout?')) {
+        localStorage.removeItem(STORAGE_KEY_CLIENT_AUTH);
+        checkClientSession();
+        showToast('Collaborator Vault Locked');
+      }
+    }
+
+    // --- Dashboard View Navigation & Routing ---
+    function handleDashboardNavClick(e) {
+      if (e) e.preventDefault();
+      showDashboardView(true);
+    }
+
+    function showDashboardView(scrollIntoView = true) {
+      const targetElement = document.getElementById('section-dashboard');
+      if (targetElement) {
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, '', '#section-dashboard');
+        }
+        if (scrollIntoView) {
+          const headerHeight = document.getElementById('siteHeader').offsetHeight;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerHeight + 10;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }
+      checkClientSession();
+    }
+
+    function checkRoute() {
+      const path = (window.location.pathname || '').toLowerCase();
+      const hash = (window.location.hash || '').toLowerCase();
+      if (path.includes('/dashboard') || path.includes('/deliverables') || hash === '#section-dashboard' || hash === '#dashboard' || hash === '#deliverables') {
+        showDashboardView(false);
+      }
+    }
+
+    // --- Sub-Tab Navigation inside Dashboard ---
+    function switchDashboardTab(tabId) {
+      const tabBtns = [document.getElementById('tabBtnMilestones'), document.getElementById('tabBtnBuilds'), document.getElementById('tabBtnDeliverables')];
+      const tabContents = [document.getElementById('dashTabMilestones'), document.getElementById('dashTabBuilds'), document.getElementById('dashTabDeliverables')];
+
+      tabBtns.forEach(btn => { if (btn) btn.classList.remove('active'); });
+      tabContents.forEach(c => { if (c) c.style.display = 'none'; });
+
+      if (tabId === 'milestones') {
+        if (document.getElementById('tabBtnMilestones')) document.getElementById('tabBtnMilestones').classList.add('active');
+        if (document.getElementById('dashTabMilestones')) document.getElementById('dashTabMilestones').style.display = 'block';
+      } else if (tabId === 'builds') {
+        if (document.getElementById('tabBtnBuilds')) document.getElementById('tabBtnBuilds').classList.add('active');
+        if (document.getElementById('dashTabBuilds')) document.getElementById('dashTabBuilds').style.display = 'block';
+      } else if (tabId === 'deliverables') {
+        if (document.getElementById('tabBtnDeliverables')) document.getElementById('tabBtnDeliverables').classList.add('active');
+        if (document.getElementById('dashTabDeliverables')) document.getElementById('dashTabDeliverables').style.display = 'block';
+        renderDeliverables();
+      }
+    }
+
+    // --- Deliverables Renderer ---
+    function renderDeliverables(filter = currentDeliverableFilter) {
+      currentDeliverableFilter = filter;
+      const tbody = document.getElementById('deliverablesTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      const filtered = currentDeliverables.filter(item => {
+        if (filter === 'all') return true;
+        return item.collaborator.toLowerCase().includes(filter.toLowerCase());
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 28px; color: var(--text-muted);">No deliverables found for this collaborator filter.</td></tr>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        
+        let statusBadgeClass = 'milestone-status-badge in-progress';
+        if (item.status === 'Verified' || item.status === 'Delivered') statusBadgeClass = 'milestone-status-badge completed';
+        if (item.status === 'In Review') statusBadgeClass = 'milestone-status-badge review';
+
+        let collabDotClass = 'collab-dot client';
+        if (item.collaborator.includes('Sree')) collabDotClass = 'collab-dot sree';
+        if (item.collaborator.includes('Gaya')) collabDotClass = 'collab-dot gaya';
+
+        tr.innerHTML = `
+          <td><strong style="color: var(--text-primary);">${escapeHtml(item.project)}</strong></td>
+          <td>
+            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 2px;">${escapeHtml(item.title)}</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(item.notes)}</div>
+          </td>
+          <td>
+            <div class="collaborator-tag">
+              <span class="${collabDotClass}"></span>
+              <span>${escapeHtml(item.collaborator)}</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">${escapeHtml(item.role)}</div>
+          </td>
+          <td>
+            <span class="${statusBadgeClass}">${escapeHtml(item.status)}</span>
+          </td>
+          <td style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary);">
+            ${escapeHtml(item.targetDate)}
+          </td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="admin-action-pill" onclick="cycleDeliverableStatus('${item.id}')" title="Cycle Status: Queued &rarr; In Progress &rarr; In Review &rarr; Verified">
+                &bull; Update Status
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterDeliverables(filter, btn) {
+      if (btn && btn.parentElement) {
+        const pills = btn.parentElement.querySelectorAll('.filter-pill');
+        pills.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      renderDeliverables(filter);
+    }
+
+    function cycleDeliverableStatus(id) {
+      const item = currentDeliverables.find(d => d.id === id);
+      if (!item) return;
+
+      const states = ['Queued', 'In Progress', 'In Review', 'Verified', 'Delivered'];
+      const currentIndex = states.indexOf(item.status);
+      const nextIndex = (currentIndex + 1) % states.length;
+      item.status = states[nextIndex];
+
+      saveDeliverables(currentDeliverables);
+      renderDeliverables();
+      showToast(item.project + ' status updated to ' + item.status);
+    }
+
+    // --- Deliverable Feedback Modal & Email Dispatch ---
+    function openDeliverableReportModal() {
+      const session = getClientSession();
+      if (session) {
+        const repName = document.getElementById('repCollaboratorName');
+        if (repName) repName.value = session.name;
+      }
+      openModal('deliverableReportModal');
+    }
+
+    function handleDeliverableReportSubmit(e) {
+      e.preventDefault();
+      const project = document.getElementById('repProjectSelect').value;
+      const collaborator = document.getElementById('repCollaboratorName').value.trim();
+      const status = document.getElementById('repStatus').value;
+      const notes = document.getElementById('repNotes').value.trim();
+
+      const newId = 'del-' + Date.now();
+      currentDeliverables.unshift({
+        id: newId,
+        project,
+        title: project + ' Test Review & Findings (' + collaborator + ')',
+        collaborator,
+        role: 'Collaborator QA',
+        status,
+        targetDate: 'Logged Today',
+        notes
+      });
+
+      saveDeliverables(currentDeliverables);
+      renderDeliverables();
+      closeModal('deliverableReportModal');
+
+      // Dispatch mailto to anand.com@gmail.com
+      const subject = encodeURIComponent('Deliverable QA Report &bull; ' + project + ' (' + collaborator + ')');
+      const body = encodeURIComponent(
+        'Project: ' + project + '\n' +
+        'Collaborator / Reporter: ' + collaborator + '\n' +
+        'Status: ' + status + '\n\n' +
+        'Findings & Observations:\n' + notes + '\n\n' +
+        '---\nSubmitted via Anandovsky Collaborator Dashboard'
+      );
+      const mailtoUrl = 'mailto:anand.com@gmail.com?subject=' + subject + '&body=' + body;
+      window.location.href = mailtoUrl;
+
+      showToast('Report saved & opening email to anand.com@gmail.com');
+    }
+
+    // --- APK Download Simulator ---
+    function downloadApk(filename, sizeMB, appName) {
+      const dummyData = 'PK\x03\x04Android Application Package: ' + appName + ' Test Build.\n' +
+        'Generated for Anandovsky Client & Collaborator Studio.\n' +
+        'File: ' + filename + ' (' + sizeMB + ' MB)\n' +
+        'Build Target: Android API 34+\n' +
+        'Designated Reviewers: Sreegovind / Gayathri / Client Partner\n' +
+        'Attribution: Created by Anandovsky\n';
+
+      const blob = new Blob([dummyData], { type: 'application/vnd.android.package-archive' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast('Downloading ' + filename + ' (' + sizeMB + ' MB)');
+    }
+
+    function downloadAllApks() {
+      downloadApk('FreeIt-v1.4.2-preview.apk', 18.4, 'FreeIt');
+      setTimeout(() => {
+        downloadApk('PocketCatalog-v2.1.0-release.apk', 14.8, 'PocketCatalog');
+      }, 700);
+      showToast('Downloading all test builds (.apk packages)...');
+    }
+
+    // --- Toast Helper ---
+    function showToast(msg) {
+      const toast = document.getElementById('dashToast');
+      const msgSpan = document.getElementById('dashToastMsg');
+      if (!toast || !msgSpan) return;
+
+      msgSpan.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        ['storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'serviceCmsModal', 'storyCmsModal'].forEach(id => closeModal(id));
+        ['storyReaderModal', 'adminLoginModal', 'projectCmsModal', 'serviceCmsModal', 'storyCmsModal', 'clientLoginModal', 'deliverableReportModal'].forEach(id => closeModal(id));
       }
     });
 
     // --- Initial Boot ---
+    window.addEventListener('popstate', checkRoute);
+    window.addEventListener('hashchange', checkRoute);
     window.addEventListener('DOMContentLoaded', () => {
       checkAdminSession();
       renderServices();
@@ -3279,6 +4539,99 @@
       renderProjects();
     });
   </script>
+
+  <!-- MODAL: Client & Collaborator Login -->
+  <div class="modal-overlay" id="clientLoginModal" onclick="closeModalOnBackdrop(event, 'clientLoginModal')">
+    <div class="modal-box" style="max-width: 480px;">
+      <button class="modal-close-btn" onclick="closeModal('clientLoginModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="modal-icon-circle" style="background: rgba(217, 119, 6, 0.1); border-color: var(--accent-gold); color: var(--accent-gold);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <h3 class="modal-title" style="font-size: 1.5rem;">Client &amp; Collaborator Portal</h3>
+      <p class="modal-desc" style="font-size: 0.88rem;">Authenticate to track active sprint milestones, download test APKs, and sign off deliverables.</p>
+
+      <form onsubmit="handleClientModalLoginSubmit(event)" style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary); font-size: 0.78rem;" for="clientModalUsername">Collaborator ID or Client Username</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="clientModalUsername" required placeholder="e.g. sreegovind, gayathri, or client" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary); font-size: 0.78rem;" for="clientModalPassword">Passcode</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="password" id="clientModalPassword" required placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <div id="clientModalError" style="display: none; font-size: 0.82rem; color: #DC2626; background: #FEF2F2; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #FCA5A5;">
+          Invalid credentials. Use <strong>smicky123</strong> or click a test persona below.
+        </div>
+        <button type="submit" class="form-submit-btn" style="width: 100%; margin-top: 4px;">
+          <span>Unlock Dashboard Workspace</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </form>
+
+      <div style="margin-top: 20px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">
+          1-Click Review Access:
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+          <button type="button" class="filter-pill" style="font-size: 0.75rem; padding: 5px 12px;" onclick="quickLoginModalAs('sreegovind')">Sreegovind (QA)</button>
+          <button type="button" class="filter-pill" style="font-size: 0.75rem; padding: 5px 12px;" onclick="quickLoginModalAs('gayathri')">Gayathri (Linguist)</button>
+          <button type="button" class="filter-pill" style="font-size: 0.75rem; padding: 5px 12px;" onclick="quickLoginModalAs('client')">Client Partner</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Submit Deliverable Report / QA Note -->
+  <div class="modal-overlay" id="deliverableReportModal" onclick="closeModalOnBackdrop(event, 'deliverableReportModal')">
+    <div class="modal-box" style="max-width: 580px;">
+      <button class="modal-close-btn" onclick="closeModal('deliverableReportModal')" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h3 class="modal-title" style="text-align: left; margin-bottom: 6px;">Submit Deliverable Note / QA Review</h3>
+      <p class="modal-desc" style="text-align: left; margin-bottom: 20px;">Send a test log update, benchmark confirmation, or blocker directly to Anandovsky.</p>
+
+      <form onsubmit="handleDeliverableReportSubmit(event)" style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="repProjectSelect">Target Project</label>
+          <select class="form-select" id="repProjectSelect" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" required>
+            <option value="FreeIt">FreeIt &mdash; Android Utility &amp; Process Scheduler</option>
+            <option value="Pocket Catalog">Pocket Catalog &mdash; Offline B2B PWA / APK</option>
+            <option value="LingoPulse AI">LingoPulse AI &mdash; Edge Voice &amp; French Academy</option>
+            <option value="OmniLedger Micro-Billing">OmniLedger Micro-Billing &mdash; Sub-50ms Stripe</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="repCollaboratorName">Collaborator / Reporter</label>
+          <input class="form-input" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" type="text" id="repCollaboratorName" required placeholder="e.g. Sreegovind / Gayathri" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="repStatus">Status Assessment</label>
+          <select class="form-select" id="repStatus" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary);" required>
+            <option value="Verified">Verified &amp; Signed Off</option>
+            <option value="In Review">In Review &bull; Minor Observations</option>
+            <option value="In Progress">In Progress &bull; Benchmarking Ongoing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color: var(--text-primary);" for="repNotes">Test Findings &amp; Observations</label>
+          <textarea class="form-textarea" style="background: #FAF7F2; border: 1px solid var(--border-medium); color: var(--text-primary); min-height: 90px;" id="repNotes" required placeholder="Detail battery telemetry, frame drops, phonetic audio accuracy, or verification details..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+          <button type="button" class="filter-pill" onclick="closeModal('deliverableReportModal')" style="padding: 9px 18px;">Cancel</button>
+          <button type="submit" class="form-submit-btn" style="padding: 9px 22px;">Log Report &bull; Email Anandovsky</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="dash-toast" id="dashToast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="dashToastMsg">Download initiated...</span>
+  </div>
+
 </body>
 </html>
 
