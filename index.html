@@ -1170,26 +1170,53 @@
       box-shadow: 0 0 14px var(--accent-glow);
     }
 
+    .project-demo-restricted-btn,
     .vault-restricted-btn {
       background: rgba(217, 119, 6, 0.08) !important;
-      border: 1px dashed rgba(217, 119, 6, 0.4) !important;
+      border: 1px dashed rgba(217, 119, 6, 0.42) !important;
       color: var(--accent-gold-dark) !important;
       cursor: pointer;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       padding: 6px 14px;
       border-radius: var(--radius-sm);
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       transition: all var(--transition-fast);
+      font-family: var(--font-mono);
+      text-decoration: none;
     }
 
+    .project-demo-restricted-btn:hover,
     .vault-restricted-btn:hover {
-      background: rgba(217, 119, 6, 0.16) !important;
+      background: rgba(217, 119, 6, 0.18) !important;
       border-color: var(--accent-gold) !important;
       color: var(--accent-gold-dark) !important;
-      box-shadow: 0 0 10px rgba(217, 119, 6, 0.2);
+      box-shadow: 0 0 12px rgba(217, 119, 6, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .demo-auth-banner {
+      background: rgba(217, 119, 6, 0.07);
+      border: 1px dashed rgba(217, 119, 6, 0.32);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--accent-gold-dark);
+      line-height: 1.5;
+    }
+
+    .demo-auth-banner.authed {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #059669;
     }
 
     /* Modals & Overlays - Warm Ivory & Espresso Framing */
@@ -3105,6 +3132,9 @@
 
 
         
+        <!-- Portfolio Demo Access Banner -->
+        <div id="portfolioDemoAuthNotice"></div>
+
         <!-- Projects Grid (Dynamic Content from CMS) -->
         <div class="projects-grid" id="projectsContainer">
           <!-- Dynamically populated via renderProjects() -->
@@ -4546,6 +4576,34 @@
         return;
       }
 
+      // Check Vault / Admin authentication status across all authorized sessions (Admin, Sreegovind, Gayathri, Client)
+      const isVaultAuthed = Boolean((typeof isClientLoggedIn === 'function' && isClientLoggedIn()) || (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()));
+
+      // Update Portfolio Demo Access Banner
+      const demoAuthNotice = document.getElementById('portfolioDemoAuthNotice');
+      if (demoAuthNotice) {
+        if (!isVaultAuthed) {
+          demoAuthNotice.innerHTML = `
+            <div class="demo-auth-banner">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink: 0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span><strong>Protected Live Demonstrations:</strong> Live project demos &amp; test APKs are restricted to authenticated users (Admin, Sreegovind, Gayathri).</span>
+              </div>
+              <button type="button" onclick="openModal('clientLoginModal')" style="background: transparent; border: none; font-weight: 700; text-decoration: underline; color: var(--accent-gold-dark); cursor: pointer; padding: 0; font-size: inherit; font-family: inherit;">Authenticate to Unlock Demos &rarr;</button>
+            </div>
+          `;
+        } else {
+          demoAuthNotice.innerHTML = `
+            <div class="demo-auth-banner authed">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink: 0;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Authenticated Session Active:</strong> Live project demos and APK downloads are unlocked and active.</span>
+              </div>
+            </div>
+          `;
+        }
+      }
+
       filtered.forEach(proj => {
         const card = document.createElement('div');
         card.className = 'project-card';
@@ -4554,44 +4612,61 @@
         const techSpans = (proj.tech || []).map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('');
         const badgeClass = proj.badgeType === 'beta' ? 'project-badge beta' : 'project-badge';
 
-        // Check if project is Pocket Catalog and check Vault authentication status
+        // Check if project is Pocket Catalog
         const isPocketCatalog = proj.id === 'pocket-catalog' || 
           (proj.title && proj.title.toLowerCase().includes('pocket catalog')) ||
           (proj.demoUrl && proj.demoUrl.toLowerCase().includes('pocket-catalog'));
-        const isVaultAuthed = Boolean((typeof isClientLoggedIn === 'function' && isClientLoggedIn()) || (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()));
 
-        // Custom action buttons based on project features
+        // Custom action buttons based on project features and authentication state
         let actionButtonsHtml = '';
         if (proj.hasGenerateQa || proj.id === 'any-syllabus' || (proj.title && proj.title.includes('Any Syllabus'))) {
-          actionButtonsHtml = `
-            <button type="button" class="custom-generate-qa-btn" onclick="openAssessmentGeneratorModal()" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 15px; border-radius: var(--radius-sm); font-size: 0.78rem; font-family: var(--font-mono);">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-              <span>Generate Q&amp;A</span>
-            </button>
-          `;
+          if (isVaultAuthed) {
+            actionButtonsHtml = `
+              <button type="button" class="custom-generate-qa-btn" onclick="openAssessmentGeneratorModal()" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 15px; border-radius: var(--radius-sm); font-size: 0.78rem; font-family: var(--font-mono);">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span>Generate Q&amp;A</span>
+              </button>
+            `;
+          } else {
+            actionButtonsHtml = `
+              <button type="button" class="project-demo-restricted-btn" onclick="handleRestrictedDemoLaunch('${escapeHtml(proj.title)}')" title="Assessment generation demo is restricted to authorized users (Admin, Sreegovind, Gayathri). Click to log in.">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Launch Demo</span>
+              </button>
+            `;
+          }
         } else if (isPocketCatalog) {
           if (isVaultAuthed) {
             actionButtonsHtml = `
               <a href="/downloads/pocket-catalog.apk" download="pocket-catalog.apk" class="project-demo-btn" onclick="showToast('Downloading Pocket Catalog Official APK (18.7 MB)...')">
-                <span>Download APK</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Download APK</span>
               </a>
             `;
           } else {
             actionButtonsHtml = `
-              <button type="button" class="vault-restricted-btn" onclick="handleDashboardNavClick(event)" title="APK download is restricted to authorized testers and clients with vault access">
+              <button type="button" class="vault-restricted-btn" onclick="handleRestrictedDemoLaunch('${escapeHtml(proj.title)}')" title="APK download is restricted to authorized testers and clients with vault access. Click to log in.">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 <span>Vault Restricted</span>
               </button>
             `;
           }
         } else {
-          actionButtonsHtml = `
-            <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn">
-              <span>Launch / Demo</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          `;
+          if (isVaultAuthed) {
+            actionButtonsHtml = `
+              <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn" title="Launch live authenticated demo">
+                <span>Launch Demo</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            `;
+          } else {
+            actionButtonsHtml = `
+              <button type="button" class="project-demo-restricted-btn" onclick="handleRestrictedDemoLaunch('${escapeHtml(proj.title)}')" title="Live demo for ${escapeHtml(proj.title)} is restricted to authorized users (Admin, Sreegovind, Gayathri). Click to log in.">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Launch Demo</span>
+              </button>
+            `;
+          }
         }
 
         // Clean note for Pocket Catalog in Portfolio section
@@ -5017,6 +5092,11 @@
       renderProjects();
       closeModal('projectCmsModal');
       showToast('Project description updated & synced to cloud database in real time');
+    }
+
+    function handleRestrictedDemoLaunch(projectTitle) {
+      showToast('Authentication Required: Demo access for "' + projectTitle + '" is restricted to authorized users (Admin, Sreegovind, Gayathri). Please log in.');
+      openModal('clientLoginModal');
     }
 
     function deleteProject(id) {
@@ -5872,6 +5952,11 @@
 
     // --- Any Syllabus Assessment Generator Logic ---
     function openAssessmentGeneratorModal() {
+      const isAuthed = Boolean((typeof isClientLoggedIn === 'function' && isClientLoggedIn()) || (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()));
+      if (!isAuthed) {
+        handleRestrictedDemoLaunch('Any Syllabus Assessment Generator');
+        return;
+      }
       openModal('assessmentGeneratorModal');
       handleSyllabusSelectChange();
     }
