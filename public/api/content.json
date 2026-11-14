@@ -105,7 +105,7 @@
       "badge": "\u25cf Active Testing",
       "badgeType": "beta",
       "platform": "Web Platform",
-      "attribution": "Created by Anandovsky & Tester Sreegovind",
+      "attribution": "Created by Anandovsky & Tester Johnny hotbody (nick)",
       "title": "Parlez App",
       "desc": "A French learning web application.",
       "tech": [
@@ -184,7 +184,7 @@
       "title": "\ud83c\udf31 Pressure-Free Testing: Empowering Student QA Leads with Zero Deadlines",
       "snippet": "Why flexible, self-paced testing produces higher quality bug reports than artificial deadlines. A model for asynchronous student collaboration.",
       "author": "Created by Anandovsky",
-      "content": "<p>Testing should never conflict with university exams or coursework. Our collaborators (Sreegovind, Gayathri) contribute purely at their own pace.</p><blockquote>\"No monthly or yearly targets. True quality emerges when contributors test with genuine curiosity.\"</blockquote>"
+      "content": "<p>Testing should never conflict with university exams or coursework. Our collaborators (Johnny hotbody (nick), Gayathri) contribute purely at their own pace.</p><blockquote>\"No monthly or yearly targets. True quality emerges when contributors test with genuine curiosity.\"</blockquote>"
     }
   ],
   "milestones": [
@@ -194,7 +194,7 @@
       "statusBadge": "Sprint 03 &bull; Release Candidate",
       "badgeClass": "in-progress",
       "platform": "Android Native &bull; API 36",
-      "assigned": "Assigned QA Lead: Sreegovind",
+      "assigned": "Assigned QA Lead: Johnny hotbody (nick)",
       "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
       "desc": "A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.",
       "progress": 85,
@@ -210,7 +210,7 @@
       "statusBadge": "Sprint 02 &bull; Feature Verification",
       "badgeClass": "in-progress",
       "platform": "PWA + Android APK",
-      "assigned": "Assigned: Client Partner & Sreegovind",
+      "assigned": "Assigned: Client Partner & Johnny hotbody (nick)",
       "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
       "desc": "An Android cataloging mobile application test build downloaded and evaluated for managing structured item/asset collections.",
       "progress": 70,
@@ -242,7 +242,7 @@
       "statusBadge": "Beta Review &bull; Active Testing",
       "badgeClass": "in-progress",
       "platform": "Web Platform",
-      "assigned": "Assigned QA: Sreegovind",
+      "assigned": "Assigned QA: Johnny hotbody (nick)",
       "flexibleNote": "Self-Paced Testing (Flexible around student exam schedules &bull; No monthly or yearly targets/deadlines &mdash; contribute whenever you have free time).",
       "desc": "A French learning web application.",
       "progress": 80,

@@ -135,7 +135,7 @@ class _PlatformHomePageState extends State<PlatformHomePage>
               _buildProjectCard(
                 badge: 'Deployed on Vercel',
                 title: 'LingoPulse AI',
-                tech: 'Next.js Edge • Web Audio API • TailwindCSS\nCreated by Anandovsky | Tester: Sreegovind',
+                tech: 'Next.js Edge • Web Audio API • TailwindCSS\nCreated by Anandovsky | Tester: Johnny hotbody (nick)',
               ),
               _buildProjectCard(
                 badge: 'Production Release',
