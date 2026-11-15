@@ -58,7 +58,7 @@ const DEFAULT_PROJECTS = [
         attribution: 'Created by Anandovsky | Tester: Johnny hotbody (nick) & Gayathri',
         desc: 'A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.',
         tech: ['Android SDK 36', 'WebView Core', 'Google Play Store', 'Version Code 5'],
-        demoUrl: '#section-dashboard',
+        demoUrl: 'https://play.google.com/store/apps',
         caseUrl: '#section-dashboard'
       },
       {
@@ -84,7 +84,7 @@ const DEFAULT_PROJECTS = [
         attribution: 'Created by Anandovsky | Tester: Gayathri',
         desc: 'It is a German language learning web application.',
         tech: ['Next.js Edge', 'Web Audio API', 'German Grammar Core', 'Vercel'],
-        demoUrl: 'https://vercel.com',
+        demoUrl: 'https://guten-app.vercel.app/',
         caseUrl: '#contact'
       },
       {
@@ -97,7 +97,7 @@ const DEFAULT_PROJECTS = [
         attribution: 'Created by Anandovsky | Tester: Johnny hotbody (nick)',
         desc: 'A French learning web application.',
         tech: ['Next.js', 'Speech Synthesis', 'French Conjugation Engine', 'Vercel Edge'],
-        demoUrl: 'https://vercel.com',
+        demoUrl: 'https://parlez-app-three.vercel.app/',
         caseUrl: '#contact'
       },
       {
@@ -124,7 +124,7 @@ const DEFAULT_PROJECTS = [
         attribution: 'Created by Anandovsky',
         desc: 'A schedule-tracking and operating rhythm application structured around "Day\'s activity" time slots.',
         tech: ['Local-First DB', 'Time-Block Matrix', 'IndexedDB', 'TailwindCSS'],
-        demoUrl: '#section-dashboard',
+        demoUrl: 'https://multi-venture.vercel.app/',
         caseUrl: '#contact'
       },
       {
@@ -296,8 +296,8 @@ const DEFAULT_MILESTONES = [
         progress: 95,
         nextDeliverable: 'German grammatical case training loop & phonetic audio buffer review. Target: Nov 16, 2026.',
         actionType: 'link',
-        actionLabel: 'Launch Staging Preview (staging.gutenapp.vercel.app)',
-        actionTarget: 'https://vercel.com',
+        actionLabel: 'Launch Staging Preview (guten-app.vercel.app)',
+        actionTarget: 'https://guten-app.vercel.app/',
         actionParam: 0
       },
       {
@@ -312,8 +312,8 @@ const DEFAULT_MILESTONES = [
         progress: 80,
         nextDeliverable: 'French irregular verb speech synthesis & audio conjugation drills. Target: Nov 22, 2026.',
         actionType: 'link',
-        actionLabel: 'Launch French Learning Preview',
-        actionTarget: 'https://vercel.com',
+        actionLabel: 'Launch French Learning Preview (parlez-app-three.vercel.app)',
+        actionTarget: 'https://parlez-app-three.vercel.app/',
         actionParam: 0
       },
       {
@@ -344,8 +344,8 @@ const DEFAULT_MILESTONES = [
         progress: 100,
         nextDeliverable: 'Daily time slot allocation telemetry & multi-venture burn charts. Target: Nov 30, 2026.',
         actionType: 'tracker',
-        actionLabel: 'Open Daily Operating Rhythm',
-        actionTarget: '#section-dashboard',
+        actionLabel: 'Open Daily Operating Rhythm (multi-venture.vercel.app)',
+        actionTarget: 'https://multi-venture.vercel.app/',
         actionParam: 0
       }
     ];
@@ -376,6 +376,27 @@ async function readBody(req) {
 }
 
 // Safe Merge Utility: merges incoming records into existing list by ID without wiping historical data
+
+function normalizeProjects(list) {
+  if (!Array.isArray(list)) return list;
+  return list.map(item => {
+    if (!item || typeof item !== 'object') return item;
+    const proj = { ...item };
+    const id = (proj.id || '').toLowerCase();
+    const title = (proj.title || '').toLowerCase();
+    if (id === 'guten-app' || title.includes('guten app')) {
+      proj.demoUrl = 'https://guten-app.vercel.app/';
+    } else if (id === 'parlez-app' || title.includes('parlez app')) {
+      proj.demoUrl = 'https://parlez-app-three.vercel.app/';
+    } else if (id === 'daily-tracker' || title.includes('daily tracker')) {
+      proj.demoUrl = 'https://multi-venture.vercel.app/';
+    } else if (id === 'freeit' || title.includes('freeit')) {
+      proj.demoUrl = 'https://play.google.com/store/apps';
+    }
+    return proj;
+  });
+}
+
 function safeMergeRecords(existingList = [], incomingData = [], meta = {}) {
   const existing = Array.isArray(existingList) ? [...existingList] : [];
   const incoming = Array.isArray(incomingData)
@@ -469,8 +490,13 @@ export default async function handler(req, res) {
         if (kvRes.ok) {
           const kvData = await kvRes.json();
           if (kvData && kvData.result) {
-            const parsed = typeof kvData.result === 'string' ? JSON.parse(kvData.result) : kvData.result;
+            let parsed = typeof kvData.result === 'string' ? JSON.parse(kvData.result) : kvData.result;
             if (parsed) {
+              if (sectionParam === 'projects') {
+                parsed = normalizeProjects(parsed);
+              } else if (parsed && parsed.projects) {
+                parsed.projects = normalizeProjects(parsed.projects);
+              }
               res.setHeader('Content-Type', 'application/json');
               res.statusCode = 200;
               res.end(JSON.stringify({
@@ -520,9 +546,12 @@ export default async function handler(req, res) {
 
     // 3. Fallback to resilient in-memory / seeded store
     const store = globalThis._allContentStore;
+    if (store && store.projects) {
+      store.projects = normalizeProjects(store.projects);
+    }
     let responseData = store;
     if (sectionParam && store[sectionParam]) {
-      responseData = store[sectionParam];
+      responseData = (sectionParam === 'projects') ? normalizeProjects(store[sectionParam]) : store[sectionParam];
     }
 
     res.setHeader('Content-Type', 'application/json');
@@ -572,7 +601,10 @@ export default async function handler(req, res) {
         }
 
         // Perform safe merge: merge incoming changes into existing records, preserving historical entries
-        const merged = safeMergeRecords(existingRecords, data, meta);
+        let merged = safeMergeRecords(existingRecords, data, meta);
+        if (section === 'projects') {
+          merged = normalizeProjects(merged);
+        }
         globalThis._allContentStore[section] = merged;
 
         // Persist merged records to Vercel KV
