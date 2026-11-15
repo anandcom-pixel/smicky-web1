@@ -58,7 +58,7 @@ const DEFAULT_PROJECTS = [
         attribution: 'Created by Anandovsky | Tester: Johnny hotbody (nick) & Gayathri',
         desc: 'A native Android WebView item resale application published to the Google Play Store, upgraded to target Android 16 (API level 36) with Version Code 5 deployed to production.',
         tech: ['Android SDK 36', 'WebView Core', 'Google Play Store', 'Version Code 5'],
-        demoUrl: 'https://play.google.com/store/apps',
+        demoUrl: 'https://play.google.com/store/apps/details?id=com.freeit.useditems',
         caseUrl: '#section-dashboard'
       },
       {
@@ -391,7 +391,7 @@ function normalizeProjects(list) {
     } else if (id === 'daily-tracker' || title.includes('daily tracker')) {
       proj.demoUrl = 'https://multi-venture.vercel.app/';
     } else if (id === 'freeit' || title.includes('freeit')) {
-      proj.demoUrl = 'https://play.google.com/store/apps';
+      proj.demoUrl = 'https://play.google.com/store/apps/details?id=com.freeit.useditems';
     }
     return proj;
   });
