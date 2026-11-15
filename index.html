@@ -3376,7 +3376,7 @@
                     </div>
                   </div>
                 </div>
-                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;">
+                <a href="https://guten-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #4F46E5; border-color: #4F46E5;" onclick="return handleLaunchDemo(event, 'https://guten-app.vercel.app/', 'Guten App')">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   <span>Launch Guten App Preview</span>
                 </a>
@@ -3404,7 +3404,7 @@
                     </div>
                   </div>
                 </div>
-                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #0284C7; border-color: #0284C7;">
+                <a href="https://parlez-app-three.vercel.app/" target="_blank" rel="noopener noreferrer" class="apk-download-btn" style="background: #0284C7; border-color: #0284C7;" onclick="return handleLaunchDemo(event, 'https://parlez-app-three.vercel.app/', 'Parlez App')">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   <span>Launch Parlez App Preview</span>
                 </a>
@@ -4654,9 +4654,9 @@
             `;
           } else {
             actionButtonsHtml = `
-              <button type="button" class="project-demo-restricted-btn" onclick="handleRestrictedDemoLaunch('${escapeHtml(proj.title)}')" title="Assessment generation demo is restricted to authorized users (Admin, Sreegovind/Johnny hotbody, Gayathri). Click to log in.">
+              <button type="button" class="vault-restricted-btn project-demo-restricted-btn" onclick="handleLaunchDemo(event, '#assessment-generator', '${escapeHtml(proj.title)}')" title="Assessment generation demo is restricted to authorized vault collaborators. Click to unlock portal.">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Launch / Demo</span>
+                <span>Launch/Demo</span>
               </button>
             `;
           }
@@ -4670,7 +4670,7 @@
             `;
           } else {
             actionButtonsHtml = `
-              <button type="button" class="vault-restricted-btn" onclick="handleRestrictedDemoLaunch('${escapeHtml(proj.title)}')" title="APK download is restricted to authorized testers and clients with vault access. Click to log in.">
+              <button type="button" class="vault-restricted-btn" onclick="handleLaunchDemo(event, '/downloads/pocket-catalog.apk', '${escapeHtml(proj.title)}')" title="APK download is restricted to authorized testers and clients with vault access. Click to unlock portal.">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 <span>Vault Restricted</span>
               </button>
@@ -4679,16 +4679,16 @@
         } else {
           if (isVaultAuthed) {
             actionButtonsHtml = `
-              <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn" title="Launch live authenticated demo">
-                <span>Launch / Demo</span>
+              <a href="${proj.demoUrl || 'https://vercel.com'}" target="_blank" rel="noopener noreferrer" class="project-demo-btn" onclick="handleLaunchDemo(event, '${escapeHtml(proj.demoUrl || 'https://vercel.com')}', '${escapeHtml(proj.title)}')" title="Launch live authenticated demo">
+                <span>Launch/Demo</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
               </a>
             `;
           } else {
             actionButtonsHtml = `
-              <button type="button" class="project-demo-restricted-btn" onclick="handleRestrictedDemoLaunch('${escapeHtml(proj.title)}')" title="Live demo for ${escapeHtml(proj.title)} is restricted to authorized users (Admin, Sreegovind/Johnny hotbody, Gayathri). Click to log in.">
+              <button type="button" class="vault-restricted-btn project-demo-restricted-btn" onclick="handleLaunchDemo(event, '${escapeHtml(proj.demoUrl || 'https://vercel.com')}', '${escapeHtml(proj.title)}')" title="Live demo for ${escapeHtml(proj.title)} is restricted to authorized vault collaborators. Click to unlock portal.">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Launch / Demo</span>
+                <span>Launch/Demo</span>
               </button>
             `;
           }
@@ -5119,9 +5119,48 @@
       showToast('Project description updated & synced to cloud database in real time');
     }
 
+    function handleLaunchDemo(e, targetUrl, projectTitle) {
+      if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      }
+
+      // Vault-Restricted Launch Gate: Exact same authentication/session check used for APK vault downloads
+      const isAuthed = Boolean((typeof isClientLoggedIn === 'function' && isClientLoggedIn()) || (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()));
+
+      if (!isAuthed) {
+        // Block navigation and prompt them to unlock the portal / log in (just like locked APK downloads)
+        showToast('Demo access for "' + (projectTitle || 'Project') + '" is restricted to authorized vault collaborators. Please unlock the portal.');
+        showDashboardView(true);
+        openModal('clientLoginModal');
+        return false;
+      }
+
+      // If user is authenticated (admin, sreegovind/Johnny hotbody, or gayathri), allow smooth target navigation
+      if (!targetUrl || targetUrl === '#' || targetUrl === '#contact') {
+        const contactEl = document.getElementById('contact');
+        if (contactEl) {
+          contactEl.scrollIntoView({ behavior: 'smooth' });
+        }
+        return true;
+      }
+
+      if (targetUrl === '#assessment-generator') {
+        openAssessmentGeneratorModal();
+        return true;
+      }
+
+      if (targetUrl === '/downloads/pocket-catalog.apk') {
+        downloadApk('/downloads/pocket-catalog.apk', 18.7, 'PocketCatalog');
+        return true;
+      }
+
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      return true;
+    }
+
     function handleRestrictedDemoLaunch(projectTitle) {
-      showToast('Authentication Required: Demo access for "' + projectTitle + '" is restricted to authorized users (Admin, Sreegovind/Johnny hotbody, Gayathri). Please log in.');
-      openModal('clientLoginModal');
+      return handleLaunchDemo(null, null, projectTitle);
     }
 
     function deleteProject(id) {
